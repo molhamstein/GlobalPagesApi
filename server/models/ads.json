@@ -1,0 +1,37 @@
+{
+  "name": "ads",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "media": {
+      "type": "object"
+    },
+    "owner": {
+      "type": "object",
+      "required": true
+    },
+    "status": {
+      "type": "string",
+      "required": true
+    },
+    "viewsCount": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

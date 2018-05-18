@@ -1,0 +1,36 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "mongoDb": {
+    "host": "mlab.com",
+    "port": 35788,
+    "url": "mongodb://localhost:27017/globalPages",
+    "database": "global_pages",
+    "password": "123456789",
+    "name": "mongoDb",
+    "xxxx": "mongodb://ahmad:123456789@ds235788.mlab.com:35788/global_pages",
+    "user": "ahmad",
+    "connector": "mongodb"
+  },
+  "emailSource": {
+    "name": "emailSource",
+    "connector": "mail",
+    "transports": [
+      {
+        "type": "smtp",
+        "host": "smtp.gmail.com",
+        "secure": true,
+        "port": 465,
+        "tls": {
+          "rejectUnauthorized": false
+        },
+        "auth": {
+          "user": "globalPagesApi@gmail.com",
+          "pass": "123456789!@#$%^&*("
+        }
+      }
+    ]
+  }
+}
