@@ -49,5 +49,9 @@
   "ads": {
     "dataSource": "mongoDb",
     "public": true
+  },
+  "attachment": {
+    "dataSource": "storage",
+    "public": true
   }
 }

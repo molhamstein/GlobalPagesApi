@@ -8,7 +8,7 @@ var ejs = require('ejs');
 module.exports = function(User) {
 	// validation
 	User.validatesInclusionOf('gender', {in: ['male', 'female']});
-	User.validatesInclusionOf('status', {in: ['pending', 'active','deactivated']});
+	User.validatesInclusionOf('status', {in: ['pending', 'activated','deactivated']});
 
 	//send verification email after registration
 	User.afterRemote('create', function(context, user, next) {
@@ -145,5 +145,36 @@ module.exports = function(User) {
 		],
 		returns: {arg: 'message', type: 'any'},
 		http: {verb: 'post',path:'/resetPassword/:token'},	
+    });
+
+    // agree or reject user
+	User.changeStatus = function(userId,status,cb){
+		User.findById(userId.toString(), function(err, user) {
+			if(err) 
+				return cb(err);
+			if(!user){
+				err = new Error('User not found');
+		        err.statusCode = 404;
+		        err.code = 'USER_NOT_FOUND';
+		        return cb(err);
+			}
+			// console.log("BBBBBB")
+			user.status = (status)?'activated':'deactivated';
+			user.save((err)=>{
+				if(err)
+					return cb(err)
+				return cb(null, user.status);
+			})
+		});
+	}
+
+	User.remoteMethod('changeStatus', {
+    	description: 'agree or Reject User from admin',
+		accepts: [
+			{arg: 'userId', type: 'string',  required:true},
+			{arg: 'agree', type: 'boolean', required: true, http: {source: 'body'}},
+		],
+		returns: {arg: 'message', type: 'string'},
+		http: {verb: 'post',path: '/:userId/changeStatus'},
     });
 };

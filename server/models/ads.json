@@ -13,25 +13,30 @@
     "description": {
       "type": "string"
     },
-    "media": {
-      "type": "object"
-    },
-    "owner": {
-      "type": "object",
-      "required": true
-    },
     "status": {
       "type": "string",
-      "required": true
+      "required": true,
+      "default": "pending"
     },
+    "image": "string",
+    "video": "string",
+
     "viewsCount": {
       "type": "number",
       "required": true,
       "default": 0
     }
   },
+  "scope": {
+    "include": "owner"
+  },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "owner" : {
+      "type": "belongsTo",
+      "model": "user"
+    }
+  },
   "acls": [],
   "methods": {}
 }
