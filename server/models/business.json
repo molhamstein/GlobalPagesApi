@@ -1,0 +1,79 @@
+{
+  "name": "business",
+  "base": "PersistedModel",
+  "automaticValidation" : false,
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "nameEn": {
+      "type": "string",
+      "required": true
+    },
+    "nameAr": {
+      "type": "string",
+      "required": true
+    },
+    "nameUnique": {
+      "type": "string",
+      "required": true
+    },
+    "logo": {
+      "type": "string"
+    },
+    "cover": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "required": true,
+      "default": "pending"
+    },
+    "description": {
+      "type": "string"
+    },
+    "openingDays": {
+      "type": [
+        "number"
+      ]
+    },
+    "openingDaysEnabled": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "validations": [],
+  "relations": {
+    "owner": {
+      "type": "belongsTo",
+      "model": "user"
+    },
+    "category": {
+      "type": "belongsTo",
+      "model": "businessCategories"
+    },
+    "subCategory": {
+      "type": "belongsTo",
+      "model": "businessCategories"
+    },
+    "myProducts": {
+      "type": "embedsMany",
+      "model": "products",
+      "property" : "products",
+      "options": {
+        "validate": true,
+        "persistent": true
+      }
+    }
+  },
+  "scope": {
+    "include": [
+      "owner",
+      "category",
+      "subCategory"
+    ]
+  },
+  "acls": [],
+  "methods": {}
+}

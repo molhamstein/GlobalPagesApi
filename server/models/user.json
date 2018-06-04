@@ -29,10 +29,20 @@
     },
     "resetPasswordExpires": {
       "type": "date"
+    },
+    "creationDate": {
+      "type": "date",
+      "required": true,
+      "default": "$now"
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "faveoriteCategories": {
+       "type": "referencesMany",
+        "model": "postCategories"
+    }
+  },
   "acls": [
     {
       "accessType": "*",

@@ -46,12 +46,32 @@
       "emailVerificationRequired": true
     }
   },
-  "ads": {
+  "posts": {
     "dataSource": "mongoDb",
     "public": true
   },
   "attachment": {
     "dataSource": "storage",
+    "public": true
+  },
+  "postCategories": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "volumes": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "business": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "products": {
+    "dataSource": "mongoDb",
+    "public": false
+  },
+  "businessCategories": {
+    "dataSource": "mongoDb",
     "public": true
   }
 }

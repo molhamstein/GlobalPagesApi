@@ -1,0 +1,62 @@
+{
+  "name": "posts",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "scope": {
+    "include": [
+      "owner",
+      "category",
+      "subCategory"
+    ]
+  },
+  "properties": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "required": true,
+      "default": "pending"
+    },
+    "image": {
+      "type": "string"
+    },
+    "video": {
+      "type": "string"
+    },
+    "viewsCount": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "creationDate": {
+      "type": "date",
+      "required": true,
+      "default": "$now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "owner": {
+      "type": "belongsTo",
+      "model": "user"
+    },
+    "category": {
+      "type": "belongsTo",
+      "model": "postCategories"
+    },
+    "subCategory": {
+      "type": "belongsTo",
+      "model": "postCategories"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

@@ -1,40 +1,30 @@
 {
-  "name": "ads",
+  "name": "postCategories",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "title": {
+    "titleAr": {
       "type": "string",
       "required": true
     },
-    "description": {
-      "type": "string"
-    },
-    "status": {
+    "titleEn": {
       "type": "string",
-      "required": true,
-      "default": "pending"
+      "required": true
     },
-    "image": "string",
-    "video": "string",
-
-    "viewsCount": {
-      "type": "number",
+    "creationDate": {
+      "type": "date",
       "required": true,
-      "default": 0
+      "default": "$now"
     }
-  },
-  "scope": {
-    "include": "owner"
   },
   "validations": [],
   "relations": {
-    "owner" : {
+    "parentCategory": {
       "type": "belongsTo",
-      "model": "user"
+      "model": "postCategories"
     }
   },
   "acls": [],

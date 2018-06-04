@@ -3,7 +3,8 @@
 module.exports = function(Ads) {
 	// validation
 	Ads.validatesInclusionOf('status', {in: ['pending', 'activated','deactivated']});
-	// Ads.validatesPresenceOf('ownerId');
+	Ads.validatesPresenceOf('categoryId');
+	// Ads.validatesPresenceOf('subCategoryId');
 
 	// add ownerId to ads
 	Ads.beforeRemote('create', function( ctx, modelInstance, next) {
@@ -17,9 +18,9 @@ module.exports = function(Ads) {
 			if(err) 
 				return cb(err);
 			if(!ad){
-				err = new Error('Ad not found');
+				err = new Error('post not found');
 		        err.statusCode = 404;
-		        err.code = 'AD_NOT_FOUND';
+		        err.code = 'POST_NOT_FOUND';
 		        return cb(err);
 			}
 			// console.log("BBBBBB")
@@ -31,26 +32,25 @@ module.exports = function(Ads) {
 			})
 		});
 	}
-
 	Ads.remoteMethod('changeStatus', {
     	description: 'agree or Reject ads from admin',
 		accepts: [
-			{arg: 'adId', type: 'string',  required:true},
+			{arg: 'postId', type: 'string',  required:true},
 			{arg: 'agree', type: 'boolean', required: true, http: {source: 'body'}},
 		],
 		returns: {arg: 'message', type: 'string'},
-		http: {verb: 'post',path: '/:adId/changeStatus'},
+		http: {verb: 'post',path: '/:postId/changeStatus'},
     });
 
     // plus viewsCount
-	Ads.plusviewsCount = function(adId,cb){
-		Ads.findById(adId.toString(),{}, function(err, ad) {
+	Ads.plusviewsCount = function(postId,cb){
+		Ads.findById(postId.toString(),{}, function(err, ad) {
 			if(err) 
 				return cb(err);
 			if(!ad){
-				err = new Error('Ad not found');
+				err = new Error('Post not found');
 		        err.statusCode = 404;
-		        err.code = 'AD_NOT_FOUND';
+		        err.code = 'POST_NOT_FOUND';
 		        return cb(err);
 			}
 
@@ -61,8 +61,8 @@ module.exports = function(Ads) {
 
 	Ads.remoteMethod('plusviewsCount', {
     	description: 'plus +1 to viewsCount',
-		accepts: {arg: 'adId', type: 'string',  required:true},
+		accepts: {arg: 'postId', type: 'string',  required:true},
 		// returns: {arg: 'message', type: 'string'},
-		http: {verb: 'post',path: '/:adId/viewsCount'},
+		http: {verb: 'post',path: '/:postId/viewsCount'},
     });
 };

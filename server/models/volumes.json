@@ -1,0 +1,40 @@
+{
+  "name": "volumes",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "scope": {
+    "include": "posts"
+  },
+  "properties": {
+    "titleAr": {
+      "type": "string",
+      "required": true
+    },
+    "titleEn": {
+      "type": "string",
+      "required": true
+    },
+    "status": {
+      "type": "string",
+      "required": true,
+      "default": "pending"
+    },
+    "creationDate": {
+      "type": "date",
+      "required": true,
+      "default": "$now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "posts": {
+      "type": "referencesMany",
+      "model": "posts"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
