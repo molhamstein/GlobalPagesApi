@@ -1,6 +1,6 @@
 {
   "db": {
-    "name": "db",
+   "name": "db",
     "connector": "memory"
   },
   "mongoDb": {
@@ -27,8 +27,8 @@
           "rejectUnauthorized": false
         },
         "auth": {
-          "user": "globalPagesApi@gmail.com",
-          "pass": "123456789!@#$%^&*("
+          "user": "dlaaalsite@gmail.com",
+          "pass": "~3&bmL:@TL"
         }
       }
     ]
