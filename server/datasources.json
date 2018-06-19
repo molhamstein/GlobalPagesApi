@@ -6,7 +6,7 @@
   "mongoDb": {
     "host": "mlab.com",
     "port": 35788,
-    "url": "mongodb://localhost:27017/globalPages",
+    "url": "mongodb://localhost:27017/globalPages1",
     "database": "global_pages",
     "password": "123456789",
     "name": "mongoDb",

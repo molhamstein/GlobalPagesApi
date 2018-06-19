@@ -73,5 +73,13 @@
   "businessCategories": {
     "dataSource": "mongoDb",
     "public": true
+  },
+  "cities": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "locations": {
+    "dataSource": "mongoDb",
+    "public": true
   }
 }

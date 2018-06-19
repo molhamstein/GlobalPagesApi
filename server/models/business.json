@@ -1,10 +1,17 @@
 {
   "name": "business",
   "base": "PersistedModel",
-  "automaticValidation" : false,
   "idInjection": true,
   "options": {
     "validateUpsert": true
+  },
+  "automaticValidation": false,
+  "scope": {
+    "include": [
+      "owner",
+      "category",
+      "subCategory"
+    ]
   },
   "properties": {
     "nameEn": {
@@ -33,6 +40,12 @@
     "description": {
       "type": "string"
     },
+    "lat": {
+      "type": "string"
+    },
+    "long": {
+      "type": "string"
+    },
     "openingDays": {
       "type": [
         "number"
@@ -57,22 +70,23 @@
       "type": "belongsTo",
       "model": "businessCategories"
     },
+    "city": {
+      "type": "belongsTo",
+      "model": "cities"
+    },
+    "location": {
+      "type": "belongsTo",
+      "model": "locations"
+    },
     "myProducts": {
       "type": "embedsMany",
       "model": "products",
-      "property" : "products",
+      "property": "products",
       "options": {
         "validate": true,
         "persistent": true
       }
     }
-  },
-  "scope": {
-    "include": [
-      "owner",
-      "category",
-      "subCategory"
-    ]
   },
   "acls": [],
   "methods": {}
