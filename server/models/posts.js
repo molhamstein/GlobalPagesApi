@@ -1,39 +1,39 @@
 'use strict';
 
-module.exports = function(Ads) {
+module.exports = function(Post) {
 	// validation
-	Ads.validatesInclusionOf('status', {in: ['pending', 'activated','deactivated']});
-	Ads.validatesPresenceOf('categoryId');
-	// Ads.validatesPresenceOf('subCategoryId');
+	Post.validatesInclusionOf('status', {in: ['pending', 'activated','deactivated']});
+	Post.validatesPresenceOf('categoryId');
+	// Post.validatesPresenceOf('subCategoryId');
 
-	// add ownerId to ads
-	Ads.beforeRemote('create', function( ctx, modelInstance, next) {
+	// add ownerId to Post
+	Post.beforeRemote('create', function( ctx, modelInstance, next) {
 		ctx.req.body.ownerId = ctx.args.options.accessToken.userId
 	    next();
 	});
 
-	// agree or reject ads
-	Ads.changeStatus = function(adId,status,cb){
-		Ads.findById(adId.toString(),{}, function(err, ad) {
+	// agree or reject Post
+	Post.changeStatus = function(postId,status,cb){
+		Post.findById(postId.toString(),{}, function(err, post) {
 			if(err) 
 				return cb(err);
-			if(!ad){
+			if(!post){
 				err = new Error('post not found');
 		        err.statusCode = 404;
 		        err.code = 'POST_NOT_FOUND';
 		        return cb(err);
 			}
 			// console.log("BBBBBB")
-			ad.status = (status)?'activated':'deactivated';
-			ad.save((err)=>{
+			post.status = (status)?'activated':'deactivated';
+			post.save((err)=>{
 				if(err)
 					return cb(err)
-				return cb(null, ad.status);
+				return cb(null, post.status);
 			})
 		});
 	}
-	Ads.remoteMethod('changeStatus', {
-    	description: 'agree or Reject ads from admin',
+	Post.remoteMethod('changeStatus', {
+    	description: 'agree or Reject Post from admin',
 		accepts: [
 			{arg: 'postId', type: 'string',  required:true},
 			{arg: 'agree', type: 'boolean', required: true, http: {source: 'body'}},
@@ -43,23 +43,23 @@ module.exports = function(Ads) {
     });
 
     // plus viewsCount
-	Ads.plusviewsCount = function(postId,cb){
-		Ads.findById(postId.toString(),{}, function(err, ad) {
+	Post.plusviewsCount = function(postId,cb){
+		Post.findById(postId.toString(),{}, function(err, post) {
 			if(err) 
 				return cb(err);
-			if(!ad){
+			if(!post){
 				err = new Error('Post not found');
 		        err.statusCode = 404;
 		        err.code = 'POST_NOT_FOUND';
 		        return cb(err);
 			}
 
-			ad.viewsCount++;
-			return ad.save(cb)
+			post.viewsCount++;
+			return post.save(cb)
 		});
 	}
 
-	Ads.remoteMethod('plusviewsCount', {
+	Post.remoteMethod('plusviewsCount', {
     	description: 'plus +1 to viewsCount',
 		accepts: {arg: 'postId', type: 'string',  required:true},
 		// returns: {arg: 'message', type: 'string'},

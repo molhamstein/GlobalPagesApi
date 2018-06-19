@@ -39,8 +39,8 @@
   "validations": [],
   "relations": {
     "faveoriteCategories": {
-       "type": "referencesMany",
-        "model": "postCategories"
+      "type": "referencesMany",
+      "model": "postCategories"
     }
   },
   "acls": [
