@@ -3,6 +3,7 @@
 module.exports = function GenerateData(server) {
 // users 
 
+/*
 	var users = [
 		{
 		  "username": "ahmad ataya",
@@ -276,7 +277,7 @@ var products = [
 
 ];
 
-
+*/
 
 
 	
