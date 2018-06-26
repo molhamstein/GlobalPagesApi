@@ -55,6 +55,16 @@
     "subCategory": {
       "type": "belongsTo",
       "model": "postCategories"
+    },
+    "MEDIA":{
+      "type": "embedsMany",
+      "model": "media",
+      "property": "media",
+      "options": {
+        "validate": false,
+        "forceId": true,
+        "validateAbsence " : true
+      }
     }
   },
   "acls": [],

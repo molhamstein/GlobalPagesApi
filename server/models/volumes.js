@@ -1,10 +1,10 @@
 'use strict';
-
+var notification = require('../notification');
 module.exports = function(Volumes) {
 	Volumes.validatesInclusionOf('status', {in: ['pending', 'activated','deactivated']});
 
 	Volumes.changeStatus = function(volumeId,status,cb){
-		Volumes.findById(volmeId.toString(),{}, function(err, volume) {
+		Volumes.findById(volumeId.toString(),{}, function(err, volume) {
 			if(err) 
 				return cb(err);
 			if(!volume){
@@ -13,12 +13,13 @@ module.exports = function(Volumes) {
 		        err.code = 'VOLUME_NOT_FOUND';
 		        return cb(err);
 			}
-			// console.log("BBBBBB")
 			volume.status = (status)?'activated':'deactivated';
 			volume.save((err)=>{
 				if(err)
 					return cb(err)
-				return cb(null, volume.status);
+				cb(null, volume.status);
+				// notification 
+				notification.addNewVolume(Volumes,volume);
 			})
 		});
 	}

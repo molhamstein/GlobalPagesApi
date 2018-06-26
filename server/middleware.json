@@ -42,7 +42,9 @@
   },
   "files": {},
   "final": {
-    "loopback#urlNotFound": {}
+    "loopback#static": {
+      "params": "$!../files"
+    }
   },
   "final:after": {
     "strong-error-handler": {}

@@ -81,5 +81,9 @@
   "locations": {
     "dataSource": "mongoDb",
     "public": true
+  },
+  "media": {
+    "dataSource": "mongoDb",
+    "public": false
   }
 }
