@@ -1,5 +1,5 @@
 {
-	"host": "localhost:3000",
+	"host": "104.217.253.15:3000",
 	"email" : "ahmad.3taya@gmail.com",
 	"resetPasswordExpires" : 3600000,
 	"baseUrl" : "localhost:3000/",
