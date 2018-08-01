@@ -18,6 +18,9 @@
     "birthDate": {
       "type": "date"
     },
+    "imageProfile" : {
+      "type" : "string"
+    },
     "phoneNumber": {
       "type": "string"
     },

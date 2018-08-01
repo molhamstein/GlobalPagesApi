@@ -10,7 +10,7 @@ module.exports = function(Attachment) {
 		var r = result.result.files.file
 		_.each(r,function(file){
 			var object = {
-				url : myConfig.baseUrl + file.container + '/' + file.name,
+				url : myConfig.host + '/' + file.container + '/' + file.name,
 
 			}
 

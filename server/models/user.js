@@ -10,6 +10,9 @@ module.exports = function(User) {
 	User.validatesInclusionOf('gender', {in: ['male', 'female']});
 	User.validatesInclusionOf('status', {in: ['pending', 'activated','deactivated']});
 
+	User.settings.acls = [ { "principalType": "ROLE", "principalId": "$everyone", "permission": "ALLOW" }]
+
+
 	//send verification email after registration
 	User.afterRemote('create', function(context, user, next) {
 		var options = {
