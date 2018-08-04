@@ -85,13 +85,5 @@
   "media": {
     "dataSource": "mongoDb",
     "public": false
-  },
-  "w": {
-    "dataSource": "db",
-    "public": false
-  },
-  "test": {
-    "dataSource": "mongoDb",
-    "public": false
   }
 }
