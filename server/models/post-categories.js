@@ -4,7 +4,7 @@ module.exports = function(Adcategories) {
 	// Adcategories.validatesPresenceOf('parentCategoryId');
 
 	Adcategories.afterRemote('create', function( ctx, result, next) {
-		var subCategories = ctx.req.body.subCategories
+		var subCategories = ctx.req.body.subCategories || [];
 		_.each(subCategories,(sub) =>{
 			sub.parentCategoryId = result.id
 		});

@@ -2,7 +2,7 @@
 var _ = require('lodash');
 module.exports = function(Cities) {
 	Cities.afterRemote('create', function( ctx, result, next) {
-		var locations = ctx.req.body.locations
+		var locations = ctx.req.body.locations || []
 		_.each(locations,(loc) =>{
 			loc.cityId = result.id
 		});
