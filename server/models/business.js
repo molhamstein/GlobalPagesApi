@@ -1,5 +1,5 @@
 'use strict';
-
+var _ = require('lodash');
 module.exports = function(Business) {
 	// validation
 	Business.validatesInclusionOf('status', {in: ['pending', 'activated','deactivated']});
@@ -18,6 +18,10 @@ module.exports = function(Business) {
 			ctx.req.body.nameUnique = name;
 			if(count != 0)
 				ctx.req.body.nameUnique = name + (count.toString())
+
+			var tempId = 1;
+			_.each(ctx.req.body.covers,(m)=>{m.id= tempId++});
+
 	    	next();
 		});
 	});
@@ -62,4 +66,41 @@ module.exports = function(Business) {
 	  		return ctx.res.json(busniess)
 		})
 	});
+
+
+
+
+	Business.searchByLocation = function(lat,lng,catId,subCatId,limit,res,cb){
+		var where = {
+			locationPoint : {
+				near : {
+					lat : lat,
+					lng : lng
+				}
+			}
+		};
+		if(catId) where.categoryId = catId;
+		if(subCatId) where.subCategoryId = subCatId;
+
+		var query = {where : where};
+		if(limit) query.limit = limit;
+
+		Business.find(query,function(err,business){
+			if(err) 
+				return cb(err);
+			return res.status(200).json(business)
+		});
+	}
+	Business.remoteMethod('searchByLocation', {
+    	// description: '',
+		accepts: [
+			{arg: 'lat', type: 'number', required: true, http: {source: 'query'}},
+			{arg: 'lng', type: 'number', required: true, http: {source: 'query'}},
+			{arg: 'catId', type: 'string', required: true, http: {source: 'query'}},
+			{arg: 'subCatId', type: 'string', http: {source: 'query'}},
+			{arg: 'limit', type: 'number', http: {source: 'query'}},
+			{arg: 'res', type: 'object', http:{source:'res'}},
+		],
+		http: {verb: 'get',path: '/searchByLocation'},
+    });
 };

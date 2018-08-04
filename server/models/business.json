@@ -29,9 +29,6 @@
     "logo": {
       "type": "string"
     },
-    "cover": {
-      "type": "string"
-    },
     "status": {
       "type": "string",
       "required": true,
@@ -40,12 +37,9 @@
     "description": {
       "type": "string"
     },
-    "lat": {
-      "type": "string"
-    },
-    "long": {
-      "type": "string"
-    },
+    "locationPoint" :{
+      "type" : "geopoint" 
+    }, 
     "openingDays": {
       "type": [
         "number"
@@ -85,6 +79,16 @@
       "options": {
         "validate": true,
         "persistent": true
+      }
+    },
+    "picturesPhoto":{
+      "type": "embedsMany",
+      "model": "media",
+      "property": "covers",
+      "options": {
+        "validate": false,
+        "forceId": true,
+        "validateAbsence " : true
       }
     }
   },

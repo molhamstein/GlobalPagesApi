@@ -18,8 +18,8 @@
     "birthDate": {
       "type": "date"
     },
-    "imageProfile" : {
-      "type" : "string"
+    "imageProfile": {
+      "type": "string"
     },
     "phoneNumber": {
       "type": "string"

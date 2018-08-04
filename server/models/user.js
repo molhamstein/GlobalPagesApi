@@ -40,6 +40,7 @@ module.exports = function(User) {
 			if (err)
         		return cb(err);
         	if (!user){
+        		console.log(email);
         		err = new Error('Email not found');
 		        err.statusCode = 404;
 		        err.code = 'EMAIL_NOT_FOUND';
@@ -85,7 +86,7 @@ module.exports = function(User) {
 
     User.remoteMethod('forgotPassword', {
     	description: 'forgot password for a user with email.',
-		accepts: {arg: 'email', type: 'string', required: true, http: {source: 'body'}},
+		accepts: {arg: 'email', type: 'string', required: true, http: {source: 'form'}},
 		returns: {arg: 'message', type: 'string'},
 		http: {verb: 'post'},
     });
@@ -175,7 +176,7 @@ module.exports = function(User) {
     	description: 'agree or Reject User from admin',
 		accepts: [
 			{arg: 'userId', type: 'string',  required:true},
-			{arg: 'agree', type: 'boolean', required: true, http: {source: 'body'}},
+			{arg: 'agree', type: 'boolean', required: true, http: {source: 'form'}},
 		],
 		returns: {arg: 'message', type: 'string'},
 		http: {verb: 'post',path: '/:userId/changeStatus'},

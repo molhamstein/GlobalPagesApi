@@ -5,6 +5,11 @@
   "options": {
     "validateUpsert": true
   },
+  "scope": {
+    "include": [
+      "locations"
+    ]
+  },
   "properties": {
     "nameAr": {
       "type": "string",
@@ -16,7 +21,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "locations": {
+      "type": "hasMany",
+      "model": "locations",
+      "foreignKey": "cityId"
+    }
+  },
   "acls": [],
   "methods": {}
 }

@@ -9,7 +9,9 @@
     "include": [
       "owner",
       "category",
-      "subCategory"
+      "subCategory",
+      "city",
+      "location"
     ]
   },
   "properties": {
@@ -56,14 +58,22 @@
       "type": "belongsTo",
       "model": "postCategories"
     },
-    "MEDIA":{
+    "city": {
+      "type": "belongsTo",
+      "model": "cities"
+    },
+    "location": {
+      "type": "belongsTo",
+      "model": "locations"
+    },
+    "MEDIA": {
       "type": "embedsMany",
       "model": "media",
       "property": "media",
       "options": {
         "validate": false,
         "forceId": true,
-        "validateAbsence " : true
+        "validateAbsence ": true
       }
     }
   },
