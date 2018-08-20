@@ -38,6 +38,9 @@
       "required": true,
       "default": 0
     },
+    "isFeatured" :{
+      "type" : "boolean"
+    },
     "creationDate": {
       "type": "date",
       "required": true,

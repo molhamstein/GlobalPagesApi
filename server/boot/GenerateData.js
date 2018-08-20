@@ -209,8 +209,10 @@ createData('user',users,function(err,users){
 											"cover": "m1.jpg",
 											"status": "activated",
 											"description": "bla bla bla bla bla bla bla bla bla ",
-											"lat": 12,
-											"long": 255,
+											"locationPoint" : {
+												"lat": 12,
+												"lng": 255
+											},
 											"openingDays": [
 											1,2,5
 											],
