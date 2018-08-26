@@ -18,8 +18,9 @@ module.exports = function(Volumes) {
 				if(err)
 					return cb(err)
 				cb(null, volume.status);
-				// notification 
-				notification.addNewVolume(Volumes,volume);
+				// notification
+				if(volume.status) 
+					notification.addNewVolume(Volumes,volume);
 			})
 		});
 	}

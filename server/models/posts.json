@@ -32,9 +32,9 @@
       "required": true,
       "default": 0
     },
-    "isFeatured" :{
-      "type" : "boolean",
-      "default" : false
+    "isFeatured": {
+      "type": "boolean",
+      "default": false
     },
     "creationDate": {
       "type": "date",

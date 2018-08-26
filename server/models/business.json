@@ -37,9 +37,9 @@
     "description": {
       "type": "string"
     },
-    "locationPoint" :{
-      "type" : "geopoint" 
-    }, 
+    "locationPoint": {
+      "type": "geopoint"
+    },
     "openingDays": {
       "type": [
         "number"
@@ -81,14 +81,14 @@
         "persistent": true
       }
     },
-    "picturesPhoto":{
+    "picturesPhoto": {
       "type": "embedsMany",
       "model": "media",
       "property": "covers",
       "options": {
         "validate": false,
         "forceId": true,
-        "validateAbsence " : true
+        "validateAbsence ": true
       }
     }
   },
