@@ -27,19 +27,14 @@
       "required": true,
       "default": "pending"
     },
-    "image": {
-      "type": "string"
-    },
-    "video": {
-      "type": "string"
-    },
     "viewsCount": {
       "type": "number",
       "required": true,
       "default": 0
     },
     "isFeatured" :{
-      "type" : "boolean"
+      "type" : "boolean",
+      "default" : false
     },
     "creationDate": {
       "type": "date",
