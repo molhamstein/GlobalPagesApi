@@ -3,9 +3,11 @@
   "base": "User",
   "idInjection": true,
   "options": {
-    "validateUpsert": true
+    "validateUpsert": true,
+    "replaceOnPUT": false
   },
   "hidden": [
+    "password", 
     "resetPasswordExpires",
     "resetPasswordToken"
   ],

@@ -5,6 +5,11 @@
   "options": {
     "validateUpsert": true
   },
+  "scope": {
+    "include": [
+      "subCategories"
+    ]
+  },
   "properties": {
     "titleAr": {
       "type": "string",
@@ -22,9 +27,10 @@
   },
   "validations": [],
   "relations": {
-    "parentCategory": {
-      "type": "belongsTo",
-      "model": "businessCategories"
+    "subCategories": {
+      "type": "hasMany",
+      "model": "businessCategories",
+      "foreignKey": "parentCategoryId"
     }
   },
   "acls": [],

@@ -81,10 +81,21 @@ module.exports = function(Business) {
 		};
 		if(catId) where.categoryId = catId;
 		if(subCatId) where.subCategoryId = subCatId;
+		if(lat > 90){
+			var err = new Error('lat must be <= 90');
+	        err.statusCode = 400;
+	        err.code = 'LAT>90';
+	        return cb(err);
+		}
+		if(lng > 180){
+			var err = new Error('lng must be <= 180');
+	        err.statusCode = 400;
+	        err.code = 'LNG>180';
+	        return cb(err);
+		}
 
 		var query = {where : where};
 		if(limit) query.limit = limit;
-
 		Business.find(query,function(err,business){
 			if(err) 
 				return cb(err);
