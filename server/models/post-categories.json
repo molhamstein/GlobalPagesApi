@@ -19,6 +19,9 @@
       "type": "string",
       "required": true
     },
+    "icon": {
+      "type": "string"
+    },
     "creationDate": {
       "type": "date",
       "required": true,
