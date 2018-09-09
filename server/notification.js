@@ -46,6 +46,7 @@ var _sendNotificationToMultiUsers = function(usersIds,message,_type){
 
 
 var _sendNotification = function(userId,message,_type= 'none'){
+	_sendOneSignalNotification(userId,message,_type);
 
 	app.models.notifications.create({
 		message : message,
@@ -56,4 +57,20 @@ var _sendNotification = function(userId,message,_type= 'none'){
 			return console.log(err);
 		console.log(userId, message)
 	})
+}
+
+var _sendOneSignalNotification = function(userId,message,_type){
+	var firstNotification = new OneSignal.Notification({    
+    	contents: {    
+	        message: message
+	    },
+	});    
+	firstNotification.postBody["filters"] = [{"field": "tag", "key": "userId", "relation": "=", "value": userId}]; 
+	myClient.sendNotification(firstNotification, function (err, httpResponse,data) {    
+	if (err) {    
+	    console.log('Something went wrong...');    
+	} else {    
+	    console.log(data, httpResponse.statusCode);    
+	}    
+});   
 }

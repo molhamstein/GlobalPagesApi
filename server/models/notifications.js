@@ -4,13 +4,13 @@ module.exports = function(Notifications) {
 
 	Notifications.customNotifcation = function(notification,recipients,cb){
 		notificationModule.sendCustomNotification(notification,recipients);
-		return cb();
+		return cb(null,{message : 'Done'});
 	}
 	
 	Notifications.remoteMethod('customNotifcation', {
     	description: 'get only notifications by tokenId ',
 		accepts: [
-			{arg: 'notification', type: 'string', 'http': {source: 'form'}},
+			{arg: 'message', type: 'string', 'http': {source: 'form'}},
 			{arg: 'recipients', type: 'array', 'http': {source: 'form'}}
 		],
 		returns: {arg: 'body', type: 'body',root: true},
