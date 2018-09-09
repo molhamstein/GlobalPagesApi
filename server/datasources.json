@@ -11,6 +11,7 @@
     "password": "123456789",
     "name": "mongoDb",
     "xxxx": "mongodb://ahmad:123456789@ds235788.mlab.com:35788/global_pages",
+    "allowExtendedOperators": true,
     "user": "ahmad",
     "connector": "mongodb"
   },

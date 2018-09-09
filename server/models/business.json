@@ -40,6 +40,15 @@
     "locationPoint": {
       "type": "geopoint"
     },
+    "phone1" : {
+      "type" : "string"
+    },
+    "phone2" : {
+      "type" : "string"
+    },
+    "fax" : {
+      "type" : "string"
+    },
     "openingDays": {
       "type": [
         "number"
