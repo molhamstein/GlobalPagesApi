@@ -22,9 +22,9 @@ module.exports = function(User) {
 		  subject: 'Thanks for registering.',
 		  template: path.resolve(__dirname, '../../server/views/emails/verifyEmail.ejs'),
 		  // redirect: '/verified',
-		  user: user
+		  user: user,
+		  host : '104.217.253.15'		  
 		};
-
 		user.verify(options, function(err, response) {
 		  if (err) {
 		    User.deleteById(user.id);
