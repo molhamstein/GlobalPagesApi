@@ -62,10 +62,12 @@ var _sendNotification = function(userId,message,_type= 'none'){
 var _sendOneSignalNotification = function(userId,message,_type){
 	var firstNotification = new OneSignal.Notification({    
     	contents: {    
-	        message: message
-	    },
+	        en: message
+	    }
 	});    
-	firstNotification.postBody["filters"] = [{"field": "tag", "key": "userId", "relation": "=", "value": userId}]; 
+	firstNotification.postBody["filters"] = [{field: "tag", key: "user_id", relation: "=", value: userId}]; 
+	firstNotification.postBody["data"] = {"abc": "123", "foo": "bar"};  
+	// firstNotification.postBody["included_segments"] = ["Active Users"];    
 	myClient.sendNotification(firstNotification, function (err, httpResponse,data) {    
 	if (err) {    
 	    console.log('Something went wrong...');    

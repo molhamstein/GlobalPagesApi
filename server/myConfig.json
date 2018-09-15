@@ -1,9 +1,15 @@
 {
-	"host": "104.217.253.15:3000",
+	"host": "http://104.217.253.15:3000",
 	"email" : "ahmad.3taya@gmail.com",
 	"resetPasswordExpires" : 3600000,
 	"baseUrl" : "localhost:3000/",
 	"oneSignalUserAuthKey":"YzY0ODFlMWQtNjA0ZS00ZDgxLWE5ZmYtYTE1NzQ2ZGJmNGU2",
 	"oneSignalAppId" : "270df309-e188-4ffa-8fa6-fb2ecc27476f",
-	"oneSignalApIKey" : "ZTkyODE1NzctNDQ1Mi00YzFlLTk4ZDItNGNmZDNmODRhNDBk"
+	"oneSignalApIKey" : "ZTkyODE1NzctNDQ1Mi00YzFlLTk4ZDItNGNmZDNmODRhNDBk",
+
+
+	"Dekaneh" : "this Keys for Dekaneh//////////////////////////////////////////////////////////////////",
+	"oneSignalUserAuthKey":"ZWQ5NGI2YWEtZGNhYS00ODExLWFhODgtOWU1NTUxYTE0Mjcy",
+	"oneSignalAppId" : "b19828bb-c6a3-48d5-ad66-1040026d8d8e",
+	"oneSignalApIKey" : "NzM5MTY0YjMtMGI5ZC00MTk1LWE4ZDUtN2QwZDI1NmUzMTFh"
 }
