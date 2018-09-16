@@ -26,6 +26,13 @@ module.exports = function(Business) {
 		});
 	});
 
+	Business.beforeRemote('replaceById', function( ctx, modelInstance, next) {
+		ctx.req.body.ownerId = ctx.args.options.accessToken.userId
+		var tempId = 1;
+		_.each(ctx.req.body.covers,(m)=>{m.id= tempId++});
+	    next();
+	});
+
 	// agree or reject Business
 	Business.changeStatus = function(businessId,status,cb){
 		Business.findById(businessId.toString(),{}, function(err, business) {

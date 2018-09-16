@@ -14,6 +14,13 @@ module.exports = function(Post) {
 	    next();
 	});
 
+	Post.beforeRemote('replaceById', function( ctx, modelInstance, next) {
+		ctx.req.body.ownerId = ctx.args.options.accessToken.userId
+		var tempId = 1;
+		_.each(ctx.req.body.media,(m)=>{m.id= tempId++});
+	    next();
+	});
+
 	// agree or reject Post
 	Post.changeStatus = function(postId,status,cb){
 		Post.findById(postId.toString(),{}, function(err, post) {
