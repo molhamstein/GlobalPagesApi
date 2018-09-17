@@ -21,6 +21,8 @@ module.exports = function(Business) {
 
 			var tempId = 1;
 			_.each(ctx.req.body.covers,(m)=>{m.id= tempId++});
+			var tempId = 1;
+			_.each(ctx.req.body.products,(m)=>{m.id= tempId++});
 
 	    	next();
 		});
@@ -30,6 +32,8 @@ module.exports = function(Business) {
 		ctx.req.body.ownerId = ctx.args.options.accessToken.userId
 		var tempId = 1;
 		_.each(ctx.req.body.covers,(m)=>{m.id= tempId++});
+		var tempId = 1;
+		_.each(ctx.req.body.products,(m)=>{m.id= tempId++});
 	    next();
 	});
 
