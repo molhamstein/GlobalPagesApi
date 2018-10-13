@@ -81,7 +81,7 @@ module.exports = function(Business) {
 
 
 
-	Business.searchByLocation = function(lat,lng,catId,subCatId,limit,res,cb){
+	Business.searchByLocation = function(lat,lng,catId,subCatId,codeCat,codeSubCat,limit,res,cb){
 		var where = {
 			locationPoint : {
 				near : {
@@ -104,13 +104,24 @@ module.exports = function(Business) {
 	        err.code = 'LNG>180';
 	        return cb(err);
 		}
-
-		var query = {where : where};
-		if(limit) query.limit = limit;
-		Business.find(query,function(err,business){
-			if(err) 
+		getCategorybyCode(codeCat,(err,category)=>{
+			if(err)
 				return cb(err);
-			return res.status(200).json(business)
+			if(category) where.categoryId = category.id;
+
+			getCategorybyCode(codeSubCat,(err,subCategory)=>{
+				if(err)
+					return cb(err);
+				if(subCategory) where.subCategoryId = subCategory.id;
+				
+				var query = {where : where};
+				if(limit) query.limit = limit;
+				Business.find(query,function(err,business){
+					if(err) 
+						return cb(err);
+					return res.status(200).json(business)
+				});
+			});
 		});
 	}
 	Business.remoteMethod('searchByLocation', {
@@ -118,11 +129,20 @@ module.exports = function(Business) {
 		accepts: [
 			{arg: 'lat', type: 'number', required: true, http: {source: 'query'}},
 			{arg: 'lng', type: 'number', required: true, http: {source: 'query'}},
-			{arg: 'catId', type: 'string', required: true, http: {source: 'query'}},
+			{arg: 'catId', type: 'string', http: {source: 'query'}},
 			{arg: 'subCatId', type: 'string', http: {source: 'query'}},
+			{arg: 'codeCat', type: 'string', http: {source: 'query'}},
+			{arg: 'codeSubCat', type: 'string', http: {source: 'query'}},
 			{arg: 'limit', type: 'number', http: {source: 'query'}},
 			{arg: 'res', type: 'object', http:{source:'res'}},
 		],
 		http: {verb: 'get',path: '/searchByLocation'},
     });
+
+
+    var getCategorybyCode = function(code,cb){
+    	if(!code || code == 'default')
+    		return cb(null,null);
+    	return Business.app.models.businessCategories.findOne({where : {code : code}},cb);
+    }
 };
