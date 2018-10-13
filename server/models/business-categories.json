@@ -10,6 +10,10 @@
     ]
   },
   "properties": {
+    "code" : {
+      "type" : "string",
+      "default" : "default"
+    },
     "titleAr": {
       "type": "string",
       "required": true
