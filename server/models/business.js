@@ -81,7 +81,7 @@ module.exports = function(Business) {
 
 
 
-	Business.searchByLocation = function(lat,lng,catId,subCatId,codeCat,codeSubCat,limit,res,cb){
+	Business.searchByLocation = function(lat,lng,catId,subCatId,codeCat,codeSubCat,openingDay,limit,res,cb){
 		var where = {
 			locationPoint : {
 				near : {
@@ -92,6 +92,11 @@ module.exports = function(Business) {
 		};
 		if(catId) where.categoryId = catId;
 		if(subCatId) where.subCategoryId = subCatId;
+		if(openingDay){
+			where.openingDaysEnabled = true;
+			where.openingDays = openingDay;
+		}
+			
 		if(lat > 90){
 			var err = new Error('lat must be <= 90');
 	        err.statusCode = 400;
@@ -133,6 +138,7 @@ module.exports = function(Business) {
 			{arg: 'subCatId', type: 'string', http: {source: 'query'}},
 			{arg: 'codeCat', type: 'string', http: {source: 'query'}},
 			{arg: 'codeSubCat', type: 'string', http: {source: 'query'}},
+			{arg: 'openingDay', type: 'number', http: {source: 'query'}},
 			{arg: 'limit', type: 'number', http: {source: 'query'}},
 			{arg: 'res', type: 'object', http:{source:'res'}},
 		],
