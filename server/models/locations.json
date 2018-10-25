@@ -12,6 +12,9 @@
     },
     "nameAr": {
       "type": "string"
+    },
+    "ip": {
+      "type": "string"
     }
   },
   "validations": [],

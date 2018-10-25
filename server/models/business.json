@@ -49,6 +49,9 @@
     "fax" : {
       "type" : "string"
     },
+    "address" : {
+      "type" : "string"
+    },
     "openingDays": {
       "type": [
         "number"
