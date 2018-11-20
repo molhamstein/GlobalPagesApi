@@ -10,8 +10,42 @@ module.exports = function(User) {
 	User.validatesInclusionOf('gender', {in: ['male', 'female']});
 	User.validatesInclusionOf('status', {in: ['pending', 'activated','deactivated']});
 
-	User.settings.acls = [ { "principalType": "ROLE", "principalId": "$everyone", "permission": "ALLOW" }]
+	User.settings.acls = [ { "principalType": "ROLE", "principalId": "$everyone", "permission": "ALLOW" }];
 
+	User.isAdmin = function(accessToken,option,cb){
+		if(typeof cb != 'function'){
+			cb = option;
+			option = {};
+		}
+		if(!accessToken || !accessToken.userId)
+			return cb(ERROR(401,'authentication required'),false);
+		User.findById(accessToken.userId, function(err, user) {
+			if(err)
+				return cb(err);
+			if(!user || !user.roles.length)
+				return cb(null,false);
+			var isAdmin = _.some(user.roles(),['name','admin']);
+			// if(isAdmin || (!option && !option.getCampaignIds && !option.getAdsIds))
+			return cb(null,isAdmin);
+		});
+	}
+
+
+	User.beforeRemote('create', function( ctx, modelInstance, next) {
+		var name = ctx.req.body.email.trim().match(/^([^@]*)@/)[1];
+		
+		// make unique name
+		User.count({username : {like : RegExp('^' + name + '[0-9]*')}},function(err,count){
+			if(err)
+				return next(err);
+			
+			ctx.req.body.username = name;
+			if(count != 0)
+				ctx.req.body.username = name + (count.toString());
+
+	    	next();
+		});
+	});
 
 	//send verification email after registration
 	User.afterRemote('create', function(context, user, next) {

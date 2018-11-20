@@ -1,5 +1,6 @@
 'use strict';
 var notificationModule = require('../notification')
+var _ = require('lodash')
 module.exports = function(Notifications) {
 
 	Notifications.customNotifcation = function(notification,recipients,cb){
@@ -32,12 +33,12 @@ module.exports = function(Notifications) {
 		Notifications.find({where : where}, function(err, notifications) {
 			if(err) 
 				return cb(err);
-			where.seen = false;
-			Notifications.updateAll(where,{seen : true},function(err,result){
-				if(err)
-					return cb(err);
-				return cb(null,notifications)
-			});
+			// where.seen = false;
+			// Notifications.updateAll(where,{seen : true},function(err,result){
+			// 	if(err)
+			// 		return cb(err);
+			return cb(null,notifications)
+			// });
 		});
 	}
 	Notifications.remoteMethod('me', {
@@ -48,5 +49,30 @@ module.exports = function(Notifications) {
 		],
 		returns: {arg: 'body', type: 'body',root: true},
 		http: {verb: 'get',path: '/me'},
+    });
+
+    Notifications.seenNotification = function(req,notifications,cb){
+		if(!req.accessToken || !req.accessToken.userId){
+			var err1 = new Error('User not login');
+	        err1.statusCode = 403;
+	        err1.code = 'USER_NOT_LOGIN';
+			return cb(err1)
+		}
+		_.each(notifications,function(id,index){try {notifications[index] = Notifications.dataSource.ObjectID(id)}catch(err){}});
+		var where  = {recipientId : req.accessToken.userId, seen : false, _id :{in : notifications}};
+		Notifications.updateAll(where,{seen : true},function(err,result){
+			if(err)
+				return cb(err);
+			return cb(null,result)
+		});
+	}
+	Notifications.remoteMethod('seenNotification', {
+    	description: 'change my multi notifications to seen ',
+		accepts: [
+			{arg: 'req', type: 'object', 'http': {source: 'req'}},
+			{arg: 'notifications', type: 'array', required: true, http: {source: 'body'}},
+		],
+		returns: {arg: 'body', type: 'body',root: true},
+		http: {verb: 'post',path: '/seenNotification'},
     });
 };

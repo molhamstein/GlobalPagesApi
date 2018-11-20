@@ -11,6 +11,11 @@
     "resetPasswordExpires",
     "resetPasswordToken"
   ],
+  "scope": {
+    "include": [
+      "roles"
+    ]
+  },
   "properties": {
     "status": {
       "type": "string",
@@ -46,6 +51,10 @@
     "faveoriteCategories": {
       "type": "referencesMany",
       "model": "postCategories"
+    },
+    "roles": {
+      "type": "referencesMany",
+      "model": "Role"
     }
   },
   "acls": [
