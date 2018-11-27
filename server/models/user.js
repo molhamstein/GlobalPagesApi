@@ -57,7 +57,7 @@ module.exports = function(User) {
 		  template: path.resolve(__dirname, '../../server/views/emails/verifyEmail.ejs'),
 		  // redirect: '/verified',
 		  user: user,
-		  host : '104.217.253.15'		  
+		  host : '172.107.175.81'		  
 		};
 		user.verify(options, function(err, response) {
 		  if (err) {
