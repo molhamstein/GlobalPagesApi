@@ -215,4 +215,28 @@ module.exports = function(User) {
 		returns: {arg: 'message', type: 'string'},
 		http: {verb: 'post',path: '/:userId/changeStatus'},
     });
+
+    User.updateFcmToken = function(token, options, res, cb) {
+    	if(!options.accessToken || !options.accessToken.userId)
+			return cb(ERROR(401,'authentication required'),false);
+		User.findById(options.accessToken.userId, function(err, user) {
+			if(err)
+				return cb(err);
+			user.fcmToken = token;
+			user.save(function(err){
+				if(err)
+					return cb(err);
+				res.status(202).json({message : 'updatedSuccessfully'});
+			})
+		});
+	};
+
+    User.remoteMethod('updateFcmToken', {
+		accepts: [
+			{arg: 'token', type: 'string',  required:true},
+			{arg: "options", type: "object", http: "optionsFromRequest"},
+			{arg: 'res', type: 'object', http:{source:'res'}},
+		],
+		http: {verb: 'post',path:'/fcmToken'},	
+    });
 };

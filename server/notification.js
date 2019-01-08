@@ -1,13 +1,16 @@
 var myConfig = require('../server/myConfig.json');
-var OneSignal = require('onesignal-node');
+var FCM = require('fcm-node');
+// var OneSignal = require('onesignal-node');
 var _ = require('lodash')
 
+var serverKey = 'AAAAKVGliig:APA91bHsqHR933i-h3FFKu90LGt2603MnA_nKN4FWITPbPH90vvqMa3c3GjH6GZ6uuagVu4MTDmqNAU8aMN3KUnkavSiGWx0AOHmmZH4DVQvOtFK12SAk_HX3iiGGGQBKm79KwU8W8zD'; //put your server key here
+var fcm = new FCM(serverKey);
 
 
-var myClient = new OneSignal.Client({
-    userAuthKey: myConfig.oneSignalUserAuthKey,
-    app: { appAuthKey: myConfig.oneSignalApIKey, appId: myConfig.oneSignalAppId }
-});
+// var myClient = new OneSignal.Client({
+//     userAuthKey: myConfig.oneSignalUserAuthKey,
+//     app: { appAuthKey: myConfig.oneSignalApIKey, appId: myConfig.oneSignalAppId }
+// });
 
 
 

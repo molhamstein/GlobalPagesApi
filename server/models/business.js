@@ -81,7 +81,7 @@ module.exports = function(Business) {
 
 
 
-	Business.searchByLocation = function(lat,lng,catId,subCatId,codeCat,codeSubCat,openingDay,limit,res,cb){
+	Business.searchByLocation = function(lat,lng,keyword,catId,subCatId,codeCat,codeSubCat,openingDay,limit,res,cb){
 		var where = {
 			locationPoint : {
 				near : {
@@ -92,6 +92,12 @@ module.exports = function(Business) {
 		};
 		if(catId) where.categoryId = catId;
 		if(subCatId) where.subCategoryId = subCatId;
+		if(keyword) where.or = [
+			{nameEn :{like : RegExp(keyword)}},
+			{nameAr :{like : RegExp(keyword)}},
+			{nameUnique :{like : RegExp(keyword)}},
+			{description :{like : RegExp(keyword)}}
+		]
 		if(openingDay){
 			where.openingDaysEnabled = true;
 			where.openingDays = openingDay;
@@ -120,6 +126,7 @@ module.exports = function(Business) {
 				if(subCategory) where.subCategoryId = subCategory.id;
 				
 				var query = {where : where};
+				console.log(where);
 				if(limit) query.limit = limit;
 				Business.find(query,function(err,business){
 					if(err) 
@@ -134,6 +141,7 @@ module.exports = function(Business) {
 		accepts: [
 			{arg: 'lat', type: 'number', required: true, http: {source: 'query'}},
 			{arg: 'lng', type: 'number', required: true, http: {source: 'query'}},
+			{arg: 'keyword', type: 'string', http: {source: 'query'}},
 			{arg: 'catId', type: 'string', http: {source: 'query'}},
 			{arg: 'subCatId', type: 'string', http: {source: 'query'}},
 			{arg: 'codeCat', type: 'string', http: {source: 'query'}},

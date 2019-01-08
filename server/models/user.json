@@ -34,6 +34,9 @@
     "gender": {
       "type": "string"
     },
+    "fcmToken" : {
+      "type" : "string"
+    },
     "resetPasswordToken": {
       "type": "string"
     },
