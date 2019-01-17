@@ -7,7 +7,8 @@ module.exports = function(Business) {
 
 	// add ownerId to Business
 	Business.beforeRemote('create', function( ctx, modelInstance, next) {
-		ctx.req.body.ownerId = ctx.args.options.accessToken.userId;
+		if(!ctx.req.body.ownerId)
+			ctx.req.body.ownerId = ctx.args.options.accessToken.userId;
 		var name = ctx.req.body.nameEn.trim().replace(/ * /g,'.');
 		
 		// make unique name
@@ -29,7 +30,8 @@ module.exports = function(Business) {
 	});
 
 	Business.beforeRemote('replaceById', function( ctx, modelInstance, next) {
-		ctx.req.body.ownerId = ctx.args.options.accessToken.userId
+		if(!ctx.req.body.ownerId)
+			ctx.req.body.ownerId = ctx.args.options.accessToken.userId
 		var tempId = 1;
 		_.each(ctx.req.body.covers,(m)=>{m.id= tempId++});
 		var tempId = 1;

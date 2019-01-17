@@ -8,14 +8,16 @@ module.exports = function(Post) {
 
 	// add ownerId to Post
 	Post.beforeRemote('create', function( ctx, modelInstance, next) {
-		ctx.req.body.ownerId = ctx.args.options.accessToken.userId
+		if(!ctx.req.body.ownerId)
+			ctx.req.body.ownerId = ctx.args.options.accessToken.userId
 		var tempId = 1;
 		_.each(ctx.req.body.media,(m)=>{m.id= tempId++});
 	    next();
 	});
 
 	Post.beforeRemote('replaceById', function( ctx, modelInstance, next) {
-		ctx.req.body.ownerId = ctx.args.options.accessToken.userId
+		if(!ctx.req.body.ownerId)
+			ctx.req.body.ownerId = ctx.args.options.accessToken.userId
 		var tempId = 1;
 		_.each(ctx.req.body.media,(m)=>{m.id= tempId++});
 	    next();
