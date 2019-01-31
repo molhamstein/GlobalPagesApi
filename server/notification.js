@@ -49,33 +49,60 @@ var _sendNotificationToMultiUsers = function(usersIds,message,_type){
 
 
 var _sendNotification = function(userId,message,_type= 'none'){
-	_sendOneSignalNotification(userId,message,_type);
-
-	app.models.notifications.create({
-		message : message,
-		recipientId : userId,
-		_type : _type
-	},function(err,notification){
-		if(err)
+	app.models.user.findById(userId,function(err,user){
+		if(err || !user) 
 			return console.log(err);
-		console.log(userId, message)
-	})
+
+		_sendOneSignalNotification(user.fcmToken,message,_type);
+
+		app.models.notifications.create({
+			message : message,
+			recipientId : userId,
+			_type : _type
+		},function(err,notification){
+			if(err)
+				return console.log(err);
+			console.log(userId, message)
+		});
+	});
 }
 
-var _sendOneSignalNotification = function(userId,message,_type){
-	var firstNotification = new OneSignal.Notification({    
-    	contents: {    
-	        en: message
-	    }
-	});    
-	firstNotification.postBody["filters"] = [{field: "tag", key: "user_id", relation: "=", value: userId}]; 
-	firstNotification.postBody["data"] = {"abc": "123", "foo": "bar"};  
+var _sendOneSignalNotification = function(fcmToken,message,_type){
+	var messageObject = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+        to: fcmToken,
+        
+        notification: {
+            title: _type, 
+            body: message
+        },
+        
+        data: {  //you can send only notification or only data(or include both)
+            businessId: '123456789',
+            adId: '123456789'
+        }
+    };
+    
+    fcm.send(messageObject, function(err, response){
+        if (err) {
+            console.log("Something has gone wrong!");
+        } else {
+            console.log("Successfully sent with response: ", response);
+        }
+    });
+
+	// var firstNotification = new OneSignal.Notification({    
+ //    	contents: {    
+	//         en: message
+	//     }
+	// });    
+	// firstNotification.postBody["filters"] = [{field: "tag", key: "user_id", relation: "=", value: userId}]; 
+	// firstNotification.postBody["data"] = {"abc": "123", "foo": "bar"};  
 	// firstNotification.postBody["included_segments"] = ["Active Users"];    
-	myClient.sendNotification(firstNotification, function (err, httpResponse,data) {    
-	if (err) {    
-	    console.log('Something went wrong...');    
-	} else {    
-	    console.log(data, httpResponse.statusCode);    
-	}    
-});   
+	// myClient.sendNotification(firstNotification, function (err, httpResponse,data) {    
+	// 	if (err) {    
+	// 	    console.log('Something went wrong...');    
+	// 	} else {    
+	// 	    console.log(data, httpResponse.statusCode);    
+	// 	}    
+	// });   
 }
