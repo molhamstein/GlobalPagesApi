@@ -12,5 +12,13 @@ module.exports = function(server) {
   
   var router = server.loopback.Router();
   router.get('/', server.loopback.status());
+  router.get('/api/settings',getSettings);
   server.use(router);
+
 };
+
+
+var getSettings = function(req,res,next){
+  var settings = require('../apiSettings.json');
+  return res.status(200).json(settings);
+}

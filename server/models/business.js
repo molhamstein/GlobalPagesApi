@@ -85,13 +85,13 @@ module.exports = function(Business) {
 
 	Business.searchByLocation = function(lat,lng,keyword,catId,subCatId,codeCat,codeSubCat,openingDay,limit,res,cb){
 		var where = {
-			locationPoint : {
-				near : {
-					lat : lat,
-					lng : lng
-				}
-			}
+			// status : 'activated'
 		};
+
+		if(lat) 
+			_.set(where,'locationPoint.near.lat',lat);
+		if(lng) 
+			_.set(where,'locationPoint.near.lng',lng);
 		if(catId) where.categoryId = catId;
 		if(subCatId) where.subCategoryId = subCatId;
 		if(keyword) where.or = [
@@ -104,19 +104,27 @@ module.exports = function(Business) {
 			where.openingDaysEnabled = true;
 			where.openingDays = openingDay;
 		}
+
+		if((lat && !lng) || (lng && !lat)){
+			var err = new Error('lat and lng both required');
+	        err.statusCode = 400;
+	        err.code = 'LATLNGREQUIRED';
+	        return cb(err);
+		}
 			
-		if(lat > 90){
+		if(lat && lat > 90){
 			var err = new Error('lat must be <= 90');
 	        err.statusCode = 400;
 	        err.code = 'LAT>90';
 	        return cb(err);
 		}
-		if(lng > 180){
+		if(lng && lng > 180){
 			var err = new Error('lng must be <= 180');
 	        err.statusCode = 400;
 	        err.code = 'LNG>180';
 	        return cb(err);
 		}
+
 		getCategorybyCode(codeCat,(err,category)=>{
 			if(err)
 				return cb(err);
@@ -141,8 +149,8 @@ module.exports = function(Business) {
 	Business.remoteMethod('searchByLocation', {
     	// description: '',
 		accepts: [
-			{arg: 'lat', type: 'number', required: true, http: {source: 'query'}},
-			{arg: 'lng', type: 'number', required: true, http: {source: 'query'}},
+			{arg: 'lat', type: 'number', http: {source: 'query'}},
+			{arg: 'lng', type: 'number', http: {source: 'query'}},
 			{arg: 'keyword', type: 'string', http: {source: 'query'}},
 			{arg: 'catId', type: 'string', http: {source: 'query'}},
 			{arg: 'subCatId', type: 'string', http: {source: 'query'}},

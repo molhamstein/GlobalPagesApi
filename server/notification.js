@@ -68,7 +68,6 @@ var _sendNotification = function(userId,message,_type= 'none'){
 }
 
 var _sendOneSignalNotification = function(fcmToken,message,_type){
-	console.log(fcmToken,message);
 	var messageObject = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
         to: fcmToken,
         
