@@ -28,8 +28,8 @@ module.exports.addNewVolume = function (VolumesModel, volume) {
      	if(err)  // TODO Debug
      		return console.log(err);
      	_.each(users,function(user){
-     		var message = "add new volume  favoriteCategories: "+user.commonToBoth.toString();
-     		_sendNotification(user._id,message,"addNewVolume")
+     		var message = "تفقد اعلانات "+ ' '+ " الجديده في هذا العدد من المرسال"
+     		_sendNotification(user._id,message,"عدد جديد من المرسال ")
      	});
      })
 }

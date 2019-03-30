@@ -19,7 +19,7 @@ module.exports = function(Volumes) {
 					return cb(err)
 				cb(null, volume.status);
 				// notification
-				if(volume.status) 
+				if(volume.status == 'activated') 
 					notification.addNewVolume(Volumes,volume);
 			})
 		});
