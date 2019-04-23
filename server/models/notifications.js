@@ -3,8 +3,12 @@ var notificationModule = require('../notification')
 var _ = require('lodash')
 module.exports = function(Notifications) {
 
-	Notifications.customNotifcation = function(notification,recipients,cb){
-		notificationModule.sendCustomNotification(notification,recipients);
+	Notifications.customNotifcation = function(message,recipients,cb){
+		if(!recipients || recipients.length == 0)
+			notificationModule.sendCustomNotificationToAllUsers(message);
+		else
+			notificationModule.sendCustomNotification(message,recipients);
+
 		return cb(null,{message : 'Done'});
 	}
 	

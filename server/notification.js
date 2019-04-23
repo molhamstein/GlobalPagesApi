@@ -3,15 +3,7 @@ var FCM = require('fcm-node');
 // var OneSignal = require('onesignal-node');
 var _ = require('lodash')
 
-var serverKey = 'AAAAKVGliig:APA91bHsqHR933i-h3FFKu90LGt2603MnA_nKN4FWITPbPH90vvqMa3c3GjH6GZ6uuagVu4MTDmqNAU8aMN3KUnkavSiGWx0AOHmmZH4DVQvOtFK12SAk_HX3iiGGGQBKm79KwU8W8zD'; //put your server key here
-var fcm = new FCM(serverKey);
-
-
-// var myClient = new OneSignal.Client({
-//     userAuthKey: myConfig.oneSignalUserAuthKey,
-//     app: { appAuthKey: myConfig.oneSignalApIKey, appId: myConfig.oneSignalAppId }
-// });
-
+var fcm = new FCM(myConfig.fcmServerKey);
 
 
 module.exports.addNewVolume = function (VolumesModel, volume) {
@@ -22,87 +14,77 @@ module.exports.addNewVolume = function (VolumesModel, volume) {
 	});
 	VolumesModel.getDataSource().connector.collection('user').aggregate([
 		{ $match: {postCategoriesIds : {$in : allCategories}} },
-		{ $project: { postCategoriesIds: 1, commonToBoth: { $setIntersection: [ "$postCategoriesIds", allCategories ] }} }
+		{ $project: { fcmToken:1, postCategoriesIds: 1, commonToBoth: { $setIntersection: [ "$postCategoriesIds", allCategories ] }} }
                      
      ],function(err,users){
      	if(err)  // TODO Debug
      		return console.log(err);
+     	fcmTokens = [];
      	_.each(users,function(user){
-     		var message = "تفقد اعلانات "+ ' '+ " الجديده في هذا العدد من المرسال"
-     		_sendNotification(user._id,message,"عدد جديد من المرسال ")
+     		if(user.fcmToken)
+     			fcmTokens.push(user.fcmToken);
      	});
-     })
+
+     	var title ="عدد جديد من المرسال ";
+ 		var message = "تفقد الإعلانات الجديده في هذا العدد من المرسال";
+ 		_sendNotificationToMultiTokens(fcmTokens,message,title,{volumeId : volume.id});
+    });
 }
 
 module.exports.sendCustomNotification = function (message,recipients) {
-	return _sendNotificationToMultiUsers(recipients,message,'customNotification');
-}
-
-
-
-
-
-
-var _sendNotificationToMultiUsers = function(usersIds,message,_type){
-	_.each(usersIds,(user)=>{_sendNotification(user._id || user,message,_type)});
-}
-
-
-var _sendNotification = function(userId,message,_type= 'none'){
-	app.models.user.findById(userId,function(err,user){
-		if(err || !user) 
+	recipients = _.map(recipients,function(userId){
+		return app.models.user.dataSource.ObjectID(userId);
+	});
+	app.models.user.find({where:{id : {in : recipients}}},function(err,users){
+		if(err)
 			return console.log(err);
 
-		_sendOneSignalNotification(user.fcmToken,message,_type);
+		fcmTokens = [];
+     	_.each(users,function(user){
+     		if(user.fcmToken)
+     			fcmTokens.push(user.fcmToken);
+     	});
 
-		app.models.notifications.create({
-			message : message,
-			recipientId : userId,
-			_type : _type
-		},function(err,notification){
-			if(err)
-				return console.log(err);
-			console.log(userId, message)
-		});
+     	var title = "المرسال";
+ 		_sendNotificationToMultiTokens(fcmTokens,message,title);
 	});
 }
 
-var _sendOneSignalNotification = function(fcmToken,message,_type){
-	var messageObject = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-        to: fcmToken,
+
+module.exports.sendCustomNotificationToAllUsers = function (message) {
+ 	var title = "المرسال";
+	var messageObject = { 
+        topic : 'allUsers',
         
         notification: {
-            title: _type, 
+            title: title, 
             body: message
-        },
-        
-        data: {  //you can send only notification or only data(or include both)
-            businessId: '123456789',
-            adId: '123456789'
         }
     };
     
     fcm.send(messageObject, function(err, response){
-        if (err) {
-            console.log("Something has gone wrong!");
-        } else {
-            console.log("Successfully sent with response: ", response);
-        }
+        if (err)
+            console.log("notification wrong!",err);
     });
+}
 
-	// var firstNotification = new OneSignal.Notification({    
- //    	contents: {    
-	//         en: message
-	//     }
-	// });    
-	// firstNotification.postBody["filters"] = [{field: "tag", key: "user_id", relation: "=", value: userId}]; 
-	// firstNotification.postBody["data"] = {"abc": "123", "foo": "bar"};  
-	// firstNotification.postBody["included_segments"] = ["Active Users"];    
-	// myClient.sendNotification(firstNotification, function (err, httpResponse,data) {    
-	// 	if (err) {    
-	// 	    console.log('Something went wrong...');    
-	// 	} else {    
-	// 	    console.log(data, httpResponse.statusCode);    
-	// 	}    
-	// });   
+
+
+_sendNotificationToMultiTokens = function(tokens, message, title, data){
+	var messageObject = { 
+        tokens : tokens,
+        
+        notification: {
+            title: title, 
+            body: message
+        },
+    };
+
+    if(data)
+    	messageObject['data'] = data;
+    
+    fcm.send(messageObject, function(err, response){
+        if (err)
+            console.log("notification wrong!",err);
+    });
 }

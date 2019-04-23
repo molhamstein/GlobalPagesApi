@@ -4,7 +4,8 @@
   "idInjection": true,
   "options": {
     "validateUpsert": true,
-    "replaceOnPUT": false
+    "replaceOnPUT": false,
+    "strictObjectIDCoercion": true
   },
   "hidden": [
     "password", 
