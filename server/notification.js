@@ -7,7 +7,10 @@ var fcm = new FCM(myConfig.fcmServerKey);
 
 
 module.exports.addNewVolume = function (VolumesModel, volume) {
-	var allCategories = [];
+ 	var title ="عدد جديد من المرسال ";
+	var message = "تفقد الإعلانات الجديده في هذا العدد من المرسال";
+	
+    var allCategories = [];
 	_.each(volume.posts(),(post)=>{
 		if(post.categoryId) allCategories.push(post.categoryId);
 		if(post.subCategoryId) allCategories.push(post.subCategoryId);
@@ -19,14 +22,19 @@ module.exports.addNewVolume = function (VolumesModel, volume) {
      ],function(err,users){
      	if(err)  // TODO Debug
      		return console.log(err);
-     	fcmTokens = [];
+        fcmTokens = [];
+     	appNotifications = [];
      	_.each(users,function(user){
      		if(user.fcmToken)
      			fcmTokens.push(user.fcmToken);
+            appNotifications.push({
+                message : message,
+                _type : 'addNewVolume',
+                data : {volumeId : volume.id},
+                recipientId : user._id
+            });
      	});
-
-     	var title ="عدد جديد من المرسال ";
- 		var message = "تفقد الإعلانات الجديده في هذا العدد من المرسال";
+        _addAppNotificationToMultiUsers(appNotifications);
  		_sendNotificationToMultiTokens(fcmTokens,message,title,{volumeId : volume.id});
     });
 }
@@ -86,5 +94,14 @@ _sendNotificationToMultiTokens = function(tokens, message, title, data){
     fcm.send(messageObject, function(err, response){
         if (err)
             console.log("notification wrong!",err);
+    });
+}
+
+
+
+_addAppNotificationToMultiUsers = function(data){
+    app.models.notifications.create(data,function(err,result){
+        if(err)
+            console.log("app notification wrong!",err);
     });
 }

@@ -169,7 +169,8 @@ module.exports = function(User) {
 		    	user.save((err) => {
 		    		if(err)
 		    			return cb(err);
-		    		return cb(null,"Success! Your password has been changed")
+		    		return res.redirect('/');
+		    		// return cb(null,"Success! Your password has been changed")
 		    	})
 		    });
 		});

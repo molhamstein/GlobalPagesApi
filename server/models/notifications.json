@@ -18,6 +18,14 @@
       "type": "boolean",
       "required": true,
       "default": false
+    },
+    "data" : {
+      "type" :"Object"
+    },
+    "creationDate": {
+      "type": "date",
+      "required": true,
+      "default": "$now"
     }
   },
   "validations": [],

@@ -74,7 +74,7 @@ module.exports = function(Notifications) {
     	description: 'change my multi notifications to seen ',
 		accepts: [
 			{arg: 'req', type: 'object', 'http': {source: 'req'}},
-			{arg: 'notifications', type: 'array', required: true, http: {source: 'body'}},
+			{arg: 'notifications', type: 'array', 'http': {source: 'form'}}
 		],
 		returns: {arg: 'body', type: 'body',root: true},
 		http: {verb: 'post',path: '/seenNotification'},
