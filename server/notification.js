@@ -1,10 +1,13 @@
 var myConfig = require('../server/myConfig.json');
-var FCM = require('fcm-node');
+// var FCM = require('fcm-node');
+var firebase = require('firebase-admin');
 // var OneSignal = require('onesignal-node');
-var _ = require('lodash')
+var _ = require('lodash');
 
-var fcm = new FCM(myConfig.fcmServerKey);
-
+// var fcm = new FCM(myConfig.fcmServerKey);
+firebase.initializeApp({
+  credential: firebase.credential.cert(require('./almersalFirebase'))
+});
 
 module.exports.addNewVolume = function (VolumesModel, volume) {
  	var title ="عدد جديد من المرسال ";
@@ -62,7 +65,7 @@ module.exports.sendCustomNotification = function (message,recipients) {
 module.exports.sendCustomNotificationToAllUsers = function (message) {
  	var title = "المرسال";
 	var messageObject = { 
-        topic : 'allUsers',
+        // topic : 'allUsers',
         
         notification: {
             title: title, 
@@ -70,17 +73,25 @@ module.exports.sendCustomNotificationToAllUsers = function (message) {
         }
     };
     
-    fcm.send(messageObject, function(err, response){
-        if (err)
-            console.log("notification wrong!",err);
-    });
+    // fcm.send(messageObject, function(err, response){
+    //     if (err)
+    //         console.log("notification wrong!",err);
+    // console.log(err,response);
+    // });
+    firebase.messaging().sendToTopic('allUsers', messageObject)
+        .then(function(response) {
+            console.log("Successfully sent message:", response);
+        })
+        .catch(function(error) {
+            console.log("Error sending message:", error);
+        });
 }
 
 
 
 _sendNotificationToMultiTokens = function(tokens, message, title, data){
 	var messageObject = { 
-        tokens : tokens,
+        // tokens : tokens,
         
         notification: {
             title: title, 
@@ -91,10 +102,17 @@ _sendNotificationToMultiTokens = function(tokens, message, title, data){
     if(data)
     	messageObject['data'] = data;
     
-    fcm.send(messageObject, function(err, response){
-        if (err)
-            console.log("notification wrong!",err);
-    });
+    // fcm.send(messageObject, function(err, response){
+    //     if (err)
+    //         console.log("notification wrong!",err);
+    // });
+    firebase.messaging().sendToDevice(tokens, messageObject)
+        .then(function(response) {
+            console.log("Successfully sent message:", response);
+        })
+        .catch(function(error) {
+            console.log("Error sending message:", error);
+        });
 }
 
 

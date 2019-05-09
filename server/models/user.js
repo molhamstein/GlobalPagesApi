@@ -42,6 +42,7 @@ module.exports = function(User) {
 			ctx.req.body.username = name;
 			if(count != 0)
 				ctx.req.body.username = name + (count.toString());
+			ctx.req.body.email = ctx.req.body.email.toLowerCase();
 
 	    	next();
 		});
@@ -57,7 +58,8 @@ module.exports = function(User) {
 		  template: path.resolve(__dirname, '../../server/views/emails/verifyEmail.ejs'),
 		  // redirect: '/verified',
 		  user: user,
-		  host : '172.107.175.81'		  
+		  host : 'almersal.com',
+		  port : 80
 		};
 		user.verify(options, function(err, response) {
 		  if (err) {
