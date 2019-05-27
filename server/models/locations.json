@@ -15,10 +15,26 @@
     },
     "ip": {
       "type": "string"
+    }, 
+    "deleted": {
+      "type": "boolean",
+      "required": false,
+      "default": false
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "businesses" : {
+      "type": "hasMany",
+      "model": "business",
+      "foreignKey": "locationId"
+    },
+    "posts" : {
+      "type": "hasMany",
+      "model": "posts",
+      "foreignKey": "locationId"
+    }
+  },
   "acls": [],
   "methods": {}
 }

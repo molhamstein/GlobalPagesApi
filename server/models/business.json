@@ -40,17 +40,21 @@
     "locationPoint": {
       "type": "geopoint"
     },
-    "phone1" : {
-      "type" : "string"
+    "phone1": {
+      "type": "string"
     },
-    "phone2" : {
-      "type" : "string"
+    "phone2": {
+      "type": "string"
     },
-    "fax" : {
-      "type" : "string"
+    "fax": {
+      "type": "string"
     },
-    "address" : {
-      "type" : "string"
+    "address": {
+      "type": "string"
+    },
+    "deleted": {
+      "type": "boolean",
+      "required": false
     },
     "openingDays": {
       "type": [

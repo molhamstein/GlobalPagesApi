@@ -17,6 +17,11 @@
     "nameEn": {
       "type": "string",
       "required": true
+    },
+    "deleted": {
+      "type": "boolean",
+      "required": false,
+      "default": false
     }
   },
   "validations": [],
@@ -24,6 +29,16 @@
     "locations": {
       "type": "hasMany",
       "model": "locations",
+      "foreignKey": "cityId"
+    }, 
+    "businesses" : {
+      "type": "hasMany",
+      "model": "business",
+      "foreignKey": "cityId"
+    },
+    "posts" : {
+      "type": "hasMany",
+      "model": "posts",
       "foreignKey": "cityId"
     }
   },
