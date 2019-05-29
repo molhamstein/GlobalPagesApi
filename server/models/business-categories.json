@@ -10,9 +10,9 @@
     ]
   },
   "properties": {
-    "code" : {
-      "type" : "string",
-      "default" : "default"
+    "code": {
+      "type": "string",
+      "default": "default"
     },
     "titleAr": {
       "type": "string",
@@ -26,6 +26,12 @@
       "type": "date",
       "required": true,
       "default": "$now"
+    },
+    "deleted": {
+      "type": "boolean",
+      "required": false ,
+      "default": false
+
     }
   },
   "validations": [],

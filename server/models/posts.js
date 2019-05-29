@@ -75,5 +75,42 @@ module.exports = function(Post) {
 		accepts: {arg: 'postId', type: 'string',  required:true},
 		// returns: {arg: 'message', type: 'string'},
 		http: {verb: 'post',path: '/:postId/viewsCount'},
-    });
+	});
+	
+
+	
+
+	Post.once("attached", function () {
+
+
+		Post.deleteById = async function (id, auth, cb) {
+			
+
+			let post = await Post.findById(id);
+			if (!post)
+				throw { message: "Resource not found", code: 404 };
+
+
+			//delete self
+			post.updateAttribute("deleted", true);
+
+
+
+			return "deleted";
+		}
+
+
+	});
+
+
+	// execlude deleted entities 
+	Post.observe('access', async function (ctx) {
+
+		ctx.query = ctx.query || {};
+		ctx.query.where = ctx.query.where || {};
+		if (!ctx.query.where.deleted) {
+			ctx.query.where.deleted = false;
+		}
+	});
+
 };

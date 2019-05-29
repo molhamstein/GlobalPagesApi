@@ -26,6 +26,11 @@
       "type": "date",
       "required": true,
       "default": "$now"
+    },
+    "deleted": {
+      "type": "boolean",
+      "required": false,
+      "default": false
     }
   },
   "validations": [],
