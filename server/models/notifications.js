@@ -78,5 +78,23 @@ module.exports = function(Notifications) {
 		],
 		returns: {arg: 'body', type: 'body',root: true},
 		http: {verb: 'post',path: '/seenNotification'},
-    });
+		});
+		
+
+	Notifications.clear = async function(req){
+		
+		if(!req.accessToken || !req.accessToken.userId){
+			var err1 = new Error('User not login');
+	        err1.statusCode = 403;
+	        err1.code = 'USER_NOT_LOGIN';
+			throw err1; 
+		}
+
+		let userId = req.accessToken.userId; 
+
+		return Notifications.app.models.notifications.destroyAll({
+			userId 
+		});
+
+	}
 };
