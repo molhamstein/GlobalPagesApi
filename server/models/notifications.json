@@ -24,8 +24,8 @@
       "required": true,
       "default": false
     },
-    "data" : {
-      "type" :"Object"
+    "data": {
+      "type": "Object"
     },
     "creationDate": {
       "type": "date",
@@ -41,33 +41,5 @@
     }
   },
   "acls": [],
-  "methods": {
-
-    "clear": {
-      "isStatic": true,
-      "accepts": [
-        {
-          "arg": "req",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "array",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "clear all user notification ",
-      "http": [
-        {
-          "path": "/clear",
-          "verb": "put"
-        }
-      ]
-    }
-  }
+  "methods": {}
 }
