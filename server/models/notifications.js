@@ -102,7 +102,7 @@ module.exports = function (Notifications) {
 			{ arg: 'req', type: 'object', 'http': { source: 'req' } },
 		],
 		returns: { arg: 'body', type: 'body', root: true },
-		http: { verb: 'delete', path: '/clear' },
+		http: { verb: 'put', path: '/clear' },
 	});
 
 
