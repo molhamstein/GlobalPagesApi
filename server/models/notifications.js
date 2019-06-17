@@ -93,7 +93,7 @@ module.exports = function (Notifications) {
 		let userId = req.accessToken.userId;
 
 		return Notifications.app.models.notifications.destroyAll({
-			userId
+			recipientId : userId
 		});
 	}
 	Notifications.remoteMethod('clear', {
