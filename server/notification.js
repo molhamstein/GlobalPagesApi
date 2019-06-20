@@ -53,7 +53,6 @@ module.exports.addNewVolume = async function (VolumesModel, volume) {
     let ObjectId = VolumesModel.dataSource.ObjectID;
     var title = "عدد جديد من المرسال ";
     var message = "تفقد الإعلانات الجديده في هذا العدد من المرسال";
-    console.log("add new volume");
     var allCategories = [];
     volume.posts.find((err, posts) => {
         _.each(posts, (post) => {
@@ -62,7 +61,6 @@ module.exports.addNewVolume = async function (VolumesModel, volume) {
             if (post.categoryId) allCategories.push(post.categoryId);
             if (post.subCategoryId) allCategories.push(post.subCategoryId);
         });
-        console.log(allCategories); 
         
         VolumesModel.getDataSource().connector.collection('user').aggregate([
             { $match: { postCategoriesIds: { $in: allCategories } } },
@@ -71,8 +69,6 @@ module.exports.addNewVolume = async function (VolumesModel, volume) {
         ], function (err, users) {
             if (err)  // TODO Debug
                 return console.log(err);
-                console.log(users); 
-                console.log("users"); 
             fcmTokens = [];
             appNotifications = [];
             _.each(users, function (user) {
@@ -86,7 +82,7 @@ module.exports.addNewVolume = async function (VolumesModel, volume) {
                 });
             });
             _addAppNotificationToMultiUsers(appNotifications);
-      //      _sendNotificationToMultiTokens(fcmTokens,message,title,{volumeId : volume.id.toString()});
+            _sendNotificationToMultiTokens(fcmTokens,message,title,{volumeId : volume.id.toString()});
         });
     });
 
