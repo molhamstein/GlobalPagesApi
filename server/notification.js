@@ -62,7 +62,8 @@ module.exports.addNewVolume = async function (VolumesModel, volume) {
             if (post.categoryId) allCategories.push(post.categoryId.toString());
             if (post.subCategoryId) allCategories.push(post.subCategoryId.toString());
         });
-
+        console.log(allCategories); 
+        
         VolumesModel.getDataSource().connector.collection('user').aggregate([
             { $match: { postCategoriesIds: { $in: allCategories } } },
             { $project: { fcmToken: 1, postCategoriesIds: 1, commonToBoth: { $setIntersection: ["$postCategoriesIds", allCategories] } } }
@@ -70,6 +71,8 @@ module.exports.addNewVolume = async function (VolumesModel, volume) {
         ], function (err, users) {
             if (err)  // TODO Debug
                 return console.log(err);
+                console.log(users); 
+                console.log("users"); 
             fcmTokens = [];
             appNotifications = [];
             _.each(users, function (user) {
