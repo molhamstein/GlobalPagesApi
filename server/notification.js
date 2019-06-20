@@ -83,7 +83,7 @@ module.exports.addNewVolume = async function (VolumesModel, volume) {
                 });
             });
             _addAppNotificationToMultiUsers(appNotifications);
-            _sendNotificationToMultiTokens(fcmTokens,message,title,{volumeId : volume.id.toString()});
+      //      _sendNotificationToMultiTokens(fcmTokens,message,title,{volumeId : volume.id.toString()});
         });
     });
 
