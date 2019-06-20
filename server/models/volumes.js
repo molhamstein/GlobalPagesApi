@@ -51,7 +51,7 @@ module.exports = function (Volumes) {
 
 		if (volume) {
 			let oldStatus = volume.status;
-			if (oldStatus == "deactivated" && newStatus == "activated") {
+			if (oldStatus != "activated" && newStatus == "activated") {
 				ctx.notifiy = true;
 			}
 		}
