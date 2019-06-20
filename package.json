@@ -8,7 +8,8 @@
   "scripts": {
     "lint": "eslint .",
     "start": "nodemon .",
-    "posttest": "npm run lint && nsp check"
+    "debug": "node --inspect .",
+    "posttest": "npm run lint && nsp check" 
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.17",
