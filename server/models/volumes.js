@@ -36,16 +36,36 @@ module.exports = function (Volumes) {
 
 
 	Volumes.afterRemote("create", async function (ctx, result) {
-		let volume = result ; 
+		let volume = result;
 		if (volume.status == 'activated')
 			notification.addNewVolume(Volumes, volume);
 
 	});
 
-	Volumes.beforeRemote("edit" , async () => {
+	// edit hook 
+	Volumes.beforeRemote('replaceById', async function (ctx, instance) {
+		let newStatus = ctx.req.body.status;
+		let { id } = ctx.req.params;
 
-		console.log("testing"); 
-	}); 
+		let volume = await Volumes.app.models.volumes.findById(id);
+
+		if (volume) {
+			let oldStatus = volume.status;
+			if (oldStatus == "deactivated" && newStatus == "activated") {
+				ctx.notifiy = true;
+			}
+		}
+		//console.log(ctx); 
+
+	});
+
+
+	// edit hook 
+	Volumes.afterRemote('replaceById', async function (ctx, instance) {
+		if (typeof ctx.notifiy !== "undefined" && ctx.notifiy == true) {
+			notification.addNewVolume(Volumes, instance);
+		}
+	});
 
 
 };
