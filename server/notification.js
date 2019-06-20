@@ -59,8 +59,8 @@ module.exports.addNewVolume = async function (VolumesModel, volume) {
         _.each(posts, (post) => {
 
 
-            if (post.categoryId) allCategories.push(post.categoryId.toString());
-            if (post.subCategoryId) allCategories.push(post.subCategoryId.toString());
+            if (post.categoryId) allCategories.push(post.categoryId);
+            if (post.subCategoryId) allCategories.push(post.subCategoryId);
         });
         console.log(allCategories); 
         
