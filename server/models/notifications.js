@@ -55,26 +55,26 @@ module.exports = function (Notifications) {
 		http: { verb: 'get', path: '/me' },
 	});
 
-	Notifications.seenNotification = function (req, notifications, cb) {
+	Notifications.seenNotification = async function (req, notifications) {
 		if (!req.accessToken || !req.accessToken.userId) {
 			var err1 = new Error('User not login');
 			err1.statusCode = 403;
 			err1.code = 'USER_NOT_LOGIN';
-			return cb(err1)
+			throw err1;
 		}
-		_.each(notifications, function (id, index) { try { notifications[index] = Notifications.dataSource.ObjectID(id) } catch (err) { } });
+		//_.each(notifications, function (id, index) { 
+		//	try { notifications[index] = Notifications.dataSource.ObjectID(id) } catch (err) { } });
+		
+		notifications = notifications.map ( notification => Notifications.dataSource.ObjectID(notification)); 
 		var where = { recipientId: req.accessToken.userId, seen: false, _id: { in: notifications } };
-		Notifications.updateAll(where, { seen: true }, function (err, result) {
-			if (err)
-				return cb(err);
-			return cb(null, result)
-		});
+		return await Notifications.updateAll(where, { seen: true });
+
 	}
 	Notifications.remoteMethod('seenNotification', {
 		description: 'change my multi notifications to seen ',
 		accepts: [
 			{ arg: 'req', type: 'object', 'http': { source: 'req' } },
-			{ arg: 'notifications', type: 'array', 'http': { source: 'form' } }
+			{ arg: 'notifications', type: 'array' }
 		],
 		returns: { arg: 'body', type: 'body', root: true },
 		http: { verb: 'post', path: '/seenNotification' },
@@ -93,7 +93,7 @@ module.exports = function (Notifications) {
 		let userId = req.accessToken.userId;
 
 		return Notifications.app.models.notifications.destroyAll({
-			recipientId : userId
+			recipientId: userId
 		});
 	}
 	Notifications.remoteMethod('clear', {
