@@ -14,7 +14,7 @@
   ],
   "scope": {
     "include": [
-      "roles"
+      "role"
     ]
   },
   "properties": {
@@ -56,9 +56,9 @@
       "type": "referencesMany",
       "model": "postCategories"
     },
-    "roles": {
-      "type": "referencesMany",
-      "model": "Role"
+    "role": {
+      "type": "belongsTo",
+      "model": "role"
     }
   },
   "acls": [

@@ -1,0 +1,27 @@
+{
+  "name": "role",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "key": {
+      "type": "string",
+      "required": true,
+      "id" : true 
+    } , 
+    "name" : {
+      "type" : "string" , 
+      "required" : true
+    },
+    "privileges" : {
+      "type" : "array" , 
+      "required" : false
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
