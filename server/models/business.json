@@ -54,7 +54,8 @@
     },
     "deleted": {
       "type": "boolean",
-      "required": false
+      "required": false ,
+      "default" :  false 
     },
     "openingDays": {
       "type": [
