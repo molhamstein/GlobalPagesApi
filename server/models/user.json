@@ -8,7 +8,7 @@
     "strictObjectIDCoercion": true
   },
   "hidden": [
-    "password", 
+    "password",
     "resetPasswordExpires",
     "resetPasswordToken"
   ],
@@ -35,8 +35,8 @@
     "gender": {
       "type": "string"
     },
-    "fcmToken" : {
-      "type" : "string"
+    "fcmToken": {
+      "type": "string"
     },
     "resetPasswordToken": {
       "type": "string"

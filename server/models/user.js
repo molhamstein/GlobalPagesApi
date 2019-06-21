@@ -241,5 +241,29 @@ module.exports = function(User) {
 			{arg: 'res', type: 'object', http:{source:'res'}},
 		],
 		http: {verb: 'post',path:'/fcmToken'},	
+	});
+	
+	User.changePassword = async function(userId , password){
+		/* Todo permisions */
+		let user = await User.findById(userId); 
+		if(!user) 
+			throw ERROR(404 , "User not found"); 
+
+		await user.updateAttribute('password', User.hashPassword(password)); 
+
+
+	}
+
+
+	User.remoteMethod('changePassword', {
+    	description: 'Change user password from admin',
+		accepts: [
+			{arg: 'userId', type: 'string',  required:true},
+			{arg: 'password', type: 'string', required: true},
+		],
+		returns: {arg: 'message', type: 'string'},
+		http: {verb: 'put',path: '/:userId/changePassword'},
     });
+
+
 };
