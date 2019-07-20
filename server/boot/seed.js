@@ -19,12 +19,13 @@ module.exports = async function (app) {
             "name": "Operator",
             "key": "operator",
             "privileges": [
+                "eat-potato"
             ]
         }
     ];
 
     for (let role of roles) {
-        await app.models.role.findOrCreate({ where: { key: role.key } }, role);
+        await app.models.role.upsert( role);
     }
 
 

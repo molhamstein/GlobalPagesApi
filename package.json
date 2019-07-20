@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "start": "nodemon .",
     "debug": "node --inspect .",
-    "posttest": "npm run lint && nsp check" 
+    "posttest": "npm run lint && nsp check"
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.17",
@@ -28,6 +28,7 @@
     "loopback-component-explorer": "^6.0.0",
     "loopback-component-storage": "^3.3.1",
     "loopback-connector-mongodb": "^1.18.1",
+    "loopback3-xtotalcount": "^0.1.2",
     "onesignal-node": "^1.1.2",
     "serve-favicon": "^2.0.1",
     "sharp": "^0.22.0",
