@@ -10,7 +10,9 @@
     "include": [
       "owner",
       "category",
-      "subCategory"
+      "subCategory" , 
+      "city" , 
+      "location" 
     ]
   },
   "properties": {
