@@ -60,6 +60,33 @@ module.exports = function (Volumes) {
 	});
 
 
+
+	Volumes.once("attached", function () {
+		Volumes.deleteById = async function (id, auth, cb) {
+
+			let volume = await Volumes.findById(id);
+			console.log(volume);
+			if (!volume)
+				throw { message: "Resource not found", code: 404 };
+
+			//delete self
+			volume.updateAttribute("deleted", true);
+
+			return "deleted";
+		}
+
+
+	});
+
+	Volumes.observe('access', async function (ctx) {
+
+		ctx.query = ctx.query || {};
+		ctx.query.where = ctx.query.where || {};
+		if (!ctx.query.where.deleted) {
+			ctx.query.where.deleted = false;
+		}
+	});
+
 	// edit hook 
 	Volumes.afterRemote('replaceById', async function (ctx, instance) {
 		if (typeof ctx.notifiy !== "undefined" && ctx.notifiy == true) {
