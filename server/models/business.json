@@ -10,12 +10,17 @@
     "include": [
       "owner",
       "category",
-      "subCategory" , 
-      "city" , 
-      "location" 
+      "subCategory",
+      "city",
+      "location"
     ]
   },
   "properties": {
+    "vip": {
+      "type": "boolean",
+      "required": false,
+      "default": false
+    },
     "nameEn": {
       "type": "string",
       "required": true
