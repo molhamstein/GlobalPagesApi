@@ -7,7 +7,7 @@ var ejs = require('ejs');
 
 module.exports = function(User) {
 	// validation
-	User.validatesInclusionOf('gender', {in: ['male', 'female']});
+//	User.validatesInclusionOf('gender', {in: ['male', 'female']});
 	User.validatesInclusionOf('status', {in: ['pending', 'activated','deactivated']});
 
 	User.settings.acls = [ { "principalType": "ROLE", "principalId": "$everyone", "permission": "ALLOW" }];
