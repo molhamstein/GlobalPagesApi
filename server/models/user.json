@@ -33,7 +33,8 @@
       "type": "string"
     },
     "gender": {
-      "type": "string"
+      "type": "string" , 
+      "required" : false 
     },
     "fcmToken": {
       "type": "string"
