@@ -22,7 +22,7 @@ module.exports = async function (app) {
         autoBackup: true,
         removeOldBackup: true,
         keepLastDaysBackup: 7,
-        autoBackupPath: '../mongobackups/' // i.e. /let/database-backup/
+        autoBackupPath: '../backup/mongobackups/' // i.e. /let/database-backup/
     };
 
     /* return if letiable is empty or not. */
@@ -105,7 +105,7 @@ module.exports = async function (app) {
 
 
     // every midnight 
-    let job = new CronJob('0 0 0 * * *', function () {
+    let job = new CronJob('* * * * * *', function () {
         dbAutoBackUp();
         job.stop();
     }, null, true);

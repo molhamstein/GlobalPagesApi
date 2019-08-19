@@ -1,0 +1,9 @@
+{
+  "name": "backup",
+  "base": "Model",
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

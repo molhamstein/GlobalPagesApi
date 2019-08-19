@@ -47,5 +47,11 @@
       "image/png",
       "video/mp4"
     ]
+  },
+  "backupstorage": {
+    "name": "backupstorage",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "root": "../backup"    
   }
 }

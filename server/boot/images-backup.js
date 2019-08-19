@@ -11,18 +11,16 @@ module.exports = async function (app) {
 
     let options = {
 
-        sourcePath: "files/images/",
-        backupPath: "../images-backup/"
+        sourcePath: "files/",
+        backupPath: "../backup/images-backup/"
 
     };
 
     async function imagesBackup() {
 
-        console.log("images backup");
-        let images = await fs.promises.readdir(options.sourcePath);
+        console.log("media backup");
 
-        images = images.map(image => path.join(options.sourcePath, image)); 
-        tar.update({ file: "../images-backup/images-backup.tar.gz" },  images);
+        await tar.update({ file: path.join(options.backupPath ,  "images-backup.tar.gz") },  [options.sourcePath]);
         
         console.log("Done images backup");
 
@@ -30,8 +28,9 @@ module.exports = async function (app) {
     }
 
     // every midnight 
-    let job = new CronJob('0 0 0 * * *', function () {
+    let job = new CronJob('* * * * * *', function () {
         imagesBackup();
+        job.stop(); 
     }, null, true);
 
 }; 

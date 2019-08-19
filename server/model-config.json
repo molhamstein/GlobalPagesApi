@@ -93,5 +93,9 @@
   "role": {
     "dataSource": "mongoDb",
     "public": true
+  },
+  "backup": {
+    "dataSource": "backupstorage",
+    "public": true
   }
 }
