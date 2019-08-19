@@ -166,7 +166,7 @@ module.exports = function (Business) {
 					return cb(err);
 				if (subCategory) where.subCategoryId = subCategory.id;
 
-				var query = { where: where };
+				var query = { where: where  ,  order: ['vip'] };
 				console.log(where);
 				if (limit) query.limit = limit;
 				Business.find(query, function (err, business) {
