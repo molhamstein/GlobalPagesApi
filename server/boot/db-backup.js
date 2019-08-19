@@ -105,7 +105,7 @@ module.exports = async function (app) {
 
 
     // every midnight 
-    let job = new CronJob('* * * * * *', function () {
+    let job = new CronJob('0 0 0 * * *', function () {
         dbAutoBackUp();
         job.stop();
     }, null, true);
