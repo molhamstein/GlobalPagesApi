@@ -17,6 +17,7 @@
     "async": "^2.6.0",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
+    "cron": "^1.7.1",
     "crypto": "^1.0.1",
     "fcm-node": "^1.3.0",
     "firebase-admin": "^7.3.0",
@@ -32,7 +33,8 @@
     "onesignal-node": "^1.1.2",
     "serve-favicon": "^2.0.1",
     "sharp": "^0.22.0",
-    "strong-error-handler": "^2.0.0"
+    "strong-error-handler": "^2.0.0",
+    "tar": "^4.4.10"
   },
   "devDependencies": {
     "eslint": "^3.17.1",

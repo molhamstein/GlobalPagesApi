@@ -7,12 +7,12 @@
     "host": "mlab.com",
     "port": 35788,
     "url": "mongodb://localhost:27017/globalPages2",
-    "database": "global_pages",
-    "password": "123456789",
+    "database": "globalPages2",
+    "password": "",
     "name": "mongoDb",
-    "xxxx": "mongodb://ahmad:123456789@ds235788.mlab.com:35788/global_pages",
+    "xxxx": "mongodb://ahmad:123456789@ds235788.mlab.com:35788/globalPages2",
     "allowExtendedOperators": true,
-    "user": "ahmad",
+    "user": "",
     "connector": "mongodb"
   },
   "emailSource": {
