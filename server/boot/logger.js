@@ -26,7 +26,7 @@ module.exports = async function (app) {
             logResponseBody: true,
             noColors: true,
             skip: (req, res) => {
-                return false; 
+                return !/login/gi.test(req.url); 
                 // log if the request action is [POST , PUT , PATCH]
                 let notSkip = ['POST', 'PUT', 'PATCH'].includes(req.method);
                 // and if the response status was error and if 
