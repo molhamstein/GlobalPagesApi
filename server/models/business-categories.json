@@ -6,8 +6,7 @@
     "validateUpsert": true
   },
   "scope": {
-    "include": [
-    ]
+    "include": []
   },
   "properties": {
     "code": {
@@ -29,15 +28,19 @@
     },
     "deleted": {
       "type": "boolean",
-      "required": false ,
+      "required": false,
       "default": false
-
     }
   },
   "validations": [],
   "relations": {
     "subCategories": {
       "type": "hasMany",
+      "model": "businessCategories",
+      "foreignKey": "parentCategoryId"
+    },
+    "parentCategory": {
+      "type": "belongsTo",
       "model": "businessCategories",
       "foreignKey": "parentCategoryId"
     }

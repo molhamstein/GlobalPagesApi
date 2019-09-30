@@ -6,9 +6,7 @@
     "validateUpsert": true
   },
   "scope": {
-    "include": [
-     
-    ]
+    "include": []
   },
   "properties": {
     "titleAr": {
@@ -37,6 +35,11 @@
   "relations": {
     "subCategories": {
       "type": "hasMany",
+      "model": "postCategories",
+      "foreignKey": "parentCategoryId"
+    },
+    "parentCategory": {
+      "type": "belongsTo",
       "model": "postCategories",
       "foreignKey": "parentCategoryId"
     }
