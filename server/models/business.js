@@ -151,7 +151,7 @@ module.exports = function (Business) {
 
 
 
-  Business.searchByLocation = function (lat, lng, maxDistance, unit, keyword, catId, subCatId, codeCat, codeSubCat, openingDay, limit, skip, cityId, locationId, res, cb) {
+  Business.searchByLocation = function (status, lat, lng, maxDistance, unit, keyword, catId, subCatId, codeCat, codeSubCat, openingDay, limit, skip, cityId, locationId, res, cb) {
     var where = {
       // status : 'activated'
     };
@@ -191,6 +191,9 @@ module.exports = function (Business) {
     if (openingDay) {
       where.openingDaysEnabled = true;
       where.openingDays = openingDay;
+    }
+    if (status) {
+      where.status = status;
     }
     if (locationId) {
       where.locationId = locationId;
@@ -256,6 +259,13 @@ module.exports = function (Business) {
   Business.remoteMethod('searchByLocation', {
     // description: '',
     accepts: [{
+        arg: 'status',
+        type: 'string',
+        http: {
+          source: 'query'
+        }
+      },
+      {
         arg: 'lat',
         type: 'number',
         http: {
