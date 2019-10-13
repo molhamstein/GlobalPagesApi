@@ -151,7 +151,7 @@ module.exports = function (Business) {
 
 
 
-  Business.searchByLocation = function (lat, lng, maxDistance, unit, keyword, catId, subCatId, codeCat, codeSubCat, openingDay, limit, skip, res, cb) {
+  Business.searchByLocation = function (lat, lng, maxDistance, unit, keyword, catId, subCatId, codeCat, codeSubCat, openingDay, limit, skip, cityId, locationId, res, cb) {
     var where = {
       // status : 'activated'
     };
@@ -192,6 +192,14 @@ module.exports = function (Business) {
       where.openingDaysEnabled = true;
       where.openingDays = openingDay;
     }
+    if (locationId) {
+      where.locationId = locationId;
+    }
+    if (cityId) {
+      where.cityId = cityId;
+    }
+
+
 
     if ((lat && !lng) || (lng && !lat)) {
       var err = new Error('lat and lng both required');
@@ -225,8 +233,8 @@ module.exports = function (Business) {
 
         var query = {
           where: where
-		};
-		console.log(where)
+        };
+        console.log(where)
         if (limit) query.limit = limit;
         if (skip) query.skip = skip;
         Business.find(query, function (err, business) {
@@ -327,6 +335,20 @@ module.exports = function (Business) {
       {
         arg: 'skip',
         type: 'number',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'cityId',
+        type: 'string',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'locationId',
+        type: 'string',
         http: {
           source: 'query'
         }
