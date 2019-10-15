@@ -1,0 +1,32 @@
+{
+  "name": "jobOpportunityTags",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "jobId": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "Jobopportunity": {
+      "type": "belongsTo",
+      "model": "jobOpportunities",
+      "foreignKey": "jobId"
+    },
+    "tags": {
+      "type": "belongsTo",
+      "model": "tags",
+      "foreignKey": "tagId",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

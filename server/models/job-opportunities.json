@@ -1,0 +1,83 @@
+{
+  "name": "jobOpportunities",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "scope": {
+    "include": [
+      "category",
+      "subCategory",
+      "tags"
+    ]
+  },
+  "automaticValidation": false,
+  "properties": {
+    "nameEn": {
+      "type": "string",
+      "required": true
+    },
+    "nameAr": {
+      "type": "string",
+      "required": true
+    },
+    "descriptionAr": {
+      "type": "string",
+      "required": true
+    },
+    "descriptionEn": {
+      "type": "string",
+      "required": true
+    },
+    "rangeSalary": {
+      "type": "string",
+      "required": false
+    },
+    "businessId": {
+      "type": "number",
+      "required": true
+    },
+    "status": {
+      "type": "string",
+      "required": true,
+      "default": "active"
+    },
+    "categoryId": {
+      "type": "string",
+      "required": true
+    },
+    "subCategoryId": {
+      "type": "string",
+      "required": true
+    },
+    "creationDate": {
+      "type": "date",
+      "required": true,
+      "default": "$now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "category": {
+      "type": "belongsTo",
+      "model": "jobOpportunityCategories"
+    },
+    "subCategory": {
+      "type": "belongsTo",
+      "model": "jobOpportunityCategories"
+    },
+    "tags": {
+      "type": "hasMany",
+      "model": "tags",
+      "foreignKey": "jobId",
+      "options": {
+        "nestRemoting": true
+      },
+      "through": "jobOpportunityTags",
+      "keyThrough": "tagId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

@@ -33,8 +33,8 @@
       "type": "string"
     },
     "gender": {
-      "type": "string" , 
-      "required" : false 
+      "type": "string",
+      "required": false
     },
     "fcmToken": {
       "type": "string"
@@ -60,10 +60,17 @@
     "role": {
       "type": "belongsTo",
       "model": "role"
+    },
+    "CV": {
+      "type": "hasOne",
+      "model": "userCV",
+      "foreignKey": "userId",
+      "options": {
+        "nestRemoting": true
+      }
     }
   },
-  "acls": [
-    {
+  "acls": [{
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",

@@ -1,0 +1,57 @@
+{
+  "name": "userCV",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "scope": {
+    "include": [
+      "tags"
+    ]
+  },
+  "properties": {
+    "education": {
+      "type": [
+        "object"
+      ],
+      "required": true,
+      "default": []
+    },
+    "experience": {
+      "type": [
+        "object"
+      ],
+      "required": true,
+      "default": []
+    },
+    "userId": {
+      "type": "string",
+      "required": true
+    },
+    "creationDate": {
+      "type": "date",
+      "required": true,
+      "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "tags": {
+      "type": "hasMany",
+      "model": "tags",
+      "foreignKey": "userCvId",
+      "options": {
+        "nestRemoting": true
+      },
+      "through": "userTags",
+      "keyThrough": "tagId"
+    },
+    "user": {
+      "type": "belongsTo",
+      "model": "user"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

@@ -97,5 +97,33 @@
   "backup": {
     "dataSource": "backupstorage",
     "public": true
+  },
+  "tags": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "userCV": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "userTags": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "jobOpportunityCategories": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "jobOpportunities": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "jobOpportunityTags": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "jobOpportunityUser": {
+    "dataSource": "mongoDb",
+    "public": true
   }
 }

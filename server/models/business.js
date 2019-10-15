@@ -387,4 +387,113 @@ module.exports = function (Business) {
       }
     }, cb);
   }
+
+  Business.addJobOpportunity = async function (businessId, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status = "active", tags, callback) {
+    /* Todo permisions */
+    let business = await Business.findById(businessId);
+    if (!business)
+      throw ERROR(404, "Business not found");
+
+    var objectJob = {
+      "nameEn": nameEn,
+      "nameAr": nameAr,
+      "descriptionEn": descriptionEn,
+      "descriptionAr": descriptionAr,
+      "rangeSalary": rangeSalary,
+      "status": status,
+      "categoryId": categoryId,
+      "subCategoryId": subCategoryId
+    }
+
+    var jobOpp = await Business.app.models.jobOpportunities.create(objectJob);
+
+    var mainTags = [];
+    tags.forEach(element => {
+      mainTags.push({
+        "tagId": element,
+        "jobId": jobOpp.id
+      })
+    });
+
+    await Business.app.models.jobOpportunityTags.create(mainTags)
+    var newJobOpp = await Business.app.models.jobOpportunities.findById(jobOpp.id)
+    callback(null, newJobOpp)
+  }
+
+  Business.remoteMethod('addJobOpportunity', {
+    description: '',
+    accepts: [{
+        arg: 'businessId',
+        type: 'string',
+        required: true,
+        http: {
+          "source": "path"
+        }
+      },
+      {
+        arg: "categoryId",
+        type: "string",
+        required: true,
+        description: ""
+      },
+      {
+        arg: "subCategoryId",
+        type: "string",
+        required: true,
+        description: ""
+      },
+      {
+        arg: "nameEn",
+        type: "string",
+        required: true,
+        description: ""
+      },
+      {
+        arg: "nameAr",
+        type: "string",
+        required: true,
+        description: ""
+      },
+      {
+        arg: "descriptionEn",
+        type: "string",
+        required: true,
+        description: ""
+      },
+      {
+        arg: "descriptionAr",
+        type: "string",
+        required: true,
+        description: ""
+      },
+      {
+        arg: "rangeSalary",
+        type: "string",
+        required: true,
+        description: ""
+      },
+      {
+        arg: "status",
+        type: "string",
+        required: false,
+        description: ""
+      },
+      {
+        arg: "tags",
+        type: ["string"],
+        required: true,
+        description: ""
+      }
+    ],
+    returns: {
+      arg: 'message',
+      type: 'string',
+      root: true
+    },
+    http: {
+      verb: 'post',
+      path: '/:businessId/addJobOpportunity'
+    },
+  });
+
 };
