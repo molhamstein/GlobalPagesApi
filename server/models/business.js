@@ -156,11 +156,11 @@ module.exports = function (Business) {
       // status : 'activated'
     };
 
-    if (lat)
+    if (lat != null)
       _.set(where, 'locationPoint.near.lat', lat);
-    if (lng)
+    if (lng != null)
       _.set(where, 'locationPoint.near.lng', lng);
-    if (maxDistance)
+    if (maxDistance != null)
       _.set(where, 'locationPoint.maxDistance', maxDistance);
     if (unit)
       _.set(where, 'locationPoint.unit', unit);
@@ -204,7 +204,7 @@ module.exports = function (Business) {
 
 
 
-    if ((lat && !lng) || (lng && !lat)) {
+    if ((lat != null && lng == null) || (lng != null && lat == null)) {
       var err = new Error('lat and lng both required');
       err.statusCode = 400;
       err.code = 'LATLNGREQUIRED';
