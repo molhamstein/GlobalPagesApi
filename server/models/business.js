@@ -394,7 +394,10 @@ module.exports = function (Business) {
     if (!business)
       throw ERROR(404, "Business not found");
 
+    var userId = req.accessToken.userId
     var objectJob = {
+      "ownerId": userId,
+      "buisnessId": buisnessId,
       "nameEn": nameEn,
       "nameAr": nameAr,
       "descriptionEn": descriptionEn,

@@ -63,9 +63,17 @@
       "type": "belongsTo",
       "model": "jobOpportunityCategories"
     },
+    "buisness": {
+      "type": "belongsTo",
+      "model": "business"
+    },
     "subCategory": {
       "type": "belongsTo",
       "model": "jobOpportunityCategories"
+    },
+    "owner": {
+      "type": "belongsTo",
+      "model": "user"
     },
     "tags": {
       "type": "hasMany",

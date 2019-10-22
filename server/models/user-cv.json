@@ -7,7 +7,7 @@
   },
   "scope": {
     "include": [
-      "tags"
+      "tags", "city"
     ]
   },
   "properties": {
@@ -28,6 +28,38 @@
     "userId": {
       "type": "string",
       "required": true
+    },
+    "bio": {
+      "type": "string",
+      "required": false
+    },
+    "primaryIdentifier": {
+      "type": "string",
+      "required": false
+    },
+    "githubLink": {
+      "type": "string",
+      "required": false
+    },
+    "facebookLink": {
+      "type": "string",
+      "required": false
+    },
+    "twitterLink": {
+      "type": "string",
+      "required": false
+    },
+    "websiteLink": {
+      "type": "string",
+      "required": false
+    },
+    "behanceLink": {
+      "type": "string",
+      "required": false
+    },
+    "cvURL": {
+      "type": "string",
+      "required": false
     },
     "creationDate": {
       "type": "date",
@@ -50,6 +82,10 @@
     "user": {
       "type": "belongsTo",
       "model": "user"
+    },
+    "city": {
+      "type": "belongsTo",
+      "model": "cities"
     }
   },
   "acls": [],

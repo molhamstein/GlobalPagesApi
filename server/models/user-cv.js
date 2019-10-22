@@ -2,7 +2,7 @@
 
 module.exports = function (Usercv) {
 
-  Usercv.updateMyCv = async function (education, experience, tags, req, callback) {
+  Usercv.updateMyCv = async function (education, experience, tags, bio, primaryIdentifier, cityId, githubLink = null, facebookLink = null, twitterLink = null, websiteLink = null, behanceLink = null, cvURL = null, req, callback) {
     var userId = req.accessToken.userId
     let user = await Usercv.app.models.User.findById(userId);
     if (!user)
@@ -60,7 +60,15 @@ module.exports = function (Usercv) {
     await Usercv.app.models.userTags.create(mainTags)
     await cv.updateAttributes({
       "education": mainEducationArrayCV,
-      "experience": mainExperienceArrayCV
+      "experience": mainExperienceArrayCV,
+      "primaryIdentifier": primaryIdentifier,
+      "bio": bio,
+      "githubLink": githubLink,
+      "facebookLink": facebookLink,
+      "twitterLink": twitterLink,
+      "websiteLink": websiteLink,
+      "behanceLink": behanceLink,
+      "cityId": cityId
     })
     var newcv = await Usercv.findById(cv.id)
     callback(null, newcv)
@@ -84,6 +92,60 @@ module.exports = function (Usercv) {
         "arg": "tags",
         "type": ["string"],
         "required": true,
+        "description": ""
+      },
+      {
+        "arg": "bio",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "arg": "primaryIdentifier",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "arg": "cityId",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "arg": "githubLink",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "arg": "facebookLink",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "arg": "twitterLink",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "arg": "websiteLink",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "arg": "behanceLink",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "arg": "cvURL",
+        "type": "string",
+        "required": false,
         "description": ""
       },
       {
