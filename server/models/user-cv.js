@@ -68,7 +68,8 @@ module.exports = function (Usercv) {
       "twitterLink": twitterLink,
       "websiteLink": websiteLink,
       "behanceLink": behanceLink,
-      "cityId": cityId
+      "cityId": cityId,
+      "cvURL":cvURL
     })
     var newcv = await Usercv.findById(cv.id)
     callback(null, newcv)
