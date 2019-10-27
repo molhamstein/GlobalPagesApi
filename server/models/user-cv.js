@@ -22,12 +22,13 @@ module.exports = function (Usercv) {
 
     var mainExperienceArrayCV = [];
     experience.forEach(element => {
-      if (element.title && element.companyName && element.from && element.to && !isNaN(new Date(element.from).getTime()) && !isNaN(new Date(element.to).getTime())) {
+      if (element.title && element.companyName && element.isPresent != null && element.from && !isNaN(new Date(element.from).getTime()) && (element.isPresent == true || (element.to && !isNaN(new Date(element.to).getTime())))) {
         mainExperienceArrayCV.push({
           "title": element.title,
           "companyName": element.companyName,
           "from": new Date(element.from),
           "to": new Date(element.to),
+          "isPresent": element.isPresent,
           "description": element.description
         })
       }
@@ -69,7 +70,7 @@ module.exports = function (Usercv) {
       "websiteLink": websiteLink,
       "behanceLink": behanceLink,
       "cityId": cityId,
-      "cvURL":cvURL
+      "cvURL": cvURL
     })
     var newcv = await Usercv.findById(cv.id)
     callback(null, newcv)
@@ -169,5 +170,8 @@ module.exports = function (Usercv) {
       path: '/updateMyCv'
     },
   });
+
+
+
 
 };
