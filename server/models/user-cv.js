@@ -2,7 +2,7 @@
 
 module.exports = function (Usercv) {
 
-  Usercv.updateMyCv = async function (education, experience, tags, bio, primaryIdentifier, cityId, githubLink = null, facebookLink = null, twitterLink = null, websiteLink = null, behanceLink = null, cvURL = null, email, imageProfile, phoneNumber, username, req, callback) {
+  Usercv.updateMyCv = async function (education, experience, tags, bio, primaryIdentifier, cityId, githubLink = null, facebookLink = null, twitterLink = null, websiteLink = null, behanceLink = null, cvURL = null, imageProfile, phoneNumber, username, req, callback) {
     var userId = req.accessToken.userId
     let user = await Usercv.app.models.User.findById(userId);
     if (!user)
@@ -73,9 +73,8 @@ module.exports = function (Usercv) {
       "cvURL": cvURL
     })
     var newcv = await Usercv.findById(cv.id)
-    if (email) {
+    if (username) {
       await user.updateAttributes({
-        "email": email,
         "phoneNumber": phoneNumber,
         "imageProfile": imageProfile,
         "username": username
@@ -89,19 +88,19 @@ module.exports = function (Usercv) {
     accepts: [{
         "arg": "education",
         "type": ["object"],
-        "required": true,
+        "required": false,
         "description": ""
       },
       {
         "arg": "experience",
         "type": ["object"],
-        "required": true,
+        "required": false,
         "description": ""
       },
       {
         "arg": "tags",
         "type": ["string"],
-        "required": true,
+        "required": false,
         "description": ""
       },
       {
@@ -154,12 +153,6 @@ module.exports = function (Usercv) {
       },
       {
         "arg": "cvURL",
-        "type": "string",
-        "required": false,
-        "description": ""
-      },
-      {
-        "arg": "email",
         "type": "string",
         "required": false,
         "description": ""
