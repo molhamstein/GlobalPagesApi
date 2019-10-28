@@ -2,7 +2,7 @@
 
 module.exports = function (Usercv) {
 
-  Usercv.updateMyCv = async function (education, experience, tags, bio, primaryIdentifier, cityId, githubLink = null, facebookLink = null, twitterLink = null, websiteLink = null, behanceLink = null, cvURL = null, imageProfile, phoneNumber, username, req, callback) {
+  Usercv.updateMyCv = async function (education = [], experience = [], tags = [], bio, primaryIdentifier, cityId, githubLink = null, facebookLink = null, twitterLink = null, websiteLink = null, behanceLink = null, cvURL = null, imageProfile, phoneNumber, username, req, callback) {
     var userId = req.accessToken.userId
     let user = await Usercv.app.models.User.findById(userId);
     if (!user)
