@@ -388,7 +388,7 @@ module.exports = function (Business) {
     }, cb);
   }
 
-  Business.addJobOpportunity = async function (businessId, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status = "active", tags, callback) {
+  Business.addJobOpportunity = async function (businessId, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status = "pending", tags, req, callback) {
     /* Todo permisions */
     let business = await Business.findById(businessId);
     if (!business)
@@ -397,7 +397,7 @@ module.exports = function (Business) {
     var userId = req.accessToken.userId
     var objectJob = {
       "ownerId": userId,
-      "buisnessId": buisnessId,
+      "businessId": businessId,
       "nameEn": nameEn,
       "nameAr": nameAr,
       "descriptionEn": descriptionEn,
@@ -486,6 +486,15 @@ module.exports = function (Business) {
         type: ["string"],
         required: true,
         description: ""
+      },
+      {
+        "arg": "req",
+        "type": "object",
+        "required": true,
+        "description": "",
+        "http": {
+          "source": "req"
+        }
       }
     ],
     returns: {
