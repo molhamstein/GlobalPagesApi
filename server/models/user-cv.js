@@ -2,7 +2,7 @@
 
 module.exports = function (Usercv) {
 
-  Usercv.updateMyCv = async function (education, experience, tags, bio, primaryIdentifier, cityId, githubLink = null, facebookLink = null, twitterLink = null, websiteLink = null, behanceLink = null, cvURL = null, email, imageProfile, phoneNumber, req, callback) {
+  Usercv.updateMyCv = async function (education, experience, tags, bio, primaryIdentifier, cityId, githubLink = null, facebookLink = null, twitterLink = null, websiteLink = null, behanceLink = null, cvURL = null, email, imageProfile, phoneNumber, username, req, callback) {
     var userId = req.accessToken.userId
     let user = await Usercv.app.models.User.findById(userId);
     if (!user)
@@ -77,7 +77,8 @@ module.exports = function (Usercv) {
       await user.updateAttributes({
         "email": email,
         "phoneNumber": phoneNumber,
-        "imageProfile": imageProfile
+        "imageProfile": imageProfile,
+        "username": username
       })
     }
     callback(null, newcv)
@@ -171,6 +172,12 @@ module.exports = function (Usercv) {
       },
       {
         "arg": "phoneNumber",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "arg": "username",
         "type": "string",
         "required": false,
         "description": ""
