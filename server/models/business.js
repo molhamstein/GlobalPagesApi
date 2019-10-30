@@ -388,7 +388,7 @@ module.exports = function (Business) {
     }, cb);
   }
 
-  Business.addJobOpportunity = async function (businessId, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status = "pending", tags, req, callback) {
+  Business.addJobOpportunity = async function (businessId, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status = "pending", tags, minimumEducationLevel = null, jobType = null, responsibilitiesEn = null, responsibilitiesAr = null, qualificationsEn = null, qualificationsAr = null, req, callback) {
     /* Todo permisions */
     let business = await Business.findById(businessId);
     if (!business)
@@ -405,7 +405,13 @@ module.exports = function (Business) {
       "rangeSalary": rangeSalary,
       "status": status,
       "categoryId": categoryId,
-      "subCategoryId": subCategoryId
+      "subCategoryId": subCategoryId,
+      "minimumEducationLevel": minimumEducationLevel,
+      "jobType": jobType,
+      "responsibilitiesEn": responsibilitiesEn,
+      "responsibilitiesAr": responsibilitiesAr,
+      "qualificationsEn": qualificationsEn,
+      "qualificationsAr": qualificationsAr
     }
 
     var jobOpp = await Business.app.models.jobOpportunities.create(objectJob);
@@ -486,6 +492,36 @@ module.exports = function (Business) {
         type: ["string"],
         required: true,
         description: ""
+      },
+      {
+        "arg": "minimumEducationLevel",
+        "type": "string",
+        "required": false
+      },
+      {
+        "arg": "jobType",
+        "type": "string",
+        "required": false
+      },
+      {
+        "arg": "responsibilitiesEn",
+        "type": "string",
+        "required": false
+      },
+      {
+        "arg": "responsibilitiesAr",
+        "type": "string",
+        "required": false
+      },
+      {
+        "arg": "qualificationsEn",
+        "type": "string",
+        "required": false
+      },
+      {
+        "arg": "qualificationsAr",
+        "type": "string",
+        "required": false
       },
       {
         "arg": "req",

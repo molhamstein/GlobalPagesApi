@@ -3,7 +3,7 @@
 module.exports = function (Jobopportunityuser) {
 
   Jobopportunityuser.validatesInclusionOf('status', {
-    in: ['pending', 'promising', 'interviewing', 'approved', 'ineligible']
+    in: ['pending', 'interviewing', 'hire', 'noHire']
   });
   Jobopportunityuser.applyJobOpportunity = async function (jobId, req, callback) {
     var userId = req.accessToken.userId;

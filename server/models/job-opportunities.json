@@ -9,7 +9,8 @@
     "include": [
       "category",
       "subCategory",
-      "tags"
+      "tags",
+      "business"
     ]
   },
   "automaticValidation": false,
@@ -55,6 +56,30 @@
       "type": "date",
       "required": true,
       "default": "$now"
+    },
+    "minimumEducationLevel": {
+      "type": "string",
+      "required": false
+    },
+    "jobType": {
+      "type": "string",
+      "required": false
+    },
+    "responsibilitiesEn": {
+      "type": "string",
+      "required": false
+    },
+    "responsibilitiesAr": {
+      "type": "string",
+      "required": false
+    },
+    "qualificationsEn": {
+      "type": "string",
+      "required": false
+    },
+    "qualificationsAr": {
+      "type": "string",
+      "required": false
     }
   },
   "validations": [],
@@ -63,7 +88,7 @@
       "type": "belongsTo",
       "model": "jobOpportunityCategories"
     },
-    "buisness": {
+    "business": {
       "type": "belongsTo",
       "model": "business"
     },
