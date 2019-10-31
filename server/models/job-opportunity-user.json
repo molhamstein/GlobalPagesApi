@@ -10,10 +10,6 @@
       "type": "string",
       "required": true
     },
-    "jobId": {
-      "type": "string",
-      "required": true
-    },
     "status": {
       "type": "string",
       "required": true,
@@ -30,6 +26,10 @@
     "user": {
       "type": "belongsTo",
       "model": "user"
+    },
+    "job": {
+      "type": "belongsTo",
+      "model": "job"
     }
   },
   "acls": [],

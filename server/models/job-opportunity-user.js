@@ -1,4 +1,5 @@
 'use strict';
+var ObjectId = require('mongodb').ObjectID;
 
 module.exports = function (Jobopportunityuser) {
 
@@ -16,11 +17,13 @@ module.exports = function (Jobopportunityuser) {
     }
 
     var oldUserInJob = await Jobopportunityuser.findOne({
-      "jobId": jobId,
-      "userId": userId
+      "where": {
+        "jobId": jobId,
+        "userId": userId
+      }
     })
 
-    if (oldUserInJob) {
+    if (oldUserInJob != null) {
       var err = new Error('You are already apply to Job Opportunity');
       err.statusCode = 600;
       err.code = 'YOU_ARE_ALREADY_APPLY_TO_JOB_OPPORTUNITY';
@@ -28,7 +31,7 @@ module.exports = function (Jobopportunityuser) {
     }
 
     var newUserInJob = await Jobopportunityuser.create({
-      "jobId": jobId,
+      "jobId": new ObjectId(jobId),
       "userId": userId
     })
 

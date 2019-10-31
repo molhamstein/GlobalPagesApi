@@ -72,7 +72,7 @@ module.exports = function (Usercv) {
       "cityId": cityId,
       "cvURL": cvURL
     })
-    var newcv = await Usercv.findById(cv.id)
+    // var newcv = await Usercv.findById(cv.id)
     if (username) {
       await user.updateAttributes({
         "phoneNumber": phoneNumber,
@@ -80,7 +80,15 @@ module.exports = function (Usercv) {
         "username": username
       })
     }
-    callback(null, newcv)
+
+    var newUser = await Usercv.app.models.user.findOne({
+      "where": {
+        "id": userId
+      },
+      "include": "CV"
+    })
+
+    callback(null, newUser)
   }
 
   Usercv.remoteMethod('updateMyCv', {
@@ -118,7 +126,7 @@ module.exports = function (Usercv) {
       {
         "arg": "cityId",
         "type": "string",
-        "required": true,
+        "required": false,
         "description": ""
       },
       {

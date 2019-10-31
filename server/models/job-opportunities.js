@@ -155,6 +155,9 @@ module.exports = function (Jobopportunity) {
 
   Jobopportunity.employee = async function (id, callback) {
     var users = await Jobopportunity.app.models.jobOpportunityUser.find({
+      "where": {
+        "jobId": id
+      },
       "include": {
         relation: 'user', // include the owner object
         scope: { // further filter the owner object
@@ -190,9 +193,68 @@ module.exports = function (Jobopportunity) {
   });
 
 
+
+  Jobopportunity.getJobOpportunity = async function (id, req, callback) {
+    var job = await Jobopportunity.findById(id);
+    if (req.accessToken && req.accessToken.userId) {
+      var userId = req.accessToken.userId
+      var userIsApplied = await Jobopportunity.app.models.jobOpportunityUser.findOne({
+        "where": {
+          "userId": userId,
+          "jobId": id
+        }
+      })
+
+      if (userIsApplied)
+        job.userIsApplied = true
+      else
+        job.userIsApplied = false
+
+    }
+    callback(null, job)
+  };
+
+
+  Jobopportunity.remoteMethod('getJobOpportunity', {
+    description: '',
+    accepts: [{
+        arg: 'id',
+        type: 'string',
+        required: true,
+        http: {
+          "source": "path"
+        }
+      },
+      {
+        arg: "req",
+        type: "object",
+        required: true,
+        description: "",
+        "http": {
+          "source": "req"
+        }
+      }
+    ],
+    returns: {
+      arg: 'message',
+      type: 'array',
+      root: true
+    },
+    http: {
+      verb: 'get',
+      path: '/:id/getJobOpportunity'
+    },
+  });
+
+
+
   Jobopportunity.searchJob = function (categoryId, subCategoryId, cityId, keyword, status, offset = 0, limit = 5, callback) {
     var filter = {}
     filter['$and'] = []
+    if (status != null)
+      filter['$and'].push({
+        'status': status
+      })
     if (categoryId != null)
       filter['$and'].push({
         'categoryId': ObjectId(categoryId)
@@ -457,6 +519,7 @@ module.exports = function (Jobopportunity) {
       })
     });
   };
+
 
   Jobopportunity.remoteMethod('searchJob', {
     description: '',
