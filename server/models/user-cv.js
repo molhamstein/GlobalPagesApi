@@ -4,6 +4,12 @@ module.exports = function (Usercv) {
 
   Usercv.updateMyCv = async function (education = [], experience = [], tags = [], bio, primaryIdentifier, cityId, githubLink = null, facebookLink = null, twitterLink = null, websiteLink = null, behanceLink = null, cvURL = null, imageProfile, phoneNumber, username, req, callback) {
     var userId = req.accessToken.userId
+    if (!req.accessToken || !req.accessToken.userId) {
+      var err1 = new Error('User not login');
+      err1.statusCode = 403;
+      err1.code = 'USER_NOT_LOGIN';
+      return cb(err1)
+    }
     let user = await Usercv.app.models.User.findById(userId);
     if (!user)
       throw ERROR(404, "User not found");

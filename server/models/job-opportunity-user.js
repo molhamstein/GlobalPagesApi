@@ -34,7 +34,8 @@ module.exports = function (Jobopportunityuser) {
       "jobId": new ObjectId(jobId),
       "userId": userId
     })
-
+    var newNumber = job.NumberOfApplicants + 1
+    await job.updateAttribute("NumberOfApplicants", newNumber);
     callback(null, newUserInJob)
   }
 

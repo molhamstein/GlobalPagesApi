@@ -4,6 +4,14 @@ var ObjectId = require('mongodb').ObjectID;
 
 module.exports = function (Jobopportunity) {
 
+  // Jobopportunity.validatesInclusionOf('jobType', {
+  //   in: ["", 'partTime', 'fullTime', 'projectBased', 'volunteer', 'internship']
+  // });
+  // Jobopportunity.validatesInclusionOf('minimumEducationLevel', {
+  //   in: ["", 'highSchoolDegree', 'associateDegree', 'universityDegree', 'doctoralDegree']
+  // });
+
+
   Jobopportunity.updateJobOpportunity = async function (id, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status, tags, minimumEducationLevel, jobType, responsibilitiesEn, responsibilitiesAr, qualificationsEn, qualificationsAr, callback) {
     var job = await Jobopportunity.findById(id);
     if (job == null) {
@@ -71,25 +79,25 @@ module.exports = function (Jobopportunity) {
       {
         arg: "nameEn",
         type: "string",
-        required: true,
+        required: false,
         description: ""
       },
       {
         arg: "nameAr",
         type: "string",
-        required: true,
+        required: false,
         description: ""
       },
       {
         arg: "descriptionEn",
         type: "string",
-        required: true,
+        required: false,
         description: ""
       },
       {
         arg: "descriptionAr",
         type: "string",
-        required: true,
+        required: false,
         description: ""
       },
       {
@@ -107,7 +115,7 @@ module.exports = function (Jobopportunity) {
       {
         arg: "tags",
         type: ["string"],
-        required: true,
+        required: false,
         description: ""
       },
       {
@@ -196,7 +204,9 @@ module.exports = function (Jobopportunity) {
 
   Jobopportunity.getJobOpportunity = async function (id, req, callback) {
     var job = await Jobopportunity.findById(id);
+    console.log("SSSSSSSSSSSSSSSSSSSSSS");
     if (req.accessToken && req.accessToken.userId) {
+      console.log("SSSSSSSSSSSSSSSSSSSSSS");
       var userId = req.accessToken.userId
       var userIsApplied = await Jobopportunity.app.models.jobOpportunityUser.findOne({
         "where": {
@@ -290,6 +300,26 @@ module.exports = function (Jobopportunity) {
             $regex: keyword,
             $options: 'i'
           }
+        }, {
+          qualificationsAr: {
+            $regex: keyword,
+            $options: 'i'
+          }
+        }, {
+          qualificationsEn: {
+            $regex: keyword,
+            $options: 'i'
+          }
+        }, {
+          responsibilitiesAr: {
+            $regex: keyword,
+            $options: 'i'
+          }
+        }, {
+          responsibilitiesEn: {
+            $regex: keyword,
+            $options: 'i'
+          }
         }]
       })
     }
@@ -297,6 +327,8 @@ module.exports = function (Jobopportunity) {
     if (filter["$and"].length == 0) {
       filter = {}
     }
+
+    console.log(filter);
     Jobopportunity.getDataSource().connector.connect(function (err, db) {
 
       var collection = db.collection('jobOpportunities');

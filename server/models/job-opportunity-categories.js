@@ -20,6 +20,7 @@ module.exports = function (Jobopportunitycategories) {
     }, ],
     returns: {
       arg: 'data',
+      root: true,
       type: 'array'
     },
     http: {

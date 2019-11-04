@@ -390,6 +390,12 @@ module.exports = function (Business) {
 
   Business.addJobOpportunity = async function (businessId, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status = "pending", tags, minimumEducationLevel = null, jobType = null, responsibilitiesEn = null, responsibilitiesAr = null, qualificationsEn = null, qualificationsAr = null, req, callback) {
     /* Todo permisions */
+    if (nameEn == null && nameAr == null) {
+      var err = new Error('name is required');
+      err.statusCode = 400;
+      err.code = 'NAMEREQUIRED';
+      return callback(err);
+    }
     let business = await Business.findById(businessId);
     if (!business)
       throw ERROR(404, "Business not found");
@@ -454,31 +460,31 @@ module.exports = function (Business) {
       {
         arg: "nameEn",
         type: "string",
-        required: true,
+        required: false,
         description: ""
       },
       {
         arg: "nameAr",
         type: "string",
-        required: true,
+        required: false,
         description: ""
       },
       {
         arg: "descriptionEn",
         type: "string",
-        required: true,
+        required: false,
         description: ""
       },
       {
         arg: "descriptionAr",
         type: "string",
-        required: true,
+        required: false,
         description: ""
       },
       {
         arg: "rangeSalary",
         type: "string",
-        required: true,
+        required: false,
         description: ""
       },
       {

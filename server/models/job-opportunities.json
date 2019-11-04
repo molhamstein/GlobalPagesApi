@@ -17,19 +17,19 @@
   "properties": {
     "nameEn": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "nameAr": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "descriptionAr": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "descriptionEn": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "rangeSalary": {
       "type": "string",
@@ -76,6 +76,11 @@
     "qualificationsEn": {
       "type": "string",
       "required": false
+    },
+    "NumberOfApplicants": {
+      "type": "number",
+      "required": true,
+      "default":0
     },
     "qualificationsAr": {
       "type": "string",
