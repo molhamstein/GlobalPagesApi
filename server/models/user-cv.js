@@ -41,7 +41,9 @@ module.exports = function (Usercv) {
     });
 
     var cv = await Usercv.findOne({
-      "userId": userId
+      "where": {
+        "userId": userId
+      }
     })
     if (cv == null) {
       cv = await Usercv.create({
