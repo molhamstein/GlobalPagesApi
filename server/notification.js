@@ -11,6 +11,10 @@ firebase.initializeApp({
 });
 
 
+console.log("firbaseJson")
+console.log(firbaseJson)
+
+
 
 var _addAppNotificationToMultiUsers = function (data) {
 
@@ -40,7 +44,7 @@ var _sendNotificationToMultiTokens = function (tokens, message, title, data) {
   // });
   firebase.messaging().sendToDevice(tokens, messageObject)
     .then(function (response) {
-      console.log("Successfully sent message:", response);
+      console.log("Successfully sent message:", response.results[0]);
     })
     .catch(function (error) {
       console.log("Error sending message:", error);
@@ -125,6 +129,8 @@ module.exports.sendCustomNotification = function (message, recipients) {
     });
 
     var title = "المرسال";
+    console.log("fcmTokens")
+    console.log(fcmTokens)
     _sendNotificationToMultiTokens(fcmTokens, message, title);
   });
 }
