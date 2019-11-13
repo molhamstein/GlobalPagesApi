@@ -12,7 +12,7 @@ module.exports = function (Jobopportunity) {
   // });
 
 
-  Jobopportunity.updateJobOpportunity = async function (id, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status, tags, minimumEducationLevel, jobType, responsibilitiesEn, responsibilitiesAr, qualificationsEn, qualificationsAr, callback) {
+  Jobopportunity.updateJobOpportunity = async function (id, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status, tags, minimumEducationLevel, jobType, responsibilitiesEn, responsibilitiesAr, qualificationsEn, qualificationsAr, ownerId, businessId, callback) {
     var job = await Jobopportunity.findById(id);
     if (job == null) {
       var err = new Error('Job Opportunity not found');
@@ -31,9 +31,18 @@ module.exports = function (Jobopportunity) {
         "jobId": id
       })
     });
+    var mainOwnerId = job.ownerId;
+    var mainBusinessId = job.businessId
+    if (ownerId)
+      mainOwnerId = ownerId;
+
+    if (businessId)
+      mainBusinessId = businessId;
 
     await Jobopportunity.app.models.jobOpportunityTags.create(mainTags)
     job = await job.updateAttributes({
+      "ownerId": mainOwnerId,
+      "businessId": mainBusinessId,
       "nameEn": nameEn,
       "nameAr": nameAr,
       "descriptionEn": descriptionEn,
@@ -145,6 +154,16 @@ module.exports = function (Jobopportunity) {
       },
       {
         "arg": "qualificationsAr",
+        "type": "string",
+        "required": false
+      },
+      {
+        "arg": "ownerId",
+        "type": "string",
+        "required": false
+      },
+      {
+        "arg": "businessId",
         "type": "string",
         "required": false
       }

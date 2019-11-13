@@ -388,7 +388,7 @@ module.exports = function (Business) {
     }, cb);
   }
 
-  Business.addJobOpportunity = async function (businessId, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status = "pending", tags, minimumEducationLevel = null, jobType = null, responsibilitiesEn = null, responsibilitiesAr = null, qualificationsEn = null, qualificationsAr = null, req, callback) {
+  Business.addJobOpportunity = async function (businessId, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status = "pending", tags, minimumEducationLevel = null, jobType = null, responsibilitiesEn = null, responsibilitiesAr = null, qualificationsEn = null, qualificationsAr = null, ownerId = null, req, callback) {
     /* Todo permisions */
     if (nameEn == null && nameAr == null) {
       var err = new Error('name is required');
@@ -401,6 +401,8 @@ module.exports = function (Business) {
       throw ERROR(404, "Business not found");
 
     var userId = req.accessToken.userId
+    if (ownerId != null)
+      userId = ownerId;
     var objectJob = {
       "ownerId": userId,
       "businessId": businessId,
@@ -526,6 +528,11 @@ module.exports = function (Business) {
       },
       {
         "arg": "qualificationsAr",
+        "type": "string",
+        "required": false
+      },
+      {
+        "arg": "ownerId",
         "type": "string",
         "required": false
       },
