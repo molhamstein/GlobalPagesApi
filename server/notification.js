@@ -11,11 +11,6 @@ firebase.initializeApp({
 });
 
 
-console.log("firbaseJson")
-console.log(firbaseJson)
-
-
-
 var _addAppNotificationToMultiUsers = function (data) {
 
   app.models.notifications.create(data, function (err, result) {
