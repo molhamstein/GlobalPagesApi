@@ -251,7 +251,8 @@ module.exports = function (Business) {
             else
               normalBusiness.push(element)
           });
-          return cb(null, vibBusiness.concat(normalBusiness))
+          var allBusiness = vibBusiness.concat(normalBusiness)
+          return cb(null, allBusiness)
           // return res.status(200).json(vibBusiness.concat(normalBusiness));
         });
       });
