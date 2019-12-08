@@ -156,14 +156,14 @@ module.exports = function (Business) {
       // status : 'activated'
     };
 
-    if (lat != null)
-      _.set(where, 'locationPoint.near.lat', lat);
-    if (lng != null)
-      _.set(where, 'locationPoint.near.lng', lng);
-    if (maxDistance != null)
-      _.set(where, 'locationPoint.maxDistance', maxDistance);
-    if (unit)
-      _.set(where, 'locationPoint.unit', unit);
+    // if (lat != null)
+    //   _.set(where, 'locationPoint.near.lat', lat);
+    // if (lng != null)
+    //   _.set(where, 'locationPoint.near.lng', lng);
+    // if (maxDistance != null)
+    //   _.set(where, 'locationPoint.maxDistance', maxDistance);
+    // if (unit)
+    //   _.set(where, 'locationPoint.unit', unit);
     if (catId) where.categoryId = catId;
     if (subCatId) where.subCategoryId = subCatId;
     if (keyword)
