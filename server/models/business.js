@@ -151,7 +151,7 @@ module.exports = function (Business) {
 
 
 
-  Business.searchByLocation = function (status, lat, lng, maxDistance, unit, keyword, catId, subCatId, codeCat, codeSubCat, openingDay, limit, skip, cityId, locationId, res, cb) {
+  Business.searchByLocation = function (status, lat, lng, maxDistance, unit, keyword, catId, subCatId, codeCat, codeSubCat, openingDay, limit, skip, cityId, locationId, cb) {
     var where = {
       // status : 'activated'
     };
@@ -251,7 +251,8 @@ module.exports = function (Business) {
             else
               normalBusiness.push(element)
           });
-          return res.status(200).json(vibBusiness.concat(normalBusiness));
+          return cb(null, vibBusiness.concat(normalBusiness))
+          // return res.status(200).json(vibBusiness.concat(normalBusiness));
         });
       });
     });
@@ -362,15 +363,14 @@ module.exports = function (Business) {
         http: {
           source: 'query'
         }
-      },
-      {
-        arg: 'res',
-        type: 'object',
-        http: {
-          source: 'res'
-        }
-      },
+      }
     ],
+    returns: [{
+      "arg": "object",
+      "type": "object",
+      "root": true,
+      "description": ""
+    }],
     http: {
       verb: 'get',
       path: '/searchByLocation'
