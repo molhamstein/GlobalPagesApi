@@ -28,7 +28,7 @@
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^6.5.0",
     "loopback-component-storage": "^3.6.3",
-    "loopback-connector-mongodb": "^1.18.1",
+    "loopback-connector-mongodb": "^3.6.0",
     "loopback3-xtotalcount": "^0.1.2",
     "morgan": "^1.9.1",
     "morgan-body": "^2.4.8",
