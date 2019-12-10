@@ -1,5 +1,7 @@
 'use strict';
 var _ = require('lodash');
+var ObjectId = require('mongodb').ObjectID;
+
 module.exports = function (Business) {
   // validation
   Business.validatesInclusionOf('status', {
@@ -415,12 +417,12 @@ module.exports = function (Business) {
     }
     if (catId) {
       categoryObj = {
-        "categoryId": catId
+        "categoryId": ObjectId(catId)
       }
     }
     if (subCatId) {
       subcategoryObj = {
-        "subCategoryId": subCatId
+        "subCategoryId": ObjectId(subCatId)
       }
     }
 
@@ -470,12 +472,12 @@ module.exports = function (Business) {
     }
     if (locationId) {
       $match.$and.push({
-        "locationId": locationId
+        "locationId": ObjectId(locationId)
       })
     }
     if (cityId) {
       $match.$and.push({
-        "cityId": cityId
+        "cityId": ObjectId(cityId)
       })
     }
 
@@ -506,7 +508,7 @@ module.exports = function (Business) {
         return cb(err);
       if (category) {
         categoryObj = {
-          "categoryId": category.id
+          "categoryId": ObjectId(category.id)
         }
       }
 
@@ -515,7 +517,7 @@ module.exports = function (Business) {
           return cb(err);
         if (subCategory) {
           subcategoryObj = {
-            "subCategoryId": subCategory.id
+            "subCategoryId": ObjectId(subCategory.id)
           }
         }
 
