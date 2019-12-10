@@ -538,12 +538,16 @@ module.exports = function (Business) {
               "distance": 1,
             }
           })
-        aggregateArray.push({
-          "$limit": limit
-        }, {
-          "$skip": skip
-        })
+        if(limit)
+          aggregateArray.push({
+            "$limit": limit
+          })
 
+        if(skip)
+          aggregateArray.push({
+            "$skip": skip
+          })
+          
         aggregateArray.push({
           $lookup: {
             from: "user",
