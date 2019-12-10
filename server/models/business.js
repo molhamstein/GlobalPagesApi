@@ -148,9 +148,6 @@ module.exports = function (Business) {
 
   });
 
-
-
-
   Business.searchByLocation = function (status, lat, lng, maxDistance, unit, keyword, catId, subCatId, codeCat, codeSubCat, openingDay, limit, skip, cityId, locationId, cb) {
     var where = {
       // status : 'activated'
@@ -375,6 +372,421 @@ module.exports = function (Business) {
     http: {
       verb: 'get',
       path: '/searchByLocation'
+    },
+  });
+
+
+
+
+  Business.newSearchByLocation = function (status, lat, lng, maxDistance, unit, keyword, catId, subCatId, codeCat, codeSubCat, openingDay, limit, skip, cityId, locationId, cb) {
+
+    var $match = {
+      "$and": [{
+        "deleted": false
+      }]
+    }
+    var geometry = {
+      $geoNear: {
+        near: [null, null],
+        key: "locationPointDB",
+        distanceField: "distance",
+        query: {
+          deleted: false
+        },
+        spherical: true
+      }
+    }
+
+    var categoryObj = {}
+    var subcategoryObj = {}
+
+    if (lat != null) {
+      geometry['$geoNear']['near'][0] = lat
+    }
+
+    if (lng != null) {
+      geometry['$geoNear']['near'][1] = lng
+
+    }
+
+    if (maxDistance != null) {
+      geometry['$geoNear']['maxDistance'] = maxDistance * 1000 / (6371 * 1000)
+
+    }
+    if (catId) {
+      categoryObj = {
+        "categoryId": catId
+      }
+    }
+    if (subCatId) {
+      subcategoryObj = {
+        "subCategoryId": subCatId
+      }
+    }
+
+    if (keyword) {
+      var orArray = [{
+          nameEn: {
+            $regex: keyword,
+            $options: 'i'
+          }
+        },
+        {
+          nameAr: {
+            $regex: keyword,
+            $options: 'i'
+          }
+        },
+        {
+          nameUnique: {
+            $regex: keyword,
+            $options: 'i'
+          }
+        },
+        {
+          description: {
+            $regex: keyword,
+            $options: 'i'
+          }
+        }
+      ]
+      $match.$and.push({
+        "$or": orArray
+      })
+    }
+
+    if (openingDay) {
+      $match.$and.push({
+        "openingDaysEnabled": true
+      })
+      $match.$and.push({
+        "openingDays": openingDay
+      })
+    }
+    if (status) {
+      $match.$and.push({
+        "status": status
+      })
+    }
+    if (locationId) {
+      $match.$and.push({
+        "locationId": locationId
+      })
+    }
+    if (cityId) {
+      $match.$and.push({
+        "cityId": cityId
+      })
+    }
+
+
+
+    if ((lat != null && lng == null) || (lng != null && lat == null)) {
+      var err = new Error('lat and lng both required');
+      err.statusCode = 400;
+      err.code = 'LATLNGREQUIRED';
+      return cb(err);
+    }
+
+    if (lat && lat > 90) {
+      var err = new Error('lat must be <= 90');
+      err.statusCode = 400;
+      err.code = 'LAT>90';
+      return cb(err);
+    }
+    if (lng && lng > 180) {
+      var err = new Error('lng must be <= 180');
+      err.statusCode = 400;
+      err.code = 'LNG>180';
+      return cb(err);
+    }
+
+    getCategorybyCode(codeCat, (err, category) => {
+      if (err)
+        return cb(err);
+      if (category) {
+        categoryObj = {
+          "categoryId": category.id
+        }
+      }
+
+      getCategorybyCode(codeSubCat, (err, subCategory) => {
+        if (err)
+          return cb(err);
+        if (subCategory) {
+          subcategoryObj = {
+            "subCategoryId": subCategory.id
+          }
+        }
+
+        if (categoryObj['categoryId'] != null)
+          $match.$and.push(categoryObj)
+        if (subcategoryObj['subCategoryId'] != null)
+          $match.$and.push(subcategoryObj)
+
+        var aggregateArray = []
+        if (geometry.$geoNear.near[0] != null)
+          aggregateArray.push(geometry)
+
+        if ($match)
+          aggregateArray.push({
+            $match: $match
+          })
+        if (geometry.$geoNear.near[0] != null)
+          aggregateArray.push({
+            "$sort": {
+              "distance": 1,
+            }
+          })
+        aggregateArray.push({
+          "$limit": limit
+        }, {
+          "$skip": skip
+        })
+
+        aggregateArray.push({
+          $lookup: {
+            from: "user",
+            localField: "ownerId",
+            foreignField: "_id",
+            as: "owner"
+          }
+        }, {
+          $unwind: "$owner"
+        }, {
+          $lookup: {
+            from: "businessCategories",
+            localField: "categoryId",
+            foreignField: "_id",
+            as: "category"
+          }
+        }, {
+          $unwind: "$category"
+        }, {
+          $lookup: {
+            from: "businessCategories",
+            localField: "subCategoryId",
+            foreignField: "_id",
+            as: "subCategory"
+          }
+        }, {
+          $unwind: "$subCategory"
+        }, {
+          $lookup: {
+            from: "cities",
+            localField: "cityId",
+            foreignField: "_id",
+            as: "city"
+          }
+        }, {
+          $unwind: "$city"
+        }, {
+          $lookup: {
+            from: "locations",
+            localField: "locationId",
+            foreignField: "_id",
+            as: "location"
+          }
+        }, {
+          $unwind: "$location"
+        }, {
+          $project: {
+            _id: 0,
+            id: "$_id",
+            vip: 1,
+            nameEn: 1,
+            nameAr: 1,
+            nameUnique: 1,
+            logo: 1,
+            status: 1,
+            description: 1,
+            locationPoint: 1,
+            locationPointDB: 1,
+            phone1: 1,
+            deleted: 1,
+            openingDays: 1,
+            openingDaysEnabled: 1,
+            creationDate: 1,
+            ownerId: 1,
+            categoryId: 1,
+            subCategoryId: 1,
+            cityId: 1,
+            locationId: 1,
+            covers: 1,
+            owner: 1,
+            category: 1,
+            subCategory: 1,
+            city: 1,
+            products: 1,
+            location: 1,
+            distance: 1,
+          }
+        })
+        Business.getDataSource().connector.connect(function (err, db) {
+
+
+          var collection = db.collection('business');
+          var b = collection.aggregate(aggregateArray);
+          b.get(function (err, business) {
+            if (err) return cb(err);
+            var vibBusiness = []
+            var normalBusiness = []
+            business.forEach(element => {
+              if (element.vip)
+                vibBusiness.push(element)
+              else
+                normalBusiness.push(element)
+            });
+            var allBusiness = vibBusiness.concat(normalBusiness)
+            return cb(null, allBusiness)
+          })
+        });
+      });
+    });
+  }
+  Business.updateLocation = function () {
+    Business.getDataSource().connector.connect(function (err, db) {
+      var cust_to_clear = db.collection('business').aggregate()
+      cust_to_clear.get(function (err, business) {
+        business.forEach(
+          function (x) {
+            if (x.locationPoint) {
+              db.collection('business').update({
+                _id: x._id
+              }, {
+                $set: {
+                  locationPointDB: [x.locationPoint.lat, x.locationPoint.lng]
+                }
+              });
+            }
+          }
+        )
+      })
+    })
+  }
+  Business.remoteMethod('updateLocation', {
+    http: {
+      verb: 'get',
+      path: '/updateLocation'
+    }
+  })
+  Business.remoteMethod('newSearchByLocation', {
+    // description: '',
+    accepts: [{
+        arg: 'status',
+        type: 'string',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'lat',
+        type: 'number',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'lng',
+        type: 'number',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'maxDistance',
+        type: 'number',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'unit',
+        type: 'string',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'keyword',
+        type: 'string',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'catId',
+        type: 'string',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'subCatId',
+        type: 'string',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'codeCat',
+        type: 'string',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'codeSubCat',
+        type: 'string',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'openingDay',
+        type: 'number',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'limit',
+        type: 'number',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'skip',
+        type: 'number',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'cityId',
+        type: 'string',
+        http: {
+          source: 'query'
+        }
+      },
+      {
+        arg: 'locationId',
+        type: 'string',
+        http: {
+          source: 'query'
+        }
+      }
+    ],
+    returns: [{
+      "arg": "object",
+      "type": "object",
+      "root": true,
+      "description": ""
+    }],
+    http: {
+      verb: 'get',
+      path: '/newSearchByLocation'
     },
   });
 

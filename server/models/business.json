@@ -47,6 +47,11 @@
     "locationPoint": {
       "type": "geopoint"
     },
+    "locationPointDB": {
+      "type":  [
+        "number"
+      ]
+    },
     "phone1": {
       "type": "string"
     },
