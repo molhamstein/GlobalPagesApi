@@ -540,16 +540,7 @@ module.exports = function (Business) {
               "distance": 1,
             }
           })
-        if(limit)
-          aggregateArray.push({
-            "$limit": limit
-          })
 
-        if(skip)
-          aggregateArray.push({
-            "$skip": skip
-          })
-          
         aggregateArray.push({
           $lookup: {
             from: "user",
@@ -628,6 +619,17 @@ module.exports = function (Business) {
             distance: 1,
           }
         })
+
+        if (limit)
+          aggregateArray.push({
+            "$limit": limit + skip
+          })
+
+        if (skip)
+          aggregateArray.push({
+            "$skip": skip
+          })
+        // cb(null, aggregateArray)
         Business.getDataSource().connector.connect(function (err, db) {
 
 
