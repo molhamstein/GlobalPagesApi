@@ -392,6 +392,7 @@ module.exports = function (Business) {
         near: [null, null],
         key: "locationPointDB",
         distanceField: "distance",
+        $limit: 15000,
         query: {
           deleted: false
         },
