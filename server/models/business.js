@@ -36,7 +36,7 @@ module.exports = function (Business) {
       _.each(ctx.req.body.products, (m) => {
         m.id = tempId++
       });
-      if (ctx.req.body.locationPoint)
+      if (ctx.req.body.locationPoint && ctx.req.body.locationPointDB == null)
         ctx.req.body.locationPointDB = [ctx.req.body.locationPoint.lat, ctx.req.body.locationPoint.lng]
 
       next();
@@ -46,11 +46,11 @@ module.exports = function (Business) {
   Business.observe('before save', function updateTimestamp(ctx, next) {
     if (ctx.instance) {
       console.log(ctx.instance)
-      if (ctx.instance.locationPoint)
+      if (ctx.instance.locationPoint && ctx.instance.locationPointDB == null)
         ctx.instance.locationPointDB = [ctx.instance.locationPoint.lat, ctx.instance.locationPoint.lng]
     } else {
       console.log(ctx.data)
-      if (ctx.data.locationPoint)
+      if (ctx.data.locationPoint && ctx.data.locationPointDB == null)
         ctx.data.locationPointDB = [ctx.data.locationPoint.lat, ctx.data.locationPoint.lng]
     }
     next();
@@ -537,9 +537,12 @@ module.exports = function (Business) {
         })
 
         if (limit)
-          aggregateArray.push({
-            "$limit": limit + skip
-          })
+          var tempSkip = 0
+        if (skip)
+          tempSkip = skip
+        aggregateArray.push({
+          "$limit": limit + tempSkip
+        })
 
         if (skip)
           aggregateArray.push({
