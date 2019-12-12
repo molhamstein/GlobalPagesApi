@@ -36,6 +36,8 @@ module.exports = function (Business) {
       _.each(ctx.req.body.products, (m) => {
         m.id = tempId++
       });
+      if (ctx.req.body.locationPoint)
+        ctx.req.body.locationPointDB = [ctx.req.body.locationPoint.lat, ctx.req.body.locationPoint.lng]
 
       next();
     });
