@@ -151,112 +151,12 @@ module.exports = function (Business) {
   });
 
   Business.searchByLocation = function (status, lat, lng, maxDistance, unit, keyword, catId, subCatId, codeCat, codeSubCat, openingDay, limit, skip, cityId, locationId, cb) {
-    var where = {
-      // status : 'activated'
-    };
-
-    if (lat != null)
-      _.set(where, 'locationPoint.near.lat', lat);
-    if (lng != null)
-      _.set(where, 'locationPoint.near.lng', lng);
-    if (maxDistance != null)
-      _.set(where, 'locationPoint.maxDistance', maxDistance);
-    if (unit)
-      _.set(where, 'locationPoint.unit', unit);
-    if (catId) where.categoryId = catId;
-    if (subCatId) where.subCategoryId = subCatId;
-    if (keyword)
-      where.or = [{
-          nameEn: {
-            like: new RegExp('.*' + keyword + '.*', "i")
-          }
-        },
-        {
-          nameAr: {
-            like: new RegExp('.*' + keyword + '.*', "i")
-          }
-        },
-        {
-          nameUnique: {
-            like: new RegExp('.*' + keyword + '.*', "i")
-          }
-        },
-        {
-          description: {
-            like: new RegExp('.*' + keyword + '.*', "i")
-          }
-        }
-      ]
-    if (openingDay) {
-      where.openingDaysEnabled = true;
-      where.openingDays = openingDay;
-    }
-    if (status) {
-      where.status = status;
-    }
-    if (locationId) {
-      where.locationId = locationId;
-    }
-    if (cityId) {
-      where.cityId = cityId;
-    }
-
-
-
-    if ((lat != null && lng == null) || (lng != null && lat == null)) {
-      var err = new Error('lat and lng both required');
-      err.statusCode = 400;
-      err.code = 'LATLNGREQUIRED';
-      return cb(err);
-    }
-
-    if (lat && lat > 90) {
-      var err = new Error('lat must be <= 90');
-      err.statusCode = 400;
-      err.code = 'LAT>90';
-      return cb(err);
-    }
-    if (lng && lng > 180) {
-      var err = new Error('lng must be <= 180');
-      err.statusCode = 400;
-      err.code = 'LNG>180';
-      return cb(err);
-    }
-
-    getCategorybyCode(codeCat, (err, category) => {
-      if (err)
-        return cb(err);
-      if (category) where.categoryId = category.id;
-
-      getCategorybyCode(codeSubCat, (err, subCategory) => {
-        if (err)
-          return cb(err);
-        if (subCategory) where.subCategoryId = subCategory.id;
-
-        var query = {
-          where: where
-        };
-        console.log(where)
-        if (limit) query.limit = limit;
-        if (skip) query.skip = skip;
-        Business.find(query, function (err, business) {
-          if (err)
-            return cb(err);
-          var vibBusiness = []
-          var normalBusiness = []
-          business.forEach(element => {
-            if (element.vip)
-              vibBusiness.push(element)
-            else
-              normalBusiness.push(element)
-          });
-          var allBusiness = vibBusiness.concat(normalBusiness)
-          return cb(null, allBusiness)
-          // return res.status(200).json(vibBusiness.concat(normalBusiness));
-        });
-      });
-    });
+    Business.newSearchByLocation(status, lat, lng, maxDistance, unit, keyword, catId, subCatId, codeCat, codeSubCat, openingDay, limit, skip, cityId, locationId, function (err, data) {
+      if (err) return cb(err)
+      cb(err, data)
+    })
   }
+
   Business.remoteMethod('searchByLocation', {
     // description: '',
     accepts: [{
