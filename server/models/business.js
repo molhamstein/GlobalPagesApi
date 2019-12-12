@@ -43,6 +43,19 @@ module.exports = function (Business) {
     });
   });
 
+  Business.observe('before save', function updateTimestamp(ctx, next) {
+    if (ctx.instance) {
+      console.log(ctx.instance)
+      if (ctx.instance.locationPoint)
+        ctx.instance.locationPointDB = [ctx.instance.locationPoint.lat, ctx.instance.locationPoint.lng]
+    } else {
+      console.log(ctx.data)
+      if (ctx.data.locationPoint)
+        ctx.data.locationPointDB = [ctx.data.locationPoint.lat, ctx.data.locationPoint.lng]
+    }
+    next();
+  });
+
   Business.beforeRemote('replaceById', function (ctx, modelInstance, next) {
     if (!ctx.req.body.ownerId)
       ctx.req.body.ownerId = ctx.args.options.accessToken.userId
