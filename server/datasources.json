@@ -4,14 +4,12 @@
     "connector": "memory"
   },
   "mongoDb": {
-    "host": "mlab.com",
-    "port": 35788,
-    "url": "mongodb://localhost:27017/globalPages2",
+    "host": "localhost",
+    "port": 27017,
+    "url": "",
     "database": "globalPages2",
     "password": "",
     "name": "mongoDb",
-    "xxxx": "mongodb://ahmad:123456789@ds235788.mlab.com:35788/globalPages2",
-    "allowExtendedOperators": true,
     "user": "",
     "connector": "mongodb"
   },
