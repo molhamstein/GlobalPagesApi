@@ -536,13 +536,14 @@ module.exports = function (Business) {
           }
         })
 
-        if (limit)
+        if (limit) {
           var tempSkip = 0
-        if (skip)
-          tempSkip = skip
-        aggregateArray.push({
-          "$limit": limit + tempSkip
-        })
+          if (skip)
+            tempSkip = skip
+          aggregateArray.push({
+            "$limit": limit + tempSkip
+          })
+        }
 
         if (skip)
           aggregateArray.push({

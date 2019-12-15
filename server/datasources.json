@@ -12,7 +12,7 @@
     "name": "mongoDb",
     "user": "",
     "connector": "mongodb"
-  },
+    },
   "emailSource": {
     "name": "emailSource",
     "connector": "mail",
