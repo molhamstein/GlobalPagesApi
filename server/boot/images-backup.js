@@ -15,40 +15,40 @@ module.exports = async function (app) {
 
     };
 
-    function getFiles(source) {
-        return fs.readdirSync(source).map(f => Path.join(source, f));
-    }
+    // function getFiles(source) {
+    //     return fs.readdirSync(source).map(f => Path.join(source, f));
+    // }
 
-    async function imagesBackup() {
+    // async function imagesBackup() {
 
-        console.log("images backup on progress .. ");
+    //     console.log("images backup on progress .. ");
 
-        let files = config.sources.map(e => getFiles(e));
-        files = _.flatten(files);
-        let exists = [];
-        let tarFile = Path.join(config.backupPath, "images-backup.tar.gz");
+    //     let files = config.sources.map(e => getFiles(e));
+    //     files = _.flatten(files);
+    //     let exists = [];
+    //     let tarFile = Path.join(config.backupPath, "images-backup.tar.gz");
 
-        if (fs.existsSync(tarFile)) {
+    //     if (fs.existsSync(tarFile)) {
 
-            tar.list({
-                sync: true,
-                file: Path.join(config.backupPath, "images-backup.tar.gz"),
-                onentry: entry => { exists.push(entry.path); }
-            });
-        }
+    //         tar.list({
+    //             sync: true,
+    //             file: Path.join(config.backupPath, "images-backup.tar.gz"),
+    //             onentry: entry => { exists.push(entry.path); }
+    //         });
+    //     }
 
-        files = files.filter(e => !exists.find(ex => ex == e));
-        if (files.length)
-            await tar.replace({ file: tarFile }, files);
+    //     files = files.filter(e => !exists.find(ex => ex == e));
+    //     if (files.length)
+    //         await tar.replace({ file: tarFile }, files);
 
-        console.log("Done images backup");
+    //     console.log("Done images backup");
 
 
-    }
+    // }
 
-    // every midnight   
-    let job = new CronJob('0 0 0 * * *', function () {
-        imagesBackup();
-    }, null, true);
+    // // every midnight   
+    // let job = new CronJob('0 0 0 * * *', function () {
+    //     imagesBackup();
+    // }, null, true);
 
 }; 
