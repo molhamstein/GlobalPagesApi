@@ -11,26 +11,30 @@
     "password": "",
     "name": "mongoDb",
     "user": "",
-    "connector": "mongodb"
-    },
+    "connector": "mongodb",
+    "server": {
+      "auto_reconnect": true,
+      "autoReconnect": true,
+      "reconnectTries": 999999999,
+      "reconnectInterval": 1000
+    }
+  },
   "emailSource": {
     "name": "emailSource",
     "connector": "mail",
-    "transports": [
-      {
-        "type": "smtp",
-        "host": "smtp.gmail.com",
-        "secure": true,
-        "port": 465,
-        "tls": {
-          "rejectUnauthorized": false
-        },
-        "auth": {
-          "user": "globalpagesapi@gmail.com",
-          "pass": "123456789!@#$%^&*("
-        }
+    "transports": [{
+      "type": "smtp",
+      "host": "smtp.gmail.com",
+      "secure": true,
+      "port": 465,
+      "tls": {
+        "rejectUnauthorized": false
+      },
+      "auth": {
+        "user": "globalpagesapi@gmail.com",
+        "pass": "123456789!@#$%^&*("
       }
-    ]
+    }]
   },
   "storage": {
     "name": "storage",
@@ -51,6 +55,6 @@
     "name": "backupstorage",
     "connector": "loopback-component-storage",
     "provider": "filesystem",
-    "root": "../backup"    
+    "root": "../backup"
   }
 }
