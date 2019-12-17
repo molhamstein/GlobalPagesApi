@@ -11,13 +11,7 @@
     "password": "",
     "name": "mongoDb",
     "user": "",
-    "connector": "mongodb",
-    "server": {
-      "auto_reconnect": true,
-      "autoReconnect": true,
-      "reconnectTries": 999999999,
-      "reconnectInterval": 1000
-    }
+    "connector": "mongodb"
   },
   "emailSource": {
     "name": "emailSource",
