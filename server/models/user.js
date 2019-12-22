@@ -4,6 +4,7 @@ var path = require('path');
 var async = require('async');
 var crypto = require('crypto');
 var ejs = require('ejs');
+var versionObject = require("../boot/version.json");
 
 module.exports = function (User) {
   // validation
@@ -199,6 +200,95 @@ module.exports = function (User) {
   });
 
 
+  User.checkVersion = function (version, platform, callback) {
+    var result = ""
+    if (platform == "android")
+      result = User.compirVersion(version, versionObject['android'])
+    else
+      result = User.compirVersion(version, versionObject['ios'])
+    var versionResult = {
+      "status": result
+    }
+    if (result == 'obsolete' || result == 'update available') {
+      versionResult["link"] = versionObject[platform].Link;
+    }
+    callback(null, versionResult)
+  }
+  User.compirVersion = function (userVersion, version) {
+
+    var isAfterLoadVersion = false
+    var isBeforLastVersion = false
+    var arrayUserVersion = userVersion.toString().split('.');
+    var arrayLastVersion = version.lastVersion.toString().split('.');
+    var arrayLoadVersion = version.loadVersion.toString().split('.');
+    console.log(arrayUserVersion)
+    console.log(arrayLastVersion)
+    console.log(arrayLoadVersion)
+    if (arrayUserVersion[2] == undefined)
+      arrayUserVersion[2] = 0
+    for (let index = 0; index < arrayUserVersion.length; index++) {
+      const element = parseInt(arrayUserVersion[index]);
+      const elementLoadVersion = parseInt(arrayLoadVersion[index]);
+      if (element > elementLoadVersion) {
+        isAfterLoadVersion = true
+        break;
+      }
+      if (element < elementLoadVersion) {
+        isAfterLoadVersion = false
+        break;
+      }
+    }
+    if (isAfterLoadVersion == false) {
+      return ("obsolete")
+    }
+
+    for (let index = 0; index < arrayUserVersion.length; index++) {
+      const element = parseInt(arrayUserVersion[index]);
+      const elementLastVersion = parseInt(arrayLastVersion[index]);
+      if (element < elementLastVersion) {
+        isBeforLastVersion = true
+        break;
+      }
+      if (element > elementLastVersion) {
+        isBeforLastVersion = false
+        break;
+      }
+    }
+
+
+    if (isBeforLastVersion == true) {
+      return ("update available")
+    } else {
+      if (userVersion == version.reviewVersion)
+        return ("inreview")
+      else
+        return ("uptodate")
+    }
+  }
+
+  User.remoteMethod('checkVersion', {
+    accepts: [{
+        arg: 'version',
+        type: 'string',
+        required: true
+      },
+      {
+        arg: 'platform',
+        type: 'string',
+        required: true
+      }
+    ],
+    returns: [{
+      "arg": "object",
+      "type": "object",
+      "root": true,
+      "description": ""
+    }],
+    http: {
+      verb: 'get',
+      path: '/checkVersion'
+    },
+  });
 
   User.resetPassword = function (token, newPassword, res, cb) {
     User.findOne({
