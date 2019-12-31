@@ -68,7 +68,7 @@
   },
   "products": {
     "dataSource": "mongoDb",
-    "public": false
+    "public": true
   },
   "businessCategories": {
     "dataSource": "mongoDb",
@@ -114,11 +114,19 @@
     "dataSource": "mongoDb",
     "public": true
   },
+  "productCategories": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
   "jobOpportunities": {
     "dataSource": "mongoDb",
     "public": true
   },
   "jobOpportunityTags": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "productTags": {
     "dataSource": "mongoDb",
     "public": true
   },

@@ -1,0 +1,29 @@
+{
+  "name": "productTags",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+
+  },
+  "validations": [],
+  "relations": {
+    "product": {
+      "type": "belongsTo",
+      "model": "product",
+      "foreignKey": "productId"
+    },
+    "tags": {
+      "type": "belongsTo",
+      "model": "tags",
+      "foreignKey": "tagId",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
