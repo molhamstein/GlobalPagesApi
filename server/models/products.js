@@ -172,7 +172,7 @@ module.exports = function (Products) {
   };
 
 
-  Jobopportunity.remoteMethod('updateProduct', {
+  Products.remoteMethod('updateProduct', {
     description: '',
     accepts: [{
         arg: 'id',
@@ -261,7 +261,7 @@ module.exports = function (Products) {
     },
     http: {
       verb: 'put',
-      path: '/:id/updateJobOpportunity'
+      path: '/:id/updateProduct'
     },
   });
 
