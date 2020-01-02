@@ -12,7 +12,7 @@
   "relations": {
     "product": {
       "type": "belongsTo",
-      "model": "product",
+      "model": "marketProducts",
       "foreignKey": "productId"
     },
     "tags": {

@@ -68,7 +68,7 @@
   },
   "products": {
     "dataSource": "mongoDb",
-    "public": true
+    "public": false
   },
   "businessCategories": {
     "dataSource": "mongoDb",
@@ -131,6 +131,10 @@
     "public": true
   },
   "jobOpportunityUser": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "marketProducts": {
     "dataSource": "mongoDb",
     "public": true
   }

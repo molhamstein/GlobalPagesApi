@@ -1,0 +1,120 @@
+{
+  "name": "marketProducts",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "scope": {
+    "include": [
+      "category",
+      "subCategory",
+      "tags",
+      "city",
+      "location",
+      "owner",
+      "business"
+    ]
+  },
+  "properties": {
+    "titleEn": {
+      "type": "string",
+      "required": true
+    },
+    "titleAr": {
+      "type": "string",
+      "required": true
+    },
+    "descriptionAr": {
+      "type": "string",
+      "required": false
+    },
+    "descriptionEn": {
+      "type": "string",
+      "required": false
+    },
+    "ownerId": {
+      "type": "string",
+      "required": true
+    },
+    "businessId": {
+      "type": "string",
+      "required": false
+    },
+    "status": {
+      "type": "string",
+      "required": false,
+      "default": "active"
+    },
+    "price": {
+      "type": "number",
+      "required": false
+    },
+    "cityId": {
+      "type": "string",
+      "required": true
+    },
+    "locationId": {
+      "type": "string",
+      "required": true
+    },
+    "categoryId": {
+      "type": "string",
+      "required": true
+    },
+    "subCategoryId": {
+      "type": "string",
+      "required": true
+    },
+    "media": {
+      "type": ["string"],
+      "required": false
+    },
+    "creationDate": {
+      "type": "date",
+      "required": true,
+      "default": "$now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "city": {
+      "type": "belongsTo",
+      "model": "cities"
+    },
+    "location": {
+      "type": "belongsTo",
+      "model": "locations"
+    },
+    "owner": {
+      "type": "belongsTo",
+      "model": "user"
+    },
+    "category": {
+      "type": "belongsTo",
+      "model": "productCategories"
+    },
+    "subCategory": {
+      "type": "belongsTo",
+      "model": "productCategories"
+    },
+    "business": {
+      "type": "belongsTo",
+      "model": "business"
+    },
+    "tags": {
+      "type": "hasMany",
+      "model": "tags",
+      "foreignKey": "productId",
+      "options": {
+        "nestRemoting": true
+      },
+      "through": "productTags",
+      "keyThrough": "tagId"
+    }
+  },
+  "acls": [],
+  "methods": {
+
+  }
+}
