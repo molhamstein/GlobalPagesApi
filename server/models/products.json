@@ -12,7 +12,8 @@
       "tags",
       "city",
       "location",
-      "owner"
+      "owner",
+      "business"
     ]
   },
   "properties": {
@@ -65,6 +66,10 @@
       "type": "string",
       "required": true
     },
+    "media": {
+      "type": ["string"],
+      "required": false
+    },
     "creationDate": {
       "type": "date",
       "required": true,
@@ -92,6 +97,10 @@
     "subCategory": {
       "type": "belongsTo",
       "model": "productCategories"
+    },
+    "business": {
+      "type": "belongsTo",
+      "model": "business"
     },
     "tags": {
       "type": "hasMany",

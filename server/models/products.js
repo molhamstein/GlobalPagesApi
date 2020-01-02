@@ -1,13 +1,13 @@
 'use strict';
 
 module.exports = function (Products) {
-  Products.addProduct = async function (categoryId, subCategoryId, cityId, locationId, titleEn, titleAr, descriptionEn, descriptionAr, price, status = "pending", tags = [], ownerId = null, req, callback) {
+  Products.addProduct = async function (categoryId, subCategoryId, cityId, locationId, titleEn, titleAr, descriptionEn, descriptionAr, price, status = "pending", tags = [], ownerId = null, media = [], businessId, req, callback) {
 
     // console.log(req)
     var userId = req.accessToken.userId
     if (ownerId != null)
       userId = ownerId;
-    var objectJob = {
+    var objectProduct = {
       "ownerId": userId,
       "cityId": cityId,
       "locationId": locationId,
@@ -19,9 +19,11 @@ module.exports = function (Products) {
       "status": status,
       "categoryId": categoryId,
       "subCategoryId": subCategoryId,
+      "media": media,
+      "businessId":businessId
     }
 
-    var product = await Products.create(objectJob);
+    var product = await Products.create(objectProduct);
 
     var mainTags = [];
     tags.forEach(element => {
@@ -105,9 +107,19 @@ module.exports = function (Products) {
         description: ""
       },
       {
-        "arg": "ownerId",
-        "type": "string",
-        "required": false
+        arg: "ownerId",
+        type: "string",
+        required: false
+      },
+      {
+        arg: "media",
+        type: ["string"],
+        required: false
+      },
+      {
+        arg: "businessId",
+        type: "string",
+        required: false
       },
       {
         "arg": "req",
@@ -130,7 +142,7 @@ module.exports = function (Products) {
     },
   });
 
-  Products.updateProduct = async function (id, categoryId, subCategoryId, cityId, locationId, titleEn, titleAr, descriptionEn, descriptionAr, price, status, tags, ownerId, callback) {
+  Products.updateProduct = async function (id, categoryId, subCategoryId, cityId, locationId, titleEn, titleAr, descriptionEn, descriptionAr, price, status, tags, ownerId, media = [],businessId, callback) {
     var product = await Products.findById(id);
     if (product == null) {
       var err = new Error('product not found');
@@ -149,12 +161,12 @@ module.exports = function (Products) {
         "productId": id
       })
     });
-    var mainOwnerId = job.ownerId;
+    var mainOwnerId = product.ownerId;
     if (ownerId)
       mainOwnerId = ownerId;
 
     await Products.app.models.productTags.create(mainTags)
-    job = await job.updateAttributes({
+    product = await product.updateAttributes({
       "ownerId": mainOwnerId,
       "titleEn": titleEn,
       "titleAr": titleAr,
@@ -163,9 +175,11 @@ module.exports = function (Products) {
       "cityId": cityId,
       "locationId": locationId,
       "price": price,
-      "status": status || job.status,
+      "status": status || product.status,
       "categoryId": categoryId,
       "subCategoryId": subCategoryId,
+      "media": media,
+      "businessId":businessId
     })
     product = await Products.findById(id);
     callback(null, product);
@@ -249,10 +263,20 @@ module.exports = function (Products) {
         description: ""
       },
       {
-        "arg": "ownerId",
-        "type": "string",
-        "required": false
+        arg: "ownerId",
+        type: "string",
+        required: false
       },
+      {
+        arg: "media",
+        type: ["string"],
+        required: false
+      },
+      {
+        arg: "businessId",
+        type: "string",
+        required: false
+      }
     ],
     returns: {
       arg: 'message',
