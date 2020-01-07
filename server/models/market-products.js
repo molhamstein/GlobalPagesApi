@@ -246,7 +246,7 @@ module.exports = function (Marketproducts) {
       },
       {
         arg: "price",
-        type: "string",
+        type: "number",
         required: false,
         description: ""
       },
