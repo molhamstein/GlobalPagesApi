@@ -20,7 +20,7 @@ module.exports = function (Marketproducts) {
       "categoryId": categoryId,
       "subCategoryId": subCategoryId,
       "media": media,
-      "businessId":businessId
+      "businessId": businessId
     }
 
     var product = await Marketproducts.create(objectProduct);
@@ -142,7 +142,7 @@ module.exports = function (Marketproducts) {
     },
   });
 
-  Marketproducts.updateProduct = async function (id, categoryId, subCategoryId, cityId, locationId, titleEn, titleAr, descriptionEn, descriptionAr, price, status, tags, ownerId, media = [],businessId, callback) {
+  Marketproducts.updateProduct = async function (id, categoryId, subCategoryId, cityId, locationId, titleEn, titleAr, descriptionEn, descriptionAr, price, status, tags = [], ownerId, media = [], businessId, callback) {
     var product = await Marketproducts.findById(id);
     if (product == null) {
       var err = new Error('product not found');
@@ -179,7 +179,7 @@ module.exports = function (Marketproducts) {
       "categoryId": categoryId,
       "subCategoryId": subCategoryId,
       "media": media,
-      "businessId":businessId
+      "businessId": businessId
     })
     product = await Marketproducts.findById(id);
     callback(null, product);

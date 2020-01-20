@@ -39,6 +39,9 @@
     "fcmToken": {
       "type": "string"
     },
+    "balance": {
+      "type": "number"
+    },
     "resetPasswordToken": {
       "type": "string"
     },

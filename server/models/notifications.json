@@ -10,10 +10,6 @@
       "type": "string",
       "required": true
     },
-    "_type": {
-      "type": "string",
-      "required": true
-    },
     "seen": {
       "type": "boolean",
       "required": true,

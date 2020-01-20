@@ -89,7 +89,6 @@ module.exports.addNewVolume = async function (VolumesModel, volume) {
           fcmTokens.push(user.fcmToken);
         appNotifications.push({
           message: message,
-          _type: 'addNewVolume',
           data: {
             volumeId: volume.id
           },
@@ -97,16 +96,25 @@ module.exports.addNewVolume = async function (VolumesModel, volume) {
         });
       });
       _addAppNotificationToMultiUsers(appNotifications);
-       _sendNotificationToMultiTokens(fcmTokens,message,title,{volumeId : volume.id.toString()});
+      _sendNotificationToMultiTokens(fcmTokens, message, title, {
+        volumeId: volume.id.toString()
+      });
     });
   });
 
+  
 }
 
-module.exports.sendCustomNotification = function (message, recipients) {
+module.exports.sendCustomNotification = function (message, recipients, type, keyId, id) {
   recipients = _.map(recipients, function (userId) {
     return app.models.user.dataSource.ObjectID(userId);
   });
+  var data;
+  if (keyId != null) {
+    data = {}
+    data[keyId] = id
+  }
+
   app.models.user.find({
     where: {
       id: {
@@ -116,17 +124,31 @@ module.exports.sendCustomNotification = function (message, recipients) {
   }, function (err, users) {
     if (err)
       return console.log(err);
-
+    appNotifications = []
     fcmTokens = [];
     _.each(users, function (user) {
       if (user.fcmToken)
         fcmTokens.push(user.fcmToken);
+      appNotifications.push({
+        message: message,
+        data: data,
+        recipientId: user.id
+      });
     });
+
 
     var title = "المرسال";
     console.log("fcmTokens")
     console.log(fcmTokens)
-    _sendNotificationToMultiTokens(fcmTokens, message, title);
+    console.log("appNotifications")
+    console.log(appNotifications)
+    
+    if (type == "app" || type == "both") {
+      _addAppNotificationToMultiUsers(appNotifications);
+    }
+    if (type == "push" || type == "both") {
+      _sendNotificationToMultiTokens(fcmTokens, message, title, data);
+    }
   });
 }
 
