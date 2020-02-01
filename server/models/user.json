@@ -40,7 +40,9 @@
       "type": "string"
     },
     "balance": {
-      "type": "number"
+      "type": "number",
+      "required": true,
+      "default": 0
     },
     "resetPasswordToken": {
       "type": "string"
