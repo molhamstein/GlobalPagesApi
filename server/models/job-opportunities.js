@@ -530,7 +530,7 @@ module.exports = function (Jobopportunity) {
           }
         },
         {
-          $limit: limit
+          $limit: limit + offset
         },
         {
           $skip: offset
