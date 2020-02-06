@@ -102,7 +102,7 @@ module.exports.addNewVolume = async function (VolumesModel, volume) {
     });
   });
 
-  
+
 }
 
 module.exports.sendCustomNotification = function (message, recipients, type, keyId, id) {
@@ -142,7 +142,7 @@ module.exports.sendCustomNotification = function (message, recipients, type, key
     console.log(fcmTokens)
     console.log("appNotifications")
     console.log(appNotifications)
-    
+
     if (type == "app" || type == "both") {
       _addAppNotificationToMultiUsers(appNotifications);
     }
@@ -153,7 +153,7 @@ module.exports.sendCustomNotification = function (message, recipients, type, key
 }
 
 
-module.exports.sendCustomNotificationToAllUsers = function (message) {
+module.exports.sendCustomNotificationToAllUsers = function (message, type, keyId, id) {
   var title = "المرسال";
   var messageObject = {
     // topic : 'allUsers',
@@ -164,16 +164,39 @@ module.exports.sendCustomNotificationToAllUsers = function (message) {
     }
   };
 
-  // fcm.send(messageObject, function(err, response){
-  //     if (err)
-  //         console.log("notification wrong!",err);
-  // console.log(err,response);
-  // });
-  firebase.messaging().sendToTopic('allUsers', messageObject)
-    .then(function (response) {
-      console.log("Successfully sent message:", response);
-    })
-    .catch(function (error) {
-      console.log("Error sending message:", error);
+  var data;
+  if (keyId != null) {
+    data = {}
+    data[keyId] = id
+  }
+
+
+  app.models.user.find({}, function (err, users) {
+    if (err)
+      return console.log(err);
+    appNotifications = []
+    _.each(users, function (user) {
+      appNotifications.push({
+        message: message,
+        data: data,
+        recipientId: user.id
+      });
     });
+
+    if (data)
+      messageObject['data'] = data
+
+    if (type == "app" || type == "both") {
+      _addAppNotificationToMultiUsers(appNotifications);
+    }
+    if (type == "push" || type == "both") {
+      firebase.messaging().sendToTopic('allUsers', messageObject)
+        .then(function (response) {
+          console.log("Successfully sent message:", response);
+        })
+        .catch(function (error) {
+          console.log("Error sending message:", error);
+        });
+    }
+  })
 }
