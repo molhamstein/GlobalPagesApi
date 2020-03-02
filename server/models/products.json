@@ -18,6 +18,11 @@
     },
     "description": {
       "type": "string"
+    },
+    "deleted": {
+      "type": "boolean",
+      "required": false,
+      "default": false
     }
   },
   "validations": [],
