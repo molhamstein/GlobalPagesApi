@@ -92,18 +92,18 @@ module.exports = function (Business) {
   Business.remoteMethod('changeStatus', {
     description: 'agree or Reject business from admin',
     accepts: [{
-        arg: 'businessId',
-        type: 'string',
-        required: true
-      },
-      {
-        arg: 'agree',
-        type: 'boolean',
-        required: true,
-        http: {
-          source: 'body'
-        }
-      },
+      arg: 'businessId',
+      type: 'string',
+      required: true
+    },
+    {
+      arg: 'agree',
+      type: 'boolean',
+      required: true,
+      http: {
+        source: 'body'
+      }
+    },
     ],
     returns: {
       arg: 'message',
@@ -214,29 +214,29 @@ module.exports = function (Business) {
 
     if (keyword) {
       var orArray = [{
-          nameEn: {
-            $regex: keyword,
-            $options: 'i'
-          }
-        },
-        {
-          nameAr: {
-            $regex: keyword,
-            $options: 'i'
-          }
-        },
-        {
-          nameUnique: {
-            $regex: keyword,
-            $options: 'i'
-          }
-        },
-        {
-          description: {
-            $regex: keyword,
-            $options: 'i'
-          }
+        nameEn: {
+          $regex: keyword,
+          $options: 'i'
         }
+      },
+      {
+        nameAr: {
+          $regex: keyword,
+          $options: 'i'
+        }
+      },
+      {
+        nameUnique: {
+          $regex: keyword,
+          $options: 'i'
+        }
+      },
+      {
+        description: {
+          $regex: keyword,
+          $options: 'i'
+        }
+      }
       ]
       $match.$and.push({
         "$or": orArray
@@ -446,110 +446,110 @@ module.exports = function (Business) {
   Business.remoteMethod('searchByLocation', {
     // description: '',
     accepts: [{
-        arg: 'status',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'lat',
-        type: 'number',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'lng',
-        type: 'number',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'maxDistance',
-        type: 'number',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'unit',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'keyword',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'catId',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'subCatId',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'codeCat',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'codeSubCat',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'openingDay',
-        type: 'number',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'limit',
-        type: 'number',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'skip',
-        type: 'number',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'cityId',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'locationId',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
+      arg: 'status',
+      type: 'string',
+      http: {
+        source: 'query'
       }
+    },
+    {
+      arg: 'lat',
+      type: 'number',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'lng',
+      type: 'number',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'maxDistance',
+      type: 'number',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'unit',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'keyword',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'catId',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'subCatId',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'codeCat',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'codeSubCat',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'openingDay',
+      type: 'number',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'limit',
+      type: 'number',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'skip',
+      type: 'number',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'cityId',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'locationId',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    }
     ],
     returns: [{
       "arg": "object",
@@ -615,29 +615,29 @@ module.exports = function (Business) {
 
     if (keyword) {
       var orArray = [{
-          nameEn: {
-            $regex: keyword,
-            $options: 'i'
-          }
-        },
-        {
-          nameAr: {
-            $regex: keyword,
-            $options: 'i'
-          }
-        },
-        {
-          nameUnique: {
-            $regex: keyword,
-            $options: 'i'
-          }
-        },
-        {
-          description: {
-            $regex: keyword,
-            $options: 'i'
-          }
+        nameEn: {
+          $regex: keyword,
+          $options: 'i'
         }
+      },
+      {
+        nameAr: {
+          $regex: keyword,
+          $options: 'i'
+        }
+      },
+      {
+        nameUnique: {
+          $regex: keyword,
+          $options: 'i'
+        }
+      },
+      {
+        description: {
+          $regex: keyword,
+          $options: 'i'
+        }
+      }
       ]
       $match.$and.push({
         "$or": orArray
@@ -773,39 +773,51 @@ module.exports = function (Business) {
           }
         }, {
           $unwind: "$location"
-        }, {
-          $project: {
-            _id: 0,
-            id: "$_id",
-            vip: 1,
-            nameEn: 1,
-            nameAr: 1,
-            nameUnique: 1,
-            logo: 1,
-            status: 1,
-            description: 1,
-            locationPoint: 1,
-            locationPointDB: 1,
-            phone1: 1,
-            deleted: 1,
-            openingDays: 1,
-            openingDaysEnabled: 1,
-            creationDate: 1,
-            ownerId: 1,
-            categoryId: 1,
-            subCategoryId: 1,
-            cityId: 1,
-            locationId: 1,
-            covers: 1,
-            owner: 1,
-            category: 1,
-            subCategory: 1,
-            city: 1,
-            products: 1,
-            location: 1,
-            distance: 1,
-          }
-        })
+        },
+          {
+            $lookup: {
+              from: "marketProducts",
+              localField: "_id",
+              foreignField: "businessId",
+              as: "myMarketProducts"
+            }
+          },
+          {
+            $project: {
+              _id: 0,
+              id: "$_id",
+              vip: 1,
+              nameEn: 1,
+              nameAr: 1,
+              nameUnique: 1,
+              logo: 1,
+              status: 1,
+              description: 1,
+              locationPoint: 1,
+              locationPointDB: 1,
+              phone1: 1,
+              phone2: 1,
+              fax: 1,
+              deleted: 1,
+              openingDays: 1,
+              openingDaysEnabled: 1,
+              creationDate: 1,
+              ownerId: 1,
+              categoryId: 1,
+              subCategoryId: 1,
+              cityId: 1,
+              locationId: 1,
+              covers: 1,
+              owner: 1,
+              category: 1,
+              subCategory: 1,
+              city: 1,
+              products: 1,
+              location: 1,
+              distance: 1,
+              myMarketProducts:1
+            }
+          })
 
         if (limit) {
           var tempSkip = 0
@@ -872,110 +884,110 @@ module.exports = function (Business) {
   Business.remoteMethod('newSearchByLocation', {
     // description: '',
     accepts: [{
-        arg: 'status',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'lat',
-        type: 'number',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'lng',
-        type: 'number',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'maxDistance',
-        type: 'number',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'unit',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'keyword',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'catId',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'subCatId',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'codeCat',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'codeSubCat',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'openingDay',
-        type: 'number',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'limit',
-        type: 'number',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'skip',
-        type: 'number',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'cityId',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'locationId',
-        type: 'string',
-        http: {
-          source: 'query'
-        }
+      arg: 'status',
+      type: 'string',
+      http: {
+        source: 'query'
       }
+    },
+    {
+      arg: 'lat',
+      type: 'number',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'lng',
+      type: 'number',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'maxDistance',
+      type: 'number',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'unit',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'keyword',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'catId',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'subCatId',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'codeCat',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'codeSubCat',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'openingDay',
+      type: 'number',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'limit',
+      type: 'number',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'skip',
+      type: 'number',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'cityId',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'locationId',
+      type: 'string',
+      http: {
+        source: 'query'
+      }
+    }
     ],
     returns: [{
       "arg": "object",
@@ -1052,111 +1064,111 @@ module.exports = function (Business) {
   Business.remoteMethod('addJobOpportunity', {
     description: '',
     accepts: [{
-        arg: 'businessId',
-        type: 'string',
-        required: true,
-        http: {
-          "source": "path"
-        }
-      },
-      {
-        arg: "categoryId",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "subCategoryId",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "nameEn",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "nameAr",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "descriptionEn",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "descriptionAr",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "rangeSalary",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "status",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "tags",
-        type: ["string"],
-        required: true,
-        description: ""
-      },
-      {
-        "arg": "minimumEducationLevel",
-        "type": "string",
-        "required": false
-      },
-      {
-        "arg": "jobType",
-        "type": "string",
-        "required": false
-      },
-      {
-        "arg": "responsibilitiesEn",
-        "type": "string",
-        "required": false
-      },
-      {
-        "arg": "responsibilitiesAr",
-        "type": "string",
-        "required": false
-      },
-      {
-        "arg": "qualificationsEn",
-        "type": "string",
-        "required": false
-      },
-      {
-        "arg": "qualificationsAr",
-        "type": "string",
-        "required": false
-      },
-      {
-        "arg": "ownerId",
-        "type": "string",
-        "required": false
-      },
-      {
-        "arg": "req",
-        "type": "object",
-        "required": true,
-        "description": "",
-        "http": {
-          "source": "req"
-        }
+      arg: 'businessId',
+      type: 'string',
+      required: true,
+      http: {
+        "source": "path"
       }
+    },
+    {
+      arg: "categoryId",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "subCategoryId",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "nameEn",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "nameAr",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "descriptionEn",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "descriptionAr",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "rangeSalary",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "status",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "tags",
+      type: ["string"],
+      required: true,
+      description: ""
+    },
+    {
+      "arg": "minimumEducationLevel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "arg": "jobType",
+      "type": "string",
+      "required": false
+    },
+    {
+      "arg": "responsibilitiesEn",
+      "type": "string",
+      "required": false
+    },
+    {
+      "arg": "responsibilitiesAr",
+      "type": "string",
+      "required": false
+    },
+    {
+      "arg": "qualificationsEn",
+      "type": "string",
+      "required": false
+    },
+    {
+      "arg": "qualificationsAr",
+      "type": "string",
+      "required": false
+    },
+    {
+      "arg": "ownerId",
+      "type": "string",
+      "required": false
+    },
+    {
+      "arg": "req",
+      "type": "object",
+      "required": true,
+      "description": "",
+      "http": {
+        "source": "req"
+      }
+    }
     ],
     returns: {
       arg: 'message',
