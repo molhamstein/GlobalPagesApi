@@ -113,7 +113,7 @@ module.exports = function (User) {
           });
         },
         function (token, user, done) {
-          var url = 'http://' + myConfig.host + '/api/users/resetPassword/' + token;
+          var url = 'http://' + myConfig.host + '/api/User/resetPassword/' + token;
           ejs.renderFile(path.resolve(__dirname, '../../server/views/emails/resetPasswordEmail.ejs'), {
             url: url
           }, {}, function (err, template) {
@@ -181,17 +181,17 @@ module.exports = function (User) {
 
   User.remoteMethod('getResetPassword', {
     accepts: [{
-        arg: 'token',
-        type: 'string',
-        required: true
-      },
-      {
-        arg: 'res',
-        type: 'object',
-        http: {
-          source: 'res'
-        }
-      },
+      arg: 'token',
+      type: 'string',
+      required: true
+    },
+    {
+      arg: 'res',
+      type: 'object',
+      http: {
+        source: 'res'
+      }
+    },
     ],
     http: {
       verb: 'get',
@@ -268,15 +268,15 @@ module.exports = function (User) {
 
   User.remoteMethod('checkVersion', {
     accepts: [{
-        arg: 'version',
-        type: 'string',
-        required: true
-      },
-      {
-        arg: 'platform',
-        type: 'string',
-        required: true
-      }
+      arg: 'version',
+      type: 'string',
+      required: true
+    },
+    {
+      arg: 'platform',
+      type: 'string',
+      required: true
+    }
     ],
     returns: [{
       "arg": "object",
@@ -324,25 +324,25 @@ module.exports = function (User) {
 
   User.remoteMethod('resetPassword', {
     accepts: [{
-        arg: 'token',
-        type: 'string',
-        required: true
-      },
-      {
-        arg: 'newPassword',
-        type: 'string',
-        required: true,
-        http: {
-          source: 'form'
-        }
-      },
-      {
-        arg: 'res',
-        type: 'object',
-        http: {
-          source: 'res'
-        }
-      },
+      arg: 'token',
+      type: 'string',
+      required: true
+    },
+    {
+      arg: 'newPassword',
+      type: 'string',
+      required: true,
+      http: {
+        source: 'form'
+      }
+    },
+    {
+      arg: 'res',
+      type: 'object',
+      http: {
+        source: 'res'
+      }
+    },
     ],
     returns: {
       arg: 'message',
@@ -378,18 +378,18 @@ module.exports = function (User) {
   User.remoteMethod('changeStatus', {
     description: 'agree or Reject User from admin',
     accepts: [{
-        arg: 'userId',
-        type: 'string',
-        required: true
-      },
-      {
-        arg: 'agree',
-        type: 'boolean',
-        required: true,
-        http: {
-          source: 'form'
-        }
-      },
+      arg: 'userId',
+      type: 'string',
+      required: true
+    },
+    {
+      arg: 'agree',
+      type: 'boolean',
+      required: true,
+      http: {
+        source: 'form'
+      }
+    },
     ],
     returns: {
       arg: 'message',
@@ -420,22 +420,22 @@ module.exports = function (User) {
 
   User.remoteMethod('updateFcmToken', {
     accepts: [{
-        arg: 'token',
-        type: 'string',
-        required: true
-      },
-      {
-        arg: "options",
-        type: "object",
-        http: "optionsFromRequest"
-      },
-      {
-        arg: 'res',
-        type: 'object',
-        http: {
-          source: 'res'
-        }
-      },
+      arg: 'token',
+      type: 'string',
+      required: true
+    },
+    {
+      arg: "options",
+      type: "object",
+      http: "optionsFromRequest"
+    },
+    {
+      arg: 'res',
+      type: 'object',
+      http: {
+        source: 'res'
+      }
+    },
     ],
     http: {
       verb: 'post',
@@ -458,15 +458,15 @@ module.exports = function (User) {
   User.remoteMethod('changePassword', {
     description: 'Change user password from admin',
     accepts: [{
-        arg: 'userId',
-        type: 'string',
-        required: true
-      },
-      {
-        arg: 'password',
-        type: 'string',
-        required: true
-      },
+      arg: 'userId',
+      type: 'string',
+      required: true
+    },
+    {
+      arg: 'password',
+      type: 'string',
+      required: true
+    },
     ],
     returns: {
       arg: 'message',
@@ -541,7 +541,7 @@ module.exports = function (User) {
       usersID.push(element.userId)
     });
 
-    var users = await User.find({
+    var User = await User.find({
       "where": {
         "id": {
           "inq": usersID
@@ -550,9 +550,9 @@ module.exports = function (User) {
       "include": "CV"
     })
 
-    var usersSorted = new Array(users.length);
+    var usersSorted = new Array(User.length);
 
-    users.forEach(element => {
+    User.forEach(element => {
       var cvId = element.CV().id;
       console.log(cvId)
       console.log(arrayAllUserTagsSorted)
@@ -575,26 +575,27 @@ module.exports = function (User) {
     }
     return mainIndex;
   }
+
   User.remoteMethod('getSimilerCV', {
     description: 'get similer cv',
     accepts: [{
-        "arg": "userId",
-        "type": "string",
-        "required": true,
-        "description": "",
-        "http": {
-          "source": "path"
-        }
-      },
-      {
-        "arg": "req",
-        "type": "object",
-        "required": true,
-        "description": "",
-        "http": {
-          "source": "req"
-        }
+      "arg": "userId",
+      "type": "string",
+      "required": true,
+      "description": "",
+      "http": {
+        "source": "path"
       }
+    },
+    {
+      "arg": "req",
+      "type": "object",
+      "required": true,
+      "description": "",
+      "http": {
+        "source": "req"
+      }
+    }
     ],
     returns: {
       arg: 'message',
@@ -604,6 +605,210 @@ module.exports = function (User) {
     http: {
       verb: 'get',
       path: '/:userId/getSimilerCV'
+    },
+  });
+
+
+
+  User.socialLogin = async function (data, type, callback) {
+    try {
+      
+      var socialId = data.socialId;
+      var gender = data.gender;
+      var image = data.image;
+      var email = data.email;
+      var username = data.username;
+      var isNewUser = false;
+      let user = await User.findOne({ "where": { "socialId": socialId, "typeLogIn": type } })
+      if (user == null) {
+        isNewUser = true;
+        var pattern = new RegExp('.*' + username + '.*', "i");
+        let usernameCount = await User.count({ "username": { regexp: pattern.toString() } })
+        if (usernameCount != 0) {
+          username += "_" + usernameCount
+        }
+        image = await User.app.service.downloadImage(image);
+        user = await User.create({ "socialId": socialId, "typeLogIn": type, "gender": gender, "imageProfile": image, "email": email, "status": "activated", "username": username, "password": "000000" })
+      }
+      let newToken = await User.app.models.AccessToken.create({
+        "userId": user.id, "ttl": 31536000000
+      })
+      let loginData = await User.app.models.AccessToken.findOne({
+        include: {
+          relation: 'user'
+        },
+        where: {
+          userId: user.id,
+          id: newToken.id
+        }
+      })
+      var temp = loginData.__data
+      user['isNewUser'] = isNewUser
+      temp['user'] = user
+      if (isNewUser) {
+        User.app.models.Notifications.customNotifcation("في حال رغبتكم بالاعلان معنا الرجاء التواصل ...", [user.id], 'app', {}, function () { })
+      }
+      callback(null, temp)
+    }
+    catch (error) {
+      callback(error)
+    }
+  }
+  User.remoteMethod('socialLogin', {
+    description: 'social Login',
+    accepts: [
+      {
+        "arg": "data",
+        "type": "object",
+        "required": true,
+        "description": ""
+      },
+      {
+        "arg": "type",
+        "type": "string",
+        "required": true,
+        "description": ""
+      }
+    ],
+    returns: {
+      "arg": "result",
+      "type": "object",
+      "root": true,
+      "description": ""
+    },
+    http: {
+      verb: 'post',
+      path: '/socialLogin'
+    },
+  });
+
+  function getRegisteredReport(filter, callback) {
+    User.getDataSource().connector.connect(function (err, db) {
+
+      var collection = db.collection('user');
+      var cursor = collection.aggregate([{
+        $match: filter
+      },
+      {
+        $group: {
+          _id: {
+            month: {
+              $month: "$creationDate"
+            },
+            day: {
+              $dayOfMonth: "$creationDate"
+            },
+            year: {
+              $year: "$creationDate"
+            }
+          },
+          total: {
+            $sum: 1
+          }
+        }
+      },
+      {
+        $sort: {
+          "_id.year": 1,
+          "_id.month": 1,
+          "_id.day": 1,
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          date: "$_id",
+          count: "$total",
+        }
+      }
+      ]);
+      cursor.get(function (err, data) {
+        if (err) return callback(err);
+        return callback(null, data);
+      })
+    });
+  }
+
+
+  User.timeStateReport = function (from, to, callback) {
+    var filter = {}
+    if (from) {
+      filter['creationDate'] = {
+        '$gt': new Date(from)
+      }
+    }
+    if (to) {
+      if (filter['creationDate'] == null)
+        filter['creationDate'] = {}
+      filter['creationDate']['$lt'] = new Date(to)
+    }
+
+
+    var resultData = []
+    getRegisteredReport(filter, function (err, firstData) {
+      resultData[0] = firstData;
+      // getSecondReport(filter, country, function (err, secondetData) {
+      //   resultData[1] = secondetData;
+      //   getThierdReport(filter, country, function (err, thierdData) {
+      //     resultData[2] = thierdData;
+      callback(null, resultData)
+      //   })
+      // })
+
+    });
+  };
+
+  User.remoteMethod('timeStateReport', {
+    description: 'social Login',
+    accepts: [
+      {
+        "arg": "from",
+        "type": "date",
+        "required": false,
+        "description": ""
+      },
+      {
+        "arg": "to",
+        "type": "date",
+        "required": false,
+        "description": ""
+      },
+    ],
+    returns: {
+      "arg": "result",
+      "type": "object",
+      "root": true,
+      "description": ""
+    },
+    http: {
+      verb: 'get',
+      path: '/timeStateReport'
+    },
+  });
+
+
+  User.setLoginType = async function (callback) {
+    try {
+      await User.updateAll({}, { "typeLogIn": "registration" })
+      callback()
+    }
+    catch (error) {
+      callback(error)
+    }
+  }
+  User.remoteMethod('setLoginType', {
+    description: 'social Login',
+    accepts: [
+    ],
+    returns: {
+      "arg": "result",
+      "type": "object",
+      "root": true,
+      "description": ""
+    },
+    http: {
+      verb: 'get',
+      path: '/setLoginType'
     },
   });
 

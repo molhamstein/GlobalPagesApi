@@ -1,0 +1,77 @@
+{
+  "name": "orders",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "scope": {
+    "include": [
+      "owner",
+      "product"
+    ]
+  },
+  "properties": {
+    "status": {
+      "type": "string",
+      "required": true,
+      "default": "pending"
+    },
+    "priceProduct": {
+      "type": "number",
+      "required": true
+    },
+    "price": {
+      "type": "number",
+      "required": true
+    },
+    "count": {
+      "type": "number",
+      "required": true
+    },
+    "note": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "address": {
+      "type": "string",
+      "required": true
+    },
+    "creationDate": {
+      "type": "date",
+      "required": true,
+      "default": "$now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "owner": {
+      "type": "belongsTo",
+      "model": "user"
+    },
+    "businessOwner": {
+      "type": "belongsTo",
+      "model": "user"
+    },
+    "business": {
+      "type": "belongsTo",
+      "model": "business"
+    },
+    "product": {
+      "type": "belongsTo",
+      "model": "marketProducts"
+    }
+  },
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY",
+      "property": "makeOrder"
+    }
+  ],
+  "methods": {}
+}

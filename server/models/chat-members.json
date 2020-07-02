@@ -1,0 +1,62 @@
+{
+  "name": "chatMembers",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "scope": {
+    "include": [
+      "user"
+    ]
+  },
+  "properties": {
+    "nickname": {
+      "type": "string",
+      "required": false
+    },
+    "unreadMessageCount": {
+      "type": "number",
+      "required": false,
+      "default": 0
+    },
+    "isAdmin": {
+      "type": "boolean",
+      "default": "false"
+    },
+    "lastMessageSeen": {
+      "type": "string",
+      "required": false
+    },
+    "isDeleted": {
+      "type": "boolean",
+      "default": false
+    },
+    "creationDate": {
+      "type": "date",
+      "required": true,
+      "default": "$now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "user": {
+      "type": "belongsTo",
+      "model": "user"
+    },
+    "chat": {
+      "type": "belongsTo",
+      "model": "Chats",
+      "foreignKey": "chatId"
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    }
+  ],
+  "methods": {}
+}

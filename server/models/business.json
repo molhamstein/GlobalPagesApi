@@ -21,6 +21,11 @@
       "required": false,
       "default": false
     },
+    "supplier": {
+      "type": "boolean",
+      "required": false,
+      "default": false
+    },
     "nameEn": {
       "type": "string",
       "required": true

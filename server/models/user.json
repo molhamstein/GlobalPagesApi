@@ -29,6 +29,14 @@
     "imageProfile": {
       "type": "string"
     },
+    "socialId": {
+      "type": "string"
+    },
+    "typeLogIn": {
+      "type": "string",
+      "required": true,
+      "default": "registration"
+    },
     "phoneNumber": {
       "type": "string"
     },
@@ -50,6 +58,34 @@
     "resetPasswordExpires": {
       "type": "date"
     },
+    "expireAutomaticApprovePost": {
+      "type": "date"
+    },
+    "countAutomaticApprovePost": {
+      "type": "number",
+      "default": "0"
+    },
+    "expireAutomaticApproveProduct": {
+      "type": "date"
+    },
+    "countAutomaticApproveProduct": {
+      "type": "number",
+      "default": "0"
+    },
+    "expireAutomaticApproveBusiness": {
+      "type": "date"
+    },
+    "countAutomaticApproveBusiness": {
+      "type": "number",
+      "default": "0"
+    },
+    "expireAutomaticApproveJob": {
+      "type": "date"
+    },
+    "countAutomaticApproveJob": {
+      "type": "number",
+      "default": "0"
+    },
     "creationDate": {
       "type": "date",
       "required": true,
@@ -61,6 +97,11 @@
     "faveoriteCategories": {
       "type": "referencesMany",
       "model": "postCategories"
+    },
+    "country": {
+      "type": "belongsTo",
+      "model": "countries",
+      "foreignKey": "countryId"
     },
     "role": {
       "type": "belongsTo",
@@ -75,7 +116,8 @@
       }
     }
   },
-  "acls": [{
+  "acls": [
+    {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",

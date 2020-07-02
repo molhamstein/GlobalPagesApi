@@ -6,8 +6,7 @@
     "validateUpsert": true
   },
   "scope": {
-    "include": [
-    ]
+    "include": []
   },
   "properties": {
     "nameAr": {
@@ -30,13 +29,18 @@
       "type": "hasMany",
       "model": "locations",
       "foreignKey": "cityId"
-    }, 
-    "businesses" : {
+    },
+    "country": {
+      "type": "belongsTo",
+      "model": "countries",
+      "foreignKey": "countryId"
+    },
+    "businesses": {
       "type": "hasMany",
       "model": "business",
       "foreignKey": "cityId"
     },
-    "posts" : {
+    "posts": {
       "type": "hasMany",
       "model": "posts",
       "foreignKey": "cityId"

@@ -36,11 +36,15 @@
       "type": "boolean",
       "default": false
     },
+    "isInternational": {
+      "type": "boolean",
+      "default": false
+    },
     "creationDate": {
       "type": "date",
       "required": true,
       "default": "$now"
-    },  
+    },
     "deleted": {
       "type": "boolean",
       "required": false,
@@ -52,6 +56,11 @@
     "owner": {
       "type": "belongsTo",
       "model": "user"
+    },
+    "country": {
+      "type": "belongsTo",
+      "model": "countries",
+      "foreignKey": "countryId"
     },
     "category": {
       "type": "belongsTo",

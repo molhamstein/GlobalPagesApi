@@ -38,10 +38,36 @@ module.exports = function (Business) {
       });
       if (ctx.req.body.locationPoint && ctx.req.body.locationPointDB == null)
         ctx.req.body.locationPointDB = [ctx.req.body.locationPoint.lat, ctx.req.body.locationPoint.lng]
+      Business.app.models.User.findById(ctx.args.options.accessToken.userId, function (err, user) {
+        if (err)
+          return next(err)
+        let expireAutomaticApproveBusiness = user.expireAutomaticApproveBusiness
+        let countAutomaticApproveBusiness = user.countAutomaticApproveBusiness
+        console.log(expireAutomaticApproveBusiness);
+        if (expireAutomaticApproveBusiness != null && expireAutomaticApproveBusiness.getTime() > new Date().getTime() && countAutomaticApproveBusiness > 0) {
+          ctx.req.body.status = "activated"
+        }
+        next();
 
-      next();
+      })
     });
   });
+
+  Business.afterRemote('create', function (ctx, business, next) {
+    if (business.status == 'activated') {
+      business.owner.get(function (err, user) {
+        let newCountAutomaticApproveBusiness = user.countAutomaticApproveBusiness - 1
+        user.updateAttribute('countAutomaticApproveBusiness', newCountAutomaticApproveBusiness, function () {
+          next()
+        })
+
+      })
+    } else {
+      next()
+    }
+
+  })
+
 
   Business.observe('before save', function updateTimestamp(ctx, next) {
     if (ctx.instance) {
@@ -377,6 +403,7 @@ module.exports = function (Business) {
             _id: 0,
             id: "$_id",
             vip: 1,
+            supplier: 1,
             nameEn: 1,
             nameAr: 1,
             nameUnique: 1,
@@ -787,6 +814,7 @@ module.exports = function (Business) {
               _id: 0,
               id: "$_id",
               vip: 1,
+              supplier: 1,
               nameEn: 1,
               nameAr: 1,
               nameUnique: 1,
@@ -815,7 +843,7 @@ module.exports = function (Business) {
               products: 1,
               location: 1,
               distance: 1,
-              myMarketProducts:1
+              myMarketProducts: 1
             }
           })
 
@@ -1045,6 +1073,17 @@ module.exports = function (Business) {
       "qualificationsEn": qualificationsEn,
       "qualificationsAr": qualificationsAr
     }
+    var owner = await Business.app.models.User.findById(userId);
+    let expireAutomaticApproveJob = owner.expireAutomaticApproveJob
+    let countAutomaticApproveJob = owner.countAutomaticApproveJob
+
+    if (expireAutomaticApproveJob != null && expireAutomaticApproveJob.getTime() > new Date().getTime() && countAutomaticApproveJob > 0) {
+      objectJob.status = 'activated'
+      let newCountAutomaticApproveJob = countAutomaticApproveJob - 1
+      await owner.updateAttribute('countAutomaticApproveJob', newCountAutomaticApproveJob)
+    }
+
+
 
     var jobOpp = await Business.app.models.jobOpportunities.create(objectJob);
 

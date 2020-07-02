@@ -49,58 +49,58 @@ var _sendNotificationToMultiTokens = function (tokens, message, title, data) {
 
 
 module.exports.addNewVolume = async function (VolumesModel, volume) {
+  console.log("sssssssssss");
+  // let ObjectId = VolumesModel.dataSource.ObjectID;
+  // var title = "عدد جديد من المرسال ";
+  // var message = "تفقد الإعلانات الجديده في هذا العدد من المرسال";
+  // var allCategories = [];
+  // volume.posts.find((err, posts) => {
+  //   _.each(posts, (post) => {
 
-  let ObjectId = VolumesModel.dataSource.ObjectID;
-  var title = "عدد جديد من المرسال ";
-  var message = "تفقد الإعلانات الجديده في هذا العدد من المرسال";
-  var allCategories = [];
-  volume.posts.find((err, posts) => {
-    _.each(posts, (post) => {
 
+  //     if (post.categoryId) allCategories.push(post.categoryId);
+  //     if (post.subCategoryId) allCategories.push(post.subCategoryId);
+  //   });
 
-      if (post.categoryId) allCategories.push(post.categoryId);
-      if (post.subCategoryId) allCategories.push(post.subCategoryId);
-    });
+  //   VolumesModel.getDataSource().connector.collection('user').aggregate([{
+  //     $match: {
+  //       postCategoriesIds: {
+  //         $in: allCategories
+  //       }
+  //     }
+  //   },
+  //   {
+  //     $project: {
+  //       fcmToken: 1,
+  //       postCategoriesIds: 1,
+  //       commonToBoth: {
+  //         $setIntersection: ["$postCategoriesIds", allCategories]
+  //       }
+  //     }
+  //   }
 
-    VolumesModel.getDataSource().connector.collection('user').aggregate([{
-        $match: {
-          postCategoriesIds: {
-            $in: allCategories
-          }
-        }
-      },
-      {
-        $project: {
-          fcmToken: 1,
-          postCategoriesIds: 1,
-          commonToBoth: {
-            $setIntersection: ["$postCategoriesIds", allCategories]
-          }
-        }
-      }
-
-    ], function (err, users) {
-      if (err) // TODO Debug
-        return console.log(err);
-      fcmTokens = [];
-      appNotifications = [];
-      _.each(users, function (user) {
-        if (user.fcmToken)
-          fcmTokens.push(user.fcmToken);
-        appNotifications.push({
-          message: message,
-          data: {
-            volumeId: volume.id
-          },
-          recipientId: user._id
-        });
-      });
-      _addAppNotificationToMultiUsers(appNotifications);
-      _sendNotificationToMultiTokens(fcmTokens, message, title, {
-        volumeId: volume.id.toString()
-      });
-    });
-  });
+  //   ], function (err, users) {
+  //     if (err) // TODO Debug
+  //       return console.log(err);
+  //     fcmTokens = [];
+  //     appNotifications = [];
+  //     _.each(users, function (user) {
+  //       if (user.fcmToken)
+  //         fcmTokens.push(user.fcmToken);
+  //       appNotifications.push({
+  //         message: message,
+  //         data: {
+  //           volumeId: volume.id
+  //         },
+  //         recipientId: user._id
+  //       });
+  //     });
+  //     _addAppNotificationToMultiUsers(appNotifications);
+  //     _sendNotificationToMultiTokens(fcmTokens, message, title, {
+  //       volumeId: volume.id.toString()
+  //     });
+  //   });
+  // });
 
 
 }

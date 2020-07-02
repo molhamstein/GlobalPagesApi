@@ -78,6 +78,14 @@
     "dataSource": "mongoDb",
     "public": true
   },
+  "countries": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "orders": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
   "locations": {
     "dataSource": "mongoDb",
     "public": true
@@ -135,6 +143,18 @@
     "public": true
   },
   "marketProducts": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "Chats": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "chatMembers": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "messages": {
     "dataSource": "mongoDb",
     "public": true
   }

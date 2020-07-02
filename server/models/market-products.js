@@ -22,8 +22,18 @@ module.exports = function (Marketproducts) {
       "media": media,
       "businessId": businessId
     }
+    var owner = await Marketproducts.app.models.User.findById(userId);
+    let expireAutomaticApproveProduct = owner.expireAutomaticApproveProduct
+    let countAutomaticApproveProduct = owner.countAutomaticApproveProduct
+
+    if (expireAutomaticApproveProduct != null && expireAutomaticApproveProduct.getTime() > new Date().getTime() && countAutomaticApproveProduct > 0) {
+      objectProduct.status = 'activated'
+      let newCountAutomaticApproveProduct = countAutomaticApproveProduct - 1
+      await owner.updateAttribute('countAutomaticApproveProduct', newCountAutomaticApproveProduct)
+    }
 
     var product = await Marketproducts.create(objectProduct);
+
 
     var mainTags = [];
     tags.forEach(element => {
@@ -41,95 +51,95 @@ module.exports = function (Marketproducts) {
   Marketproducts.remoteMethod('addProduct', {
     description: '',
     accepts: [{
-        arg: "categoryId",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "subCategoryId",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "cityId",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "locationId",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "titleEn",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "titleAr",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "descriptionEn",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "descriptionAr",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "price",
-        type: "number",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "status",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "tags",
-        type: ["string"],
-        required: false,
-        description: ""
-      },
-      {
-        arg: "ownerId",
-        type: "string",
-        required: false
-      },
-      {
-        arg: "media",
-        type: ["string"],
-        required: false
-      },
-      {
-        arg: "businessId",
-        type: "string",
-        required: false
-      },
-      {
-        "arg": "req",
-        "type": "object",
-        "required": true,
-        "description": "",
-        "http": {
-          "source": "req"
-        }
+      arg: "categoryId",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "subCategoryId",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "cityId",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "locationId",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "titleEn",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "titleAr",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "descriptionEn",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "descriptionAr",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "price",
+      type: "number",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "status",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "tags",
+      type: ["string"],
+      required: false,
+      description: ""
+    },
+    {
+      arg: "ownerId",
+      type: "string",
+      required: false
+    },
+    {
+      arg: "media",
+      type: ["string"],
+      required: false
+    },
+    {
+      arg: "businessId",
+      type: "string",
+      required: false
+    },
+    {
+      "arg": "req",
+      "type": "object",
+      "required": true,
+      "description": "",
+      "http": {
+        "source": "req"
       }
+    }
     ],
     returns: {
       arg: 'message',
@@ -189,94 +199,94 @@ module.exports = function (Marketproducts) {
   Marketproducts.remoteMethod('updateProduct', {
     description: '',
     accepts: [{
-        arg: 'id',
-        type: 'string',
-        required: true,
-        http: {
-          "source": "path"
-        }
-      },
-      {
-        arg: "categoryId",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "subCategoryId",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "cityId",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "locationId",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "titleEn",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "titleAr",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "descriptionEn",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "descriptionAr",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "price",
-        type: "number",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "status",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "tags",
-        type: ["string"],
-        required: false,
-        description: ""
-      },
-      {
-        arg: "ownerId",
-        type: "string",
-        required: false
-      },
-      {
-        arg: "media",
-        type: ["string"],
-        required: false
-      },
-      {
-        arg: "businessId",
-        type: "string",
-        required: false
+      arg: 'id',
+      type: 'string',
+      required: true,
+      http: {
+        "source": "path"
       }
+    },
+    {
+      arg: "categoryId",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "subCategoryId",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "cityId",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "locationId",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "titleEn",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "titleAr",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "descriptionEn",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "descriptionAr",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "price",
+      type: "number",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "status",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "tags",
+      type: ["string"],
+      required: false,
+      description: ""
+    },
+    {
+      arg: "ownerId",
+      type: "string",
+      required: false
+    },
+    {
+      arg: "media",
+      type: ["string"],
+      required: false
+    },
+    {
+      arg: "businessId",
+      type: "string",
+      required: false
+    }
     ],
     returns: {
       arg: 'message',
