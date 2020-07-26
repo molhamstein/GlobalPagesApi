@@ -8,7 +8,9 @@
   "scope": {
     "include": [
       "owner",
-      "product"
+      "product",
+      "businessOwner",
+      "business"
     ]
   },
   "properties": {
@@ -50,7 +52,9 @@
   "relations": {
     "owner": {
       "type": "belongsTo",
-      "model": "user"
+      "model": "user",
+      "foreignKey": "ownerId"
+
     },
     "businessOwner": {
       "type": "belongsTo",
