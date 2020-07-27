@@ -5,6 +5,9 @@ var async = require('async');
 var crypto = require('crypto');
 var ejs = require('ejs');
 var versionObject = require("../boot/version.json");
+var g = require('strong-globalize')();
+var debug = require('debug')('loopback:user');
+
 
 module.exports = function (User) {
   // validation
@@ -478,6 +481,105 @@ module.exports = function (User) {
     },
   });
 
+  User.login = function (credentials, include, fn) {
+    var self = this;
+    if (typeof include === 'function') {
+      fn = include;
+      include = undefined;
+    }
+
+    fn = fn || utils.createPromiseCallback();
+
+    include = (include || '');
+    if (Array.isArray(include)) {
+      include = include.map(function (val) {
+        return val.toLowerCase();
+      });
+    } else {
+      include = include.toLowerCase();
+    }
+
+
+    var query = {
+      email: credentials.email
+    }
+
+    if (!query.email) {
+      var err2 = new Error(g.f('{{email}} is required'));
+      err2.statusCode = 400;
+      err2.code = 'EMAIL_REQUIRED';
+      fn(err2);
+      return fn.promise;
+    }
+
+    self.findOne({
+      where: query
+    }, function (err, user) {
+      var defaultError = new Error(g.f('login failed'));
+      defaultError.statusCode = 401;
+      defaultError.code = 'LOGIN_FAILED';
+
+      function tokenHandler(err, token) {
+        if (err) return fn(err);
+        if (Array.isArray(include) ? include.indexOf('user') !== -1 : include === 'user') {
+          // NOTE(bajtos) We can't set token.user here:
+          //  1. token.user already exists, it's a function injected by
+          //     "AccessToken belongsTo User" relation
+          //  2. ModelBaseClass.toJSON() ignores own properties, thus
+          //     the value won't be included in the HTTP response
+          // See also loopback#161 and loopback#162
+          token.__data.user = user;
+        }
+        fn(err, token);
+      }
+
+      if (err) {
+        debug('An error is reported from User.findOne: %j', err);
+        fn(defaultError);
+      } else if (user) {
+        if (user.dateUnlockAccount && user.dateUnlockAccount.getTime() > new Date().getTime()) {
+          var lockError = new Error(g.f('your account is lock'));
+          lockError.statusCode = 530;
+          lockError.code = 'ACCOUNT_IS_LOCK';
+          fn(lockError);
+
+        }
+        else {
+          user.hasPassword(credentials.password, function (err, isMatch) {
+            if (err) {
+              debug('An error is reported from User.hasPassword: %j', err);
+              fn(defaultError);
+            } else if (isMatch) {
+              user.updateAttribute("failedLogin", 0, function () {
+
+                if (user.createAccessToken.length === 2) {
+                  user.createAccessToken(credentials.ttl, tokenHandler);
+                } else {
+                  user.createAccessToken(credentials.ttl, credentials, tokenHandler);
+                }
+              })
+            } else {
+              let newFailedLogin = user.failedLogin + 1
+              let data = { "failedLogin": newFailedLogin }
+              if (newFailedLogin % 3 == 0) {
+                let date = new Date()
+                data['dateUnlockAccount'] = date.setHours(date.getHours() + 1)
+              }
+              user.updateAttributes(data, function () {
+                debug('The password is invalid for user %s', query.email || query.username);
+                fn(defaultError);
+              })
+            }
+          });
+        }
+      } else {
+        debug('No matching record is found for user %s', query.email || query.username);
+        fn(defaultError);
+      }
+    });
+    return fn.promise;
+  }
+
   User.afterRemote("login", function (ctx, res, next) {
 
     let temp = {
@@ -612,7 +714,7 @@ module.exports = function (User) {
 
   User.socialLogin = async function (data, type, callback) {
     try {
-      
+
       var socialId = data.socialId;
       var gender = data.gender;
       var image = data.image;
