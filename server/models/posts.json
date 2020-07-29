@@ -11,7 +11,8 @@
       "category",
       "subCategory",
       "city",
-      "location"
+      "location",
+      "country"
     ]
   },
   "properties": {

@@ -14,7 +14,8 @@
   ],
   "scope": {
     "include": [
-      "role"
+      "role",
+      "country"
     ]
   },
   "properties": {

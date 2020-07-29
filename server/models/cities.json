@@ -6,7 +6,9 @@
     "validateUpsert": true
   },
   "scope": {
-    "include": []
+    "include": [
+      "country"
+    ]
   },
   "properties": {
     "nameAr": {
