@@ -101,8 +101,8 @@ module.exports = function (Volumes) {
 	// });
 	var publishVolume = new CronJob('0 19 * * 5', async function () {
 		// var publishVolume = new CronJob('19 15 * * 1', async function () {
-		let volume = await Volumes.findOne({ "where": { "status": "pending" }, "order": "creationDate DESC" })
-		if (volume) {
+		let volume = await Volumes.findOne({ "order": "creationDate DESC" })
+		if (volume && volume.status == 'pending') {
 			await volume.updateAttribute("status", "activated")
 			notification.addNewVolume(Volumes, volume);
 		}
