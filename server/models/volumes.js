@@ -99,8 +99,8 @@ module.exports = function (Volumes) {
 	// var createVolume = new CronJob('1 0 * * 6', function () {
 	// var createVolume = new CronJob('4 14 * * 1', async function () {
 	// });
-	var publishVolume = new CronJob('0 19 * * 5', function () {
-	// var publishVolume = new CronJob('19 15 * * 1', async function () {
+	var publishVolume = new CronJob('0 19 * * 5', async function () {
+		// var publishVolume = new CronJob('19 15 * * 1', async function () {
 		let volume = await Volumes.findOne({ "where": { "status": "pending" }, "order": "creationDate DESC" })
 		if (volume) {
 			await volume.updateAttribute("status", "activated")
