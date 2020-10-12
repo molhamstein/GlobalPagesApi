@@ -11,9 +11,6 @@
       "lastMessage"
     ]
   },
-  "hidden": [
-    "membersId"
-  ],
   "properties": {
     "title": {
       "type": "string",
@@ -28,7 +25,9 @@
       "default": "chat"
     },
     "membersId": {
-      "type": "array",
+      "type": [
+        "string"
+      ],
       "default": []
     },
     "lastMessageDate": {

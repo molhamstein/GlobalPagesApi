@@ -1,30 +1,18 @@
 {
-  "name": "notifications",
+  "name": "contact",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "message": {
+    "number": {
       "type": "string",
       "required": true
     },
-    "seen": {
-      "type": "boolean",
-      "required": true,
-      "default": false
-    },
-    "type": {
-      "type": "string"
-    },
-    "clicked": {
-      "type": "boolean",
-      "required": true,
-      "default": false
-    },
-    "data": {
-      "type": "Object"
+    "name": {
+      "type": "string",
+      "required": true
     },
     "creationDate": {
       "type": "date",
@@ -34,7 +22,7 @@
   },
   "validations": [],
   "relations": {
-    "recipient": {
+    "owner": {
       "type": "belongsTo",
       "model": "user"
     }

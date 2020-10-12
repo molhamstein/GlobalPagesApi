@@ -30,6 +30,9 @@
     "imageProfile": {
       "type": "string"
     },
+    "coverProfile": {
+      "type": "string"
+    },
     "socialId": {
       "type": "string"
     },
@@ -64,35 +67,47 @@
     },
     "countAutomaticApprovePost": {
       "type": "number",
-      "default": "0"
+      "default": 0
     },
     "expireAutomaticApproveProduct": {
       "type": "date"
     },
     "countAutomaticApproveProduct": {
       "type": "number",
-      "default": "0"
+      "default": 0
     },
     "expireAutomaticApproveBusiness": {
       "type": "date"
     },
     "countAutomaticApproveBusiness": {
       "type": "number",
-      "default": "0"
+      "default": 0
     },
     "expireAutomaticApproveJob": {
       "type": "date"
     },
     "countAutomaticApproveJob": {
       "type": "number",
-      "default": "0"
+      "default": 0
     },
     "failedLogin": {
       "type": "number",
-      "default": "0"
+      "default": 0
     },
     "dateUnlockAccount": {
       "type": "date"
+    },
+    "follower": {
+      "type": "number",
+      "default": 0
+    },
+    "userFollowing": {
+      "type": "number",
+      "default": 0
+    },
+    "businessFollowing": {
+      "type": "number",
+      "default": 0
     },
     "creationDate": {
       "type": "date",

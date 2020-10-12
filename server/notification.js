@@ -105,11 +105,11 @@ module.exports.addNewVolume = async function (VolumesModel, volume) {
 
 }
 
-module.exports.sendCustomNotification = function (message, recipients, type, keyId, id) {
+module.exports.sendCustomNotification = function (message, recipients, type, keyId, id, typeNot) {
   recipients = _.map(recipients, function (userId) {
     return app.models.user.dataSource.ObjectID(userId);
   });
-  var data;
+  var data = { "type": typeNot };
   if (keyId != null) {
     data = {}
     data[keyId] = id
@@ -132,7 +132,8 @@ module.exports.sendCustomNotification = function (message, recipients, type, key
       appNotifications.push({
         message: message,
         data: data,
-        recipientId: user.id
+        recipientId: user.id,
+        type: typeNot
       });
     });
 
@@ -153,7 +154,7 @@ module.exports.sendCustomNotification = function (message, recipients, type, key
 }
 
 
-module.exports.sendCustomNotificationToAllUsers = function (message, type, keyId, id) {
+module.exports.sendCustomNotificationToAllUsers = function (message, type, keyId, id, typeNot) {
   var title = "المرسال";
   var messageObject = {
     // topic : 'allUsers',
@@ -164,7 +165,7 @@ module.exports.sendCustomNotificationToAllUsers = function (message, type, keyId
     }
   };
 
-  var data;
+  var data = { "type": typeNot };
   if (keyId != null) {
     data = {}
     data[keyId] = id
@@ -179,7 +180,8 @@ module.exports.sendCustomNotificationToAllUsers = function (message, type, keyId
       appNotifications.push({
         message: message,
         data: data,
-        recipientId: user.id
+        recipientId: user.id,
+        type: typeNot
       });
     });
 

@@ -21,6 +21,9 @@
       "required": false,
       "default": false
     },
+    "coverProfile": {
+      "type": "string"
+    },
     "supplier": {
       "type": "boolean",
       "required": true,
@@ -40,6 +43,10 @@
     },
     "logo": {
       "type": "string"
+    },
+    "follower": {
+      "type": "number",
+      "default": 0
     },
     "status": {
       "type": "string",
@@ -82,6 +89,21 @@
     "openingDaysEnabled": {
       "type": "boolean",
       "default": false
+    },
+    "productRate": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "productCountRate": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "productRateTotal": {
+      "type": "number",
+      "required": true,
+      "default": 0
     },
     "creationDate": {
       "type": "date",

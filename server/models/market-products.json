@@ -12,7 +12,8 @@
       "tags",
       "city",
       "location",
-      "owner"
+      "owner",
+      "business"
     ]
   },
   "properties": {
@@ -31,6 +32,11 @@
     "descriptionEn": {
       "type": "string",
       "required": false
+    },
+    "viewsCount": {
+      "type": "number",
+      "required": true,
+      "default": 0
     },
     "ownerId": {
       "type": "string",
@@ -65,11 +71,29 @@
       "type": "string",
       "required": true
     },
+    "coverProfile": {
+      "type": "string"
+    },
     "media": {
       "type": [
         "string"
       ],
       "required": false
+    },
+    "rate": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "countRate": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "rateTotal": {
+      "type": "number",
+      "required": true,
+      "default": 0
     },
     "creationDate": {
       "type": "date",

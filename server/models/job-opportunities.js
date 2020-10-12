@@ -223,9 +223,7 @@ module.exports = function (Jobopportunity) {
 
   Jobopportunity.getJobOpportunity = async function (id, req, callback) {
     var job = await Jobopportunity.findById(id);
-    console.log("SSSSSSSSSSSSSSSSSSSSSS");
     if (req.accessToken && req.accessToken.userId) {
-      console.log("SSSSSSSSSSSSSSSSSSSSSS");
       var userId = req.accessToken.userId
       var userIsApplied = await Jobopportunity.app.models.jobOpportunityUser.findOne({
         "where": {

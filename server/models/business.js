@@ -43,12 +43,13 @@ module.exports = function (Business) {
           return next(err)
         let expireAutomaticApproveBusiness = user.expireAutomaticApproveBusiness
         let countAutomaticApproveBusiness = user.countAutomaticApproveBusiness
-        console.log(expireAutomaticApproveBusiness);
-        if (expireAutomaticApproveBusiness != null && expireAutomaticApproveBusiness.getTime() > new Date().getTime() && countAutomaticApproveBusiness > 0) {
-          ctx.req.body.status = "activated"
-        }
-        next();
+        user.country.get(function (err, country) {
 
+          if ((expireAutomaticApproveBusiness != null && expireAutomaticApproveBusiness.getTime() > new Date().getTime() && countAutomaticApproveBusiness > 0) || (country && country.isAllowedBusiness)) {
+            ctx.req.body.status = "activated"
+          }
+          next();
+        })
       })
     });
   });
@@ -56,10 +57,14 @@ module.exports = function (Business) {
   Business.afterRemote('create', function (ctx, business, next) {
     if (business.status == 'activated') {
       business.owner.get(function (err, user) {
-        let newCountAutomaticApproveBusiness = user.countAutomaticApproveBusiness - 1
-        user.updateAttribute('countAutomaticApproveBusiness', newCountAutomaticApproveBusiness, function () {
+        if (user.expireAutomaticApproveBusiness != null && user.expireAutomaticApproveBusiness.getTime() > new Date().getTime() && user.countAutomaticApproveBusiness > 0) {
+          let newCountAutomaticApproveBusiness = user.countAutomaticApproveBusiness - 1
+          user.updateAttribute('countAutomaticApproveBusiness', newCountAutomaticApproveBusiness, function () {
+            next()
+          })
+        } else {
           next()
-        })
+        }
 
       })
     } else {
@@ -1076,11 +1081,13 @@ module.exports = function (Business) {
     var owner = await Business.app.models.User.findById(userId);
     let expireAutomaticApproveJob = owner.expireAutomaticApproveJob
     let countAutomaticApproveJob = owner.countAutomaticApproveJob
-
-    if (expireAutomaticApproveJob != null && expireAutomaticApproveJob.getTime() > new Date().getTime() && countAutomaticApproveJob > 0) {
+    let country = await owner.country.get();
+    if ((expireAutomaticApproveJob != null && expireAutomaticApproveJob.getTime() > new Date().getTime() && countAutomaticApproveJob > 0) || (country && country.isAllowedJob)) {
       objectJob.status = 'activated'
-      let newCountAutomaticApproveJob = countAutomaticApproveJob - 1
-      await owner.updateAttribute('countAutomaticApproveJob', newCountAutomaticApproveJob)
+      if (expireAutomaticApproveJob != null && expireAutomaticApproveJob.getTime() > new Date().getTime() && countAutomaticApproveJob > 0) {
+        let newCountAutomaticApproveJob = countAutomaticApproveJob - 1
+        await owner.updateAttribute('countAutomaticApproveJob', newCountAutomaticApproveJob)
+      }
     }
 
 

@@ -157,5 +157,25 @@
   "messages": {
     "dataSource": "mongoDb",
     "public": true
+  },
+  "userSeen": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "userSeenProduct": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "rating": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "follower": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "contact": {
+    "dataSource": "mongoDb",
+    "public": true
   }
 }

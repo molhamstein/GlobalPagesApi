@@ -3,7 +3,7 @@ var notificationModule = require('../notification')
 var _ = require('lodash')
 module.exports = function (Notifications) {
 
-  Notifications.customNotifcation = function (message, recipients, type = "push", data, cb) {
+  Notifications.customNotifcation = async function (message, recipients = [], type = "push", data, typeNot, countryId, cb) {
     let keyId = null
     let id = null
     for (const key in data) {
@@ -12,15 +12,24 @@ module.exports = function (Notifications) {
         keyId = key
       }
     }
+    if (countryId != null && (!recipients || recipients.length == 0)) {
+      let users = await Notifications.app.models.user.find({ "where": { "countryId": countryId } })
+      users.forEach(element => {
+        recipients.push(element.id)
+      });
+    }
 
-    if (!recipients || recipients.length == 0)
-      notificationModule.sendCustomNotificationToAllUsers(message, type, keyId, id);
-    else
-      notificationModule.sendCustomNotification(message, recipients, type, keyId, id);
-    // }
 
-    // }
+    if (recipients && recipients.length > 0) {
+      // console.log("sendCustomNotification")
 
+      notificationModule.sendCustomNotification(message, recipients, type, keyId, id, typeNot);
+    } else if (countryId == null && recipients.length == 0) {
+      // console.log("sendCustomNotificationToAllUsers")
+
+      notificationModule.sendCustomNotificationToAllUsers(message, type, keyId, id, typeNot);
+
+    }
     return cb(null, {
       message: 'Done'
     });
@@ -29,33 +38,47 @@ module.exports = function (Notifications) {
   Notifications.remoteMethod('customNotifcation', {
     description: 'get only notifications by tokenId ',
     accepts: [{
-        arg: 'message',
-        type: 'string',
-        'http': {
-          source: 'form'
-        }
-      },
-      {
-        arg: 'recipients',
-        type: 'array',
-        'http': {
-          source: 'form'
-        }
-      },
-      {
-        arg: 'type',
-        type: 'string',
-        'http': {
-          source: 'form'
-        }
-      },
-      {
-        arg: 'data',
-        type: 'object',
-        'http': {
-          source: 'form'
-        }
+      arg: 'message',
+      type: 'string',
+      'http': {
+        source: 'form'
       }
+    },
+    {
+      arg: 'recipients',
+      type: 'array',
+      'http': {
+        source: 'form'
+      }
+    },
+    {
+      arg: 'type',
+      type: 'string',
+      'http': {
+        source: 'form'
+      }
+    },
+    {
+      arg: 'data',
+      type: 'object',
+      'http': {
+        source: 'form'
+      }
+    },
+    {
+      arg: 'typeNot',
+      type: 'string',
+      'http': {
+        source: 'form'
+      }
+    },
+    {
+      arg: 'countryId',
+      type: 'string',
+      'http': {
+        source: 'form'
+      }
+    }
     ],
     returns: {
       arg: 'body',
@@ -98,19 +121,19 @@ module.exports = function (Notifications) {
   Notifications.remoteMethod('me', {
     description: 'get only notifications by tokenId ',
     accepts: [{
-        arg: 'req',
-        type: 'object',
-        'http': {
-          source: 'req'
-        }
-      },
-      {
-        arg: 'seen',
-        type: 'boolean',
-        'http': {
-          source: 'query'
-        }
+      arg: 'req',
+      type: 'object',
+      'http': {
+        source: 'req'
       }
+    },
+    {
+      arg: 'seen',
+      type: 'boolean',
+      'http': {
+        source: 'query'
+      }
+    }
     ],
     returns: {
       arg: 'body',
@@ -149,16 +172,16 @@ module.exports = function (Notifications) {
   Notifications.remoteMethod('seenNotification', {
     description: 'change my multi notifications to seen ',
     accepts: [{
-        arg: 'req',
-        type: 'object',
-        'http': {
-          source: 'req'
-        }
-      },
-      {
-        arg: 'notifications',
-        type: 'array'
+      arg: 'req',
+      type: 'object',
+      'http': {
+        source: 'req'
       }
+    },
+    {
+      arg: 'notifications',
+      type: 'array'
+    }
     ],
     returns: {
       arg: 'body',
@@ -195,7 +218,7 @@ module.exports = function (Notifications) {
       'http': {
         source: 'req'
       }
-    }, ],
+    },],
     returns: {
       arg: 'body',
       type: 'body',

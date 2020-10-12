@@ -6,8 +6,7 @@
     "validateUpsert": true
   },
   "scope": {
-    "include": [
-    ]
+    "include": []
   },
   "properties": {
     "nameAr": {
@@ -18,6 +17,26 @@
       "type": "string",
       "required": true
     },
+    "isAllowedPost": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "isAllowedProduct": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "isAllowedBusiness": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "isAllowedJob": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
     "deleted": {
       "type": "boolean",
       "required": false,
@@ -25,8 +44,7 @@
     }
   },
   "validations": [],
-  "relations": {
-  },
+  "relations": {},
   "acls": [],
   "methods": {}
 }

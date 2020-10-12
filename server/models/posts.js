@@ -17,11 +17,16 @@ module.exports = function (Post) {
 				return next(err)
 			let expireAutomaticApprovePost = user.expireAutomaticApprovePost
 			let countAutomaticApprovePost = user.countAutomaticApprovePost
-			console.log(expireAutomaticApprovePost);
-			if (expireAutomaticApprovePost != null && expireAutomaticApprovePost.getTime() > new Date().getTime() && countAutomaticApprovePost > 0) {
-				ctx.req.body.status = "activated"
-			}
-			next();
+			user.country.get(function (err, country) {
+				if (err)
+					return next(err)
+				console.log(country);
+				if ((expireAutomaticApprovePost != null && expireAutomaticApprovePost.getTime() > new Date().getTime() && countAutomaticApprovePost > 0) || (country && country.isAllowedPost)) {
+					ctx.req.body.status = "activated"
+				}
+				next();
+
+			})
 
 		})
 	});
@@ -36,10 +41,16 @@ module.exports = function (Post) {
 			}
 			if (post.status == 'activated') {
 				post.owner.get(function (err, user) {
-					let newCountAutomaticApprovePost = user.countAutomaticApprovePost - 1
-					user.updateAttribute('countAutomaticApprovePost', newCountAutomaticApprovePost, function () {
+					if (user.expireAutomaticApprovePost != null && user.expireAutomaticApprovePost.getTime() > new Date().getTime() && user.countAutomaticApprovePost > 0) {
+
+						let newCountAutomaticApprovePost = user.countAutomaticApprovePost - 1
+						user.updateAttribute('countAutomaticApprovePost', newCountAutomaticApprovePost, function () {
+							next()
+						})
+					}
+					else {
 						next()
-					})
+					}
 				})
 			} else {
 				next()
@@ -86,7 +97,7 @@ module.exports = function (Post) {
 	});
 
 	// plus viewsCount
-	Post.plusviewsCount = function (postId, cb) {
+	Post.plusviewsCount = function (postId, req, cb) {
 		Post.findById(postId.toString(), {}, function (err, post) {
 			if (err)
 				return cb(err);
@@ -96,15 +107,33 @@ module.exports = function (Post) {
 				err.code = 'POST_NOT_FOUND';
 				return cb(err);
 			}
+			if (req.accessToken && req.accessToken.userId) {
+				var userId = req.accessToken.userId
+				Post.app.models.userSeen.findOne({ "where": { userId, "postId": post.id } }, function (err, data) {
+					if (err)
+						return cb(err);
+					if (data == null)
+						Post.app.models.userSeen.create({ userId, "postId": post.id })
+				})
+			}
 
 			post.viewsCount++;
+
 			return post.save(cb)
 		});
 	}
 
 	Post.remoteMethod('plusviewsCount', {
 		description: 'plus +1 to viewsCount',
-		accepts: { arg: 'postId', type: 'string', required: true },
+		accepts: [{ arg: 'postId', type: 'string', required: true }, {
+			arg: "req",
+			type: "object",
+			required: true,
+			description: "",
+			"http": {
+				"source": "req"
+			}
+		}],
 		// returns: {arg: 'message', type: 'string'},
 		http: { verb: 'post', path: '/:postId/viewsCount' },
 	});

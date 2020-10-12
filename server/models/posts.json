@@ -20,6 +20,9 @@
       "type": "string",
       "required": true
     },
+    "coverProfile": {
+      "type": "string"
+    },
     "description": {
       "type": "string"
     },

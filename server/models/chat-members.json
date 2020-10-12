@@ -22,7 +22,7 @@
     },
     "isAdmin": {
       "type": "boolean",
-      "default": "false"
+      "default": false
     },
     "lastMessageSeen": {
       "type": "string",

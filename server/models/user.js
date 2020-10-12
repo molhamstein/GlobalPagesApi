@@ -64,6 +64,7 @@ module.exports = function (User) {
 
   //send verification email after registration
   User.afterRemote('create', function (context, user, next) {
+    User.app.models.notifications.create({ "message": "مرحباً في تطبيق المرسال , من أجل الإعلان أو التسجيل في الموقع يرجى التواصل على info@almersal.co", "recipientId": user.id, "type": "welcome" })
     var options = {
       type: 'email',
       to: user.email,
@@ -730,7 +731,7 @@ module.exports = function (User) {
           username += "_" + usernameCount
         }
         image = await User.app.service.downloadImage(image);
-        user = await User.create({ "socialId": socialId, "typeLogIn": type, "gender": gender, "imageProfile": image, "email": email, "status": "activated", "username": username, "password": "000000" })
+        user = await User.create({ "socialId": socialId, "typeLogIn": type, "gender": gender, "imageProfile": image, "email": socialId + "." + type + "@socialmersal.com", "status": "activated", "username": username, "password": "000000" })
       }
       let newToken = await User.app.models.AccessToken.create({
         "userId": user.id, "ttl": 31536000000
@@ -912,6 +913,263 @@ module.exports = function (User) {
       verb: 'get',
       path: '/setLoginType'
     },
+  });
+
+
+
+  User.timeStateReport = function (from, to, cb) {
+    var filter = {}
+    if (from) {
+      filter['creationDate'] = {
+        '$gt': new Date(from)
+      }
+    }
+    if (to) {
+      if (filter['creationDate'] == null)
+        filter['creationDate'] = {}
+      filter['creationDate']['$lt'] = new Date(to)
+    }
+
+    var resultData = []
+    getUserReport(filter, function (err, userData) {
+      resultData[0] = userData;
+      getBusinessReport(filter, function (err, businessData) {
+        resultData[1] = businessData;
+        getPostReport(filter, function (err, postData) {
+          resultData[2] = postData;
+          getJobReport(filter, function (err, jobData) {
+            resultData[3] = jobData;
+            cb(null, resultData)
+          })
+
+        })
+      })
+
+    })
+
+  }
+
+  function getUserReport(filter, callback) {
+
+    User.getDataSource().connector.connect(function (err, db) {
+
+      var collection = db.collection('user');
+      var cursor = collection.aggregate([{
+        $match: filter
+      },
+      {
+        $group: {
+          _id: {
+            month: {
+              $month: "$creationDate"
+            },
+            day: {
+              $dayOfMonth: "$creationDate"
+            },
+            year: {
+              $year: "$creationDate"
+            }
+          },
+          total: {
+            $sum: 1
+          }
+        }
+      },
+      {
+        $sort: {
+          "_id.year": 1,
+          "_id.month": 1,
+          "_id.day": 1,
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          date: "$_id",
+          count: "$total",
+        }
+      }
+      ]);
+      cursor.get(function (err, data) {
+        if (err) return callback(err);
+        return callback(null, data);
+      })
+    });
+  }
+  function getJobReport(filter, callback) {
+
+    User.getDataSource().connector.connect(function (err, db) {
+
+      var collection = db.collection('jobOpportunities');
+      var cursor = collection.aggregate([{
+        $match: filter
+      },
+      {
+        $group: {
+          _id: {
+            month: {
+              $month: "$creationDate"
+            },
+            day: {
+              $dayOfMonth: "$creationDate"
+            },
+            year: {
+              $year: "$creationDate"
+            }
+          },
+          total: {
+            $sum: 1
+          }
+        }
+      },
+      {
+        $sort: {
+          "_id.year": 1,
+          "_id.month": 1,
+          "_id.day": 1,
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          date: "$_id",
+          count: "$total",
+        }
+      }
+      ]);
+      cursor.get(function (err, data) {
+        if (err) return callback(err);
+        return callback(null, data);
+      })
+    });
+  }
+
+  function getPostReport(filter, callback) {
+
+    User.getDataSource().connector.connect(function (err, db) {
+
+      var collection = db.collection('posts');
+      var cursor = collection.aggregate([{
+        $match: filter
+      },
+      {
+        $group: {
+          _id: {
+            month: {
+              $month: "$creationDate"
+            },
+            day: {
+              $dayOfMonth: "$creationDate"
+            },
+            year: {
+              $year: "$creationDate"
+            }
+          },
+          total: {
+            $sum: 1
+          }
+        }
+      },
+      {
+        $sort: {
+          "_id.year": 1,
+          "_id.month": 1,
+          "_id.day": 1,
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          date: "$_id",
+          count: "$total",
+        }
+      }
+      ]);
+      cursor.get(function (err, data) {
+        if (err) return callback(err);
+        return callback(null, data);
+      })
+    });
+  }
+
+  function getBusinessReport(filter, callback) {
+
+    User.getDataSource().connector.connect(function (err, db) {
+
+      var collection = db.collection('business');
+      var cursor = collection.aggregate([{
+        $match: filter
+      },
+      {
+        $group: {
+          _id: {
+            month: {
+              $month: "$creationDate"
+            },
+            day: {
+              $dayOfMonth: "$creationDate"
+            },
+            year: {
+              $year: "$creationDate"
+            }
+          },
+          total: {
+            $sum: 1
+          }
+        }
+      },
+      {
+        $sort: {
+          "_id.year": 1,
+          "_id.month": 1,
+          "_id.day": 1,
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          date: "$_id",
+          count: "$total",
+        }
+      }
+      ]);
+      cursor.get(function (err, data) {
+        if (err) return callback(err);
+        return callback(null, data);
+      })
+    });
+  }
+
+  User.remoteMethod('timeStateReport', {
+    "accepts": [
+      {
+        "arg": "from",
+        "type": "date",
+        "required": false,
+        "description": ""
+      },
+      {
+        "arg": "to",
+        "type": "date",
+        "required": false,
+        "description": ""
+      }
+    ],
+    "returns": [
+      {
+        "arg": "result",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }
+    ],
+    "description": "report as time",
+    "http": [
+      {
+        "path": "/timeStateReport",
+        "verb": "get"
+      }
+    ]
   });
 
 };

@@ -95,26 +95,26 @@ module.exports = function (Volumes) {
 	});
 
 
-	var CronJob = require('cron').CronJob;
-	// var createVolume = new CronJob('1 0 * * 6', function () {
-	// var createVolume = new CronJob('4 14 * * 1', async function () {
-	// });
-	var publishVolume = new CronJob('0 19 * * 5', async function () {
-		// var publishVolume = new CronJob('19 15 * * 1', async function () {
-		let volume = await Volumes.findOne({ "order": "creationDate DESC" })
-		if (volume && volume.status == 'pending') {
-			await volume.updateAttribute("status", "activated")
-			notification.addNewVolume(Volumes, volume);
-		}
+	// var CronJob = require('cron').CronJob;
+	// // var createVolume = new CronJob('1 0 * * 6', function () {
+	// // var createVolume = new CronJob('4 14 * * 1', async function () {
+	// // });
+	// var publishVolume = new CronJob('0 19 * * 5', async function () {
+	// 	// var publishVolume = new CronJob('19 15 * * 1', async function () {
+	// 	let volume = await Volumes.findOne({ "order": "creationDate DESC" })
+	// 	if (volume && volume.status == 'pending') {
+	// 		await volume.updateAttribute("status", "activated")
+	// 		notification.addNewVolume(Volumes, volume);
+	// 	}
 
-		const today = new Date()
-		var title = today.getFullYear() + " - " + today.getDate() + " - " + today.toLocaleString('default', { month: 'long' })
-		var volumeObj = {
-			"titleAr": title,
-			"titleEn": title,
-		}
-		let newVolumes = await Volumes.create(volumeObj)
-	});
-	// createVolume.start();
-	publishVolume.start();
+	// 	const today = new Date()
+	// 	var title = today.getFullYear() + " - " + today.getDate() + " - " + today.toLocaleString('default', { month: 'long' })
+	// 	var volumeObj = {
+	// 		"titleAr": title,
+	// 		"titleEn": title,
+	// 	}
+	// 	let newVolumes = await Volumes.create(volumeObj)
+	// });
+	// // createVolume.start();
+	// publishVolume.start();
 };

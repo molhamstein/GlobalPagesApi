@@ -1,30 +1,23 @@
 {
-  "name": "notifications",
+  "name": "rating",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "message": {
+    "text": {
       "type": "string",
+      "required": false
+    },
+    "value": {
+      "type": "number",
       "required": true
     },
-    "seen": {
-      "type": "boolean",
+    "status": {
+      "type": "string",
       "required": true,
-      "default": false
-    },
-    "type": {
-      "type": "string"
-    },
-    "clicked": {
-      "type": "boolean",
-      "required": true,
-      "default": false
-    },
-    "data": {
-      "type": "Object"
+      "default": "active"
     },
     "creationDate": {
       "type": "date",
@@ -34,9 +27,13 @@
   },
   "validations": [],
   "relations": {
-    "recipient": {
+    "owner": {
       "type": "belongsTo",
       "model": "user"
+    },
+    "product": {
+      "type": "belongsTo",
+      "model": "marketProducts"
     }
   },
   "acls": [],
