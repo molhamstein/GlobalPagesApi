@@ -5,6 +5,9 @@
   "options": {
     "validateUpsert": true
   },
+  "scope":{
+    "include":["owner","product"]
+  },
   "properties": {
     "text": {
       "type": "string",

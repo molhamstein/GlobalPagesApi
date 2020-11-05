@@ -598,7 +598,7 @@ module.exports = function (Business) {
 
 
 
-  Business.newSearchByLocation = function (status, lat, lng, maxDistance, unit, keyword, catId, subCatId, codeCat, codeSubCat, openingDay, limit, skip, cityId, locationId, cb) {
+  Business.newSearchByLocation = function (status, lat, lng, maxDistance, unit, keyword, catId, subCatId, codeCat, codeSubCat, openingDay, limit, skip, cityId, locationId, supplier, cb) {
 
     var $match = {
       "$and": [{
@@ -687,6 +687,11 @@ module.exports = function (Business) {
     if (status) {
       $match.$and.push({
         "status": status
+      })
+    }
+    if (supplier) {
+      $match.$and.push({
+        "supplier": supplier
       })
     }
     if (locationId) {
@@ -1017,6 +1022,13 @@ module.exports = function (Business) {
     {
       arg: 'locationId',
       type: 'string',
+      http: {
+        source: 'query'
+      }
+    },
+    {
+      arg: 'supplier',
+      type: 'boolean',
       http: {
         source: 'query'
       }
