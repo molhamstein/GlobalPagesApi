@@ -76,19 +76,21 @@ module.exports = function (Follower) {
             return callback(err);
         }
         let owner = await Follower.app.models.user.findById(req.accessToken.userId);
-        let following = owner.following - 1;
-        await owner.updateAttribute("following", following);
+        let data = {}
 
         if (hasFollow.type == 'USER') {
             let user = await Follower.app.models.user.findById(id);
             let follower = user.follower - 1;
             await user.updateAttribute("follower", follower);
+            data = { "userFollowing": owner.userFollowing - 1 }
         } else {
             let business = await Follower.app.models.business.findById(id);
             let follower = business.follower - 1;
             await business.updateAttribute("follower", follower);
-        }
+            data = { "businessFollowing": owner.businessFollowing - 1 }
 
+        }
+        await owner.updateAttributes(data);
         await Follower.destroyAll({ objectId: id, ownerId: owner.id })
         callback(null, {})
     }

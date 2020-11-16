@@ -1,54 +1,60 @@
 'use strict';
+var ObjectId = require('mongodb').ObjectID;
 
 module.exports = function (Marketproducts) {
   Marketproducts.addProduct = async function (categoryId, subCategoryId, cityId, locationId, titleEn, titleAr, descriptionEn, descriptionAr, price, status = "pending", tags = [], ownerId = null, media = [], businessId, req, callback) {
 
     // console.log(req)
-    var userId = req.accessToken.userId
-    if (ownerId != null)
-      userId = ownerId;
-    var objectProduct = {
-      "ownerId": userId,
-      "cityId": cityId,
-      "locationId": locationId,
-      "titleEn": titleEn,
-      "titleAr": titleAr,
-      "descriptionEn": descriptionEn,
-      "descriptionAr": descriptionAr,
-      "price": price,
-      "status": status,
-      "categoryId": categoryId,
-      "subCategoryId": subCategoryId,
-      "media": media,
-      "businessId": businessId
-    }
-    var owner = await Marketproducts.app.models.User.findById(userId);
-    let expireAutomaticApproveProduct = owner.expireAutomaticApproveProduct
-    let countAutomaticApproveProduct = owner.countAutomaticApproveProduct
-    let country = await owner.country.get();
-
-    if ((expireAutomaticApproveProduct != null && expireAutomaticApproveProduct.getTime() > new Date().getTime() && countAutomaticApproveProduct > 0) || (country && country.isAllowedProduct)) {
-      objectProduct.status = 'activated'
-      if (expireAutomaticApproveProduct != null && expireAutomaticApproveProduct.getTime() > new Date().getTime() && countAutomaticApproveProduct > 0) {
-        let newCountAutomaticApproveProduct = countAutomaticApproveProduct - 1
-        await owner.updateAttribute('countAutomaticApproveProduct', newCountAutomaticApproveProduct)
+    try {
+      var userId = req.accessToken.userId
+      if (ownerId != null)
+        userId = ownerId;
+      var objectProduct = {
+        "ownerId": userId,
+        "cityId": cityId,
+        "locationId": locationId,
+        "titleEn": titleEn,
+        "titleAr": titleAr,
+        "descriptionEn": descriptionEn,
+        "descriptionAr": descriptionAr,
+        "price": price,
+        "status": status,
+        "categoryId": categoryId,
+        "subCategoryId": subCategoryId,
+        "media": media,
+        "businessId": businessId
       }
+      var owner = await Marketproducts.app.models.User.findById(userId);
+      let expireAutomaticApproveProduct = owner.expireAutomaticApproveProduct
+      let countAutomaticApproveProduct = owner.countAutomaticApproveProduct
+      let country = await owner.country.get();
+
+      if ((expireAutomaticApproveProduct != null && expireAutomaticApproveProduct.getTime() > new Date().getTime() && countAutomaticApproveProduct > 0) || (country && country.isAllowedProduct)) {
+        objectProduct.status = 'activated'
+        if (expireAutomaticApproveProduct != null && expireAutomaticApproveProduct.getTime() > new Date().getTime() && countAutomaticApproveProduct > 0) {
+          let newCountAutomaticApproveProduct = countAutomaticApproveProduct - 1
+          await owner.updateAttribute('countAutomaticApproveProduct', newCountAutomaticApproveProduct)
+        }
+      }
+
+      var product = await Marketproducts.create(objectProduct);
+
+
+      var mainTags = [];
+      tags.forEach(element => {
+        mainTags.push({
+          "tagId": element,
+          "productId": product.id
+        })
+      });
+
+      await Marketproducts.app.models.productTags.create(mainTags)
+      var newproduct = await Marketproducts.findById(product.id)
+      callback(null, newproduct)
+    } catch (err) {
+      callback(err)
     }
 
-    var product = await Marketproducts.create(objectProduct);
-
-
-    var mainTags = [];
-    tags.forEach(element => {
-      mainTags.push({
-        "tagId": element,
-        "productId": product.id
-      })
-    });
-
-    await Marketproducts.app.models.productTags.create(mainTags)
-    var newproduct = await Marketproducts.findById(product.id)
-    callback(null, newproduct)
   }
 
   Marketproducts.remoteMethod('addProduct', {
@@ -422,6 +428,234 @@ module.exports = function (Marketproducts) {
     }],
     // returns: {arg: 'message', type: 'string'},
     http: { verb: 'post', path: '/:productId/productViewsCount' },
+  });
+
+
+  Marketproducts.searchProduct = function (filter = { "where": {}, limit: 10, skip: 0 }, cb) {
+    if (filter.where == null) {
+      filter.where = {}
+    }
+    console.log(filter)
+    var $match = {
+      "$and": []
+    }
+
+    if (filter.where.categoryId) {
+      $match.$and.push({
+        "categoryId": ObjectId(filter.where.categoryId)
+      })
+    }
+    if (filter.where.subCategoryId) {
+      $match.$and.push({
+        "subCategoryId": ObjectId(filter.where.subCategoryId)
+      })
+    }
+    if (filter.where.locationId) {
+      $match.$and.push({
+        "locationId": ObjectId(filter.where.locationId)
+      })
+    }
+
+    if (filter.where.cityId) {
+      $match.$and.push({
+        "locationId": ObjectId(filter.where.cityId)
+      })
+    }
+    if (filter.where.countryId) {
+      $match.$and.push({
+        "countryId": ObjectId(filter.where.countryId)
+      })
+    }
+
+    if (filter.where.keyword) {
+      $match.$and.push({
+        "$or": [
+          {
+            titleEn: {
+              $regex: filter.where.keyword,
+              $options: 'i'
+            }
+          },
+          {
+            titleAr: {
+              $regex: filter.where.keyword,
+              $options: 'i'
+            }
+          },
+          {
+            "business.nameEn": {
+              $regex: filter.where.keyword,
+              $options: 'i'
+            }
+          },
+          {
+            "business.nameAr": {
+              $regex: filter.where.keyword,
+              $options: 'i'
+            }
+          },
+        ]
+      })
+    }
+
+    var aggregateArray = []
+
+    if (filter.where.keyword) {
+      // aggregateArray.push(
+      //   {
+      //     $lookup: {
+      //       from: "business",
+      //       localField: "businessId",
+      //       foreignField: "_id",
+      //       as: "business"
+      //     }
+      //   }, {
+      //   $unwind: "$business"
+      // },
+      //   {
+      //     $project: {
+      //       business: 1
+      //     }
+      //   }
+      // )
+    }
+
+
+
+
+    aggregateArray.push(
+      {
+        $lookup: {
+          from: "user",
+          localField: "ownerId",
+          foreignField: "_id",
+          as: "owner"
+        }
+      }, {
+      $unwind: "$owner"
+    }, {
+      $lookup: {
+        from: "productCategories",
+        localField: "categoryId",
+        foreignField: "_id",
+        as: "category"
+      }
+    }, {
+      $unwind: "$category"
+    }, {
+      $lookup: {
+        from: "productCategories",
+        localField: "subCategoryId",
+        foreignField: "_id",
+        as: "subCategory"
+      }
+    }, {
+      $unwind: "$subCategory"
+    }, {
+      $lookup: {
+        from: "cities",
+        localField: "cityId",
+        foreignField: "_id",
+        as: "city"
+      }
+    }, {
+      $unwind: "$city"
+    },
+      {
+        $lookup: {
+          from: "business",
+          localField: "businessId",
+          foreignField: "_id",
+          as: "business"
+        }
+      }, {
+      $unwind: "$business"
+    },
+      {
+        $lookup: {
+          from: "locations",
+          localField: "locationId",
+          foreignField: "_id",
+          as: "location"
+        }
+      }, {
+      $unwind: "$location"
+    }, {
+      $project: {
+        _id: 0,
+        id: "$_id",
+        titleEn: 1,
+        titleAr: 1,
+        descriptionAr: 1,
+        descriptionEn: 1,
+        viewsCount: 1,
+        status: 1,
+        price: 1,
+        rate: 1,
+        countRate: 1,
+        rateTotal: 1,
+        deleted: 1,
+        creationDate: 1,
+        ownerId: 1,
+        businessId: 1,
+        categoryId: 1,
+        subCategoryId: 1,
+        cityId: 1,
+        locationId: 1,
+        owner: 1,
+        category: 1,
+        subCategory: 1,
+        city: 1,
+        location: 1,
+        business: 1
+      }
+    })
+
+    if ($match && $match.$and.length != 0) {
+      aggregateArray.push({
+        $match: $match
+      })
+    }
+
+    if (filter.limit) {
+      var tempSkip = 0
+      if (filter.skip)
+        tempSkip = filter.skip
+      aggregateArray.push({
+        "$limit": filter.limit + tempSkip
+      })
+    }
+
+    if (filter.skip)
+      aggregateArray.push({
+        "$skip": filter.skip
+      })
+
+    Marketproducts.getDataSource().connector.connect(function (err, db) {
+
+
+      var collection = db.collection('marketProducts');
+      var b = collection.aggregate(aggregateArray);
+      b.get(function (err, data) {
+        // console.log(data.length)
+        if (err)
+          cb(err, null)
+        else
+          cb(null, data);
+      })
+    })
+
+  }
+
+  Marketproducts.remoteMethod('searchProduct', {
+    description: 'plus +1 to viewsCount',
+    accepts: [{ arg: 'filter', type: 'object', required: false }],
+    returns: [{
+      "arg": "object",
+      "type": "object",
+      "root": true,
+      "description": ""
+    }], http: { verb: 'get', path: '/searchProduct' },
   });
 
 };

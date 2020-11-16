@@ -15,7 +15,8 @@
   "scope": {
     "include": [
       "role",
-      "country"
+      "country",
+      "city"
     ]
   },
   "properties": {
@@ -125,6 +126,11 @@
       "type": "belongsTo",
       "model": "countries",
       "foreignKey": "countryId"
+    },
+    "city": {
+      "type": "belongsTo",
+      "model": "cities",
+      "foreignKey": "cityId"
     },
     "role": {
       "type": "belongsTo",

@@ -294,6 +294,126 @@ module.exports = function (User) {
     },
   });
 
+
+
+  User.getSimilerCV = async function (userId, req, callback) {
+    var oneCV = await User.app.models.userCV.findOne({
+      "where": {
+        "userId": userId
+      }
+    })
+    var tags = []
+    if (oneCV == null)
+      callback(null, [])
+    oneCV.tags().forEach(element => {
+      tags.push(element.id);
+    });
+    if (tags.length == 0)
+      callback(null, [])
+    var allUserTags = await User.app.models.userTags.find({
+      "where": {
+        "tagId": {
+          "inq": tags
+        },
+        "userCvId": {
+          "neq": oneCV.id
+        }
+      }
+    })
+
+    var arrayAllUserTags = {}
+    allUserTags.forEach(element => {
+      if (arrayAllUserTags[element.userCvId.toString()] == null) {
+        arrayAllUserTags[element.userCvId.toString()] = 0
+      }
+      arrayAllUserTags[element.userCvId.toString()] += 1
+    });
+
+    var arrayAllUserTagsSorted = Object.keys(arrayAllUserTags).sort(function (a, b) {
+      return arrayAllUserTags[b] - arrayAllUserTags[a]
+    })
+
+    var cvs = await User.app.models.userCV.find({
+      "where": {
+        "id": {
+          "inq": arrayAllUserTagsSorted
+        }
+      }
+    })
+
+    var usersID = []
+    cvs.forEach(element => {
+      usersID.push(element.userId)
+    });
+
+    var users = await User.find({
+      "where": {
+        "id": {
+          "inq": usersID
+        }
+      },
+      "include": "CV"
+    })
+
+    var usersSorted = new Array(users.length);
+
+    users.forEach(element => {
+      var cvId = element.CV().id;
+      console.log(cvId)
+      console.log(arrayAllUserTagsSorted)
+      var index = getIndexInArray(cvId, arrayAllUserTagsSorted)
+      usersSorted[index] = element
+    });
+    callback(null, usersSorted)
+
+
+  }
+
+  function getIndexInArray(id, array) {
+    var mainIndex = -1;
+    // array.forEach(element => {
+    for (let index = 0; index < array.length; index++) {
+      const element = array[index];
+      if (element.toString() == id.toString()) {
+        return index
+      }
+    }
+    return mainIndex;
+  }
+
+  User.remoteMethod('getSimilerCV', {
+    description: 'get similer cv',
+    accepts: [{
+      "arg": "userId",
+      "type": "string",
+      "required": true,
+      "description": "",
+      "http": {
+        "source": "path"
+      }
+    },
+    {
+      "arg": "req",
+      "type": "object",
+      "required": true,
+      "description": "",
+      "http": {
+        "source": "req"
+      }
+    }
+    ],
+    returns: {
+      arg: 'message',
+      root: true,
+      type: 'object'
+    },
+    http: {
+      verb: 'get',
+      path: '/:userId/getSimilerCV'
+    },
+  });
+
+
   User.resetPassword = function (token, newPassword, res, cb) {
     User.findOne({
       where: {
@@ -594,123 +714,6 @@ module.exports = function (User) {
 
   });
 
-  User.getSimilerCV = async function (userId, req, callback) {
-    var oneCV = await User.app.models.userCV.findOne({
-      "where": {
-        "userId": userId
-      }
-    })
-    var tags = []
-    if (oneCV == null)
-      callback(null, [])
-    oneCV.tags().forEach(element => {
-      tags.push(element.id);
-    });
-    if (tags.length == 0)
-      callback(null, [])
-    var allUserTags = await User.app.models.userTags.find({
-      "where": {
-        "tagId": {
-          "inq": tags
-        },
-        "userCvId": {
-          "neq": oneCV.id
-        }
-      }
-    })
-
-    var arrayAllUserTags = {}
-    allUserTags.forEach(element => {
-      if (arrayAllUserTags[element.userCvId.toString()] == null) {
-        arrayAllUserTags[element.userCvId.toString()] = 0
-      }
-      arrayAllUserTags[element.userCvId.toString()] += 1
-    });
-
-    var arrayAllUserTagsSorted = Object.keys(arrayAllUserTags).sort(function (a, b) {
-      return arrayAllUserTags[b] - arrayAllUserTags[a]
-    })
-
-    var cvs = await User.app.models.userCV.find({
-      "where": {
-        "id": {
-          "inq": arrayAllUserTagsSorted
-        }
-      }
-    })
-
-    var usersID = []
-    cvs.forEach(element => {
-      usersID.push(element.userId)
-    });
-
-    var User = await User.find({
-      "where": {
-        "id": {
-          "inq": usersID
-        }
-      },
-      "include": "CV"
-    })
-
-    var usersSorted = new Array(User.length);
-
-    User.forEach(element => {
-      var cvId = element.CV().id;
-      console.log(cvId)
-      console.log(arrayAllUserTagsSorted)
-      var index = getIndexInArray(cvId, arrayAllUserTagsSorted)
-      usersSorted[index] = element
-    });
-    callback(null, usersSorted)
-
-
-  }
-
-  function getIndexInArray(id, array) {
-    var mainIndex = -1;
-    // array.forEach(element => {
-    for (let index = 0; index < array.length; index++) {
-      const element = array[index];
-      if (element.toString() == id.toString()) {
-        return index
-      }
-    }
-    return mainIndex;
-  }
-
-  User.remoteMethod('getSimilerCV', {
-    description: 'get similer cv',
-    accepts: [{
-      "arg": "userId",
-      "type": "string",
-      "required": true,
-      "description": "",
-      "http": {
-        "source": "path"
-      }
-    },
-    {
-      "arg": "req",
-      "type": "object",
-      "required": true,
-      "description": "",
-      "http": {
-        "source": "req"
-      }
-    }
-    ],
-    returns: {
-      arg: 'message',
-      root: true,
-      type: 'object'
-    },
-    http: {
-      verb: 'get',
-      path: '/:userId/getSimilerCV'
-    },
-  });
-
 
 
   User.socialLogin = async function (data, type, callback) {
@@ -731,7 +734,7 @@ module.exports = function (User) {
           username += "_" + usernameCount
         }
         image = await User.app.service.downloadImage(image);
-        user = await User.create({ "socialId": socialId, "typeLogIn": type, "gender": gender, "imageProfile": image, "email": socialId + "." + type + "@socialmersal.com", "status": "activated", "username": username, "password": "000000" })
+        user = await User.create({ "socialId": socialId, "typeLogIn": type, "gender": gender, "imageProfile": image, "email": email, "status": "activated", "username": username, "password": "000000" })
       }
       let newToken = await User.app.models.AccessToken.create({
         "userId": user.id, "ttl": 31536000000

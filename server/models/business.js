@@ -1057,7 +1057,7 @@ module.exports = function (Business) {
     }, cb);
   }
 
-  Business.addJobOpportunity = async function (businessId, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status = "pending", tags, minimumEducationLevel = null, jobType = null, responsibilitiesEn = null, responsibilitiesAr = null, qualificationsEn = null, qualificationsAr = null, ownerId = null, req, callback) {
+  Business.addJobOpportunity = async function (businessId, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status = "pending", tags = [], minimumEducationLevel = null, jobType = null, responsibilitiesEn = null, responsibilitiesAr = null, qualificationsEn = null, qualificationsAr = null, ownerId = null, req, callback) {
     /* Todo permisions */
     if (nameEn == null && nameAr == null) {
       var err = new Error('name is required');
@@ -1180,7 +1180,7 @@ module.exports = function (Business) {
     {
       arg: "tags",
       type: ["string"],
-      required: true,
+      required: false,
       description: ""
     },
     {

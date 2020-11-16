@@ -13,7 +13,8 @@
       "city",
       "location",
       "owner",
-      "business"
+      "business",
+      "country"
     ]
   },
   "properties": {
@@ -60,14 +61,6 @@
       "required": true
     },
     "locationId": {
-      "type": "string",
-      "required": true
-    },
-    "categoryId": {
-      "type": "string",
-      "required": true
-    },
-    "subCategoryId": {
       "type": "string",
       "required": true
     },

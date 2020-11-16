@@ -12,7 +12,7 @@ module.exports = function (Jobopportunity) {
   // });
 
 
-  Jobopportunity.updateJobOpportunity = async function (id, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status, tags, minimumEducationLevel, jobType, responsibilitiesEn, responsibilitiesAr, qualificationsEn, qualificationsAr, ownerId, businessId, callback) {
+  Jobopportunity.updateJobOpportunity = async function (id, categoryId, subCategoryId, nameEn, nameAr, descriptionEn, descriptionAr, rangeSalary, status, tags = [], minimumEducationLevel, jobType, responsibilitiesEn, responsibilitiesAr, qualificationsEn, qualificationsAr, ownerId, businessId, callback) {
     var job = await Jobopportunity.findById(id);
     if (job == null) {
       var err = new Error('Job Opportunity not found');
@@ -66,107 +66,107 @@ module.exports = function (Jobopportunity) {
   Jobopportunity.remoteMethod('updateJobOpportunity', {
     description: '',
     accepts: [{
-        arg: 'id',
-        type: 'string',
-        required: true,
-        http: {
-          "source": "path"
-        }
-      },
-      {
-        arg: "categoryId",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "subCategoryId",
-        type: "string",
-        required: true,
-        description: ""
-      },
-      {
-        arg: "nameEn",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "nameAr",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "descriptionEn",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "descriptionAr",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "rangeSalary",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "status",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "tags",
-        type: ["string"],
-        required: false,
-        description: ""
-      },
-      {
-        "arg": "minimumEducationLevel",
-        "type": "string",
-        "required": false
-      },
-      {
-        "arg": "jobType",
-        "type": "string",
-        "required": false
-      },
-      {
-        "arg": "responsibilitiesEn",
-        "type": "string",
-        "required": false
-      },
-      {
-        "arg": "responsibilitiesAr",
-        "type": "string",
-        "required": false
-      },
-      {
-        "arg": "qualificationsEn",
-        "type": "string",
-        "required": false
-      },
-      {
-        "arg": "qualificationsAr",
-        "type": "string",
-        "required": false
-      },
-      {
-        "arg": "ownerId",
-        "type": "string",
-        "required": false
-      },
-      {
-        "arg": "businessId",
-        "type": "string",
-        "required": false
+      arg: 'id',
+      type: 'string',
+      required: true,
+      http: {
+        "source": "path"
       }
+    },
+    {
+      arg: "categoryId",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "subCategoryId",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "nameEn",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "nameAr",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "descriptionEn",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "descriptionAr",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "rangeSalary",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "status",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "tags",
+      type: ["string"],
+      required: false,
+      description: ""
+    },
+    {
+      "arg": "minimumEducationLevel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "arg": "jobType",
+      "type": "string",
+      "required": false
+    },
+    {
+      "arg": "responsibilitiesEn",
+      "type": "string",
+      "required": false
+    },
+    {
+      "arg": "responsibilitiesAr",
+      "type": "string",
+      "required": false
+    },
+    {
+      "arg": "qualificationsEn",
+      "type": "string",
+      "required": false
+    },
+    {
+      "arg": "qualificationsAr",
+      "type": "string",
+      "required": false
+    },
+    {
+      "arg": "ownerId",
+      "type": "string",
+      "required": false
+    },
+    {
+      "arg": "businessId",
+      "type": "string",
+      "required": false
+    }
     ],
     returns: {
       arg: 'message',
@@ -245,22 +245,22 @@ module.exports = function (Jobopportunity) {
   Jobopportunity.remoteMethod('getJobOpportunity', {
     description: '',
     accepts: [{
-        arg: 'id',
-        type: 'string',
-        required: true,
-        http: {
-          "source": "path"
-        }
-      },
-      {
-        arg: "req",
-        type: "object",
-        required: true,
-        description: "",
-        "http": {
-          "source": "req"
-        }
+      arg: 'id',
+      type: 'string',
+      required: true,
+      http: {
+        "source": "path"
       }
+    },
+    {
+      arg: "req",
+      type: "object",
+      required: true,
+      description: "",
+      "http": {
+        "source": "req"
+      }
+    }
     ],
     returns: {
       arg: 'message',
@@ -350,217 +350,217 @@ module.exports = function (Jobopportunity) {
 
       var collection = db.collection('jobOpportunities');
       var cursor = collection.aggregate([{
-          $lookup: {
-            from: "user",
-            localField: "ownerId",
-            foreignField: "_id",
-            as: "owner"
-          },
+        $lookup: {
+          from: "user",
+          localField: "ownerId",
+          foreignField: "_id",
+          as: "owner"
         },
-        {
-          $lookup: {
-            from: "business",
-            "let": {
-              "id": "$businessId"
-            },
-            pipeline: [{
-                "$match": {
-                  "$expr": {
-                    "$eq": ["$_id", "$$id"]
-                  }
-                }
-              },
-              {
-                "$project": {
-                  "_id": 0,
-                  'id': '$_id',
-                  'nameEn': 1,
-                  'nameAr': 1,
-                  'nameUnique': 1,
-                  'logo': 1,
-                  'status': 1,
-                  'description': 1,
-                  'covers': 1,
-                  'locationPoint': 1,
-                  'phone1': 1,
-                  'fax': 1,
-                  'address': 1,
-                  'deleted': 1,
-                  'cityId': 1,
-                  'locationId': 1
-                }
+      },
+      {
+        $lookup: {
+          from: "business",
+          "let": {
+            "id": "$businessId"
+          },
+          pipeline: [{
+            "$match": {
+              "$expr": {
+                "$eq": ["$_id", "$$id"]
               }
-            ],
-            as: "business"
+            }
           },
-        },
-        {
-          $unwind: "$business"
-        },
-        {
-          $lookup: {
-            from: "cities",
-            "let": {
-              "id": "$business.cityId"
-            },
-            pipeline: [{
-                "$match": {
-                  "$expr": {
-                    "$eq": ["$_id", "$$id"]
-                  }
-                }
-              },
-              {
-                "$project": {
-                  "_id": 0,
-                  'id': '$_id',
-                  'nameEn': 1,
-                  'nameAr': 1,
-                  'deleted': 1
-                }
-              }
-            ],
-            as: "business.city"
-          },
-        },
-        {
-          $unwind: "$business.city"
-        },
-        {
-          $lookup: {
-            from: "locations",
-            "let": {
-              "id": "$business.locationId"
-            },
-            pipeline: [{
-                "$match": {
-                  "$expr": {
-                    "$eq": ["$_id", "$$id"]
-                  }
-                }
-              },
-              {
-                "$project": {
-                  "_id": 0,
-                  'id': '$_id',
-                  'nameEn': 1,
-                  'nameAr': 1,
-                  'deleted': 1
-                }
-              }
-            ],
-            as: "business.location"
-          },
-        },
-        {
-          $unwind: "$business.location"
-        },
-        {
-          $lookup: {
-            from: "jobOpportunityCategories",
-            "let": {
-              "id": "$subCategoryId"
-            },
-            pipeline: [{
-                "$match": {
-                  "$expr": {
-                    "$eq": ["$_id", "$$id"]
-                  }
-                }
-              },
-              {
-                "$project": {
-                  "_id": 0,
-                  'id': '$_id',
-                  'titleAr': 1,
-                  'titleEn': 1,
-                  'creationDate': 1,
-                  'deleted': 1,
-                  'parentCategoryId': 1
-                }
-              }
-            ],
-            as: "subCategory"
-          },
-        },
-        {
-          $lookup: {
-            from: "jobOpportunityCategories",
-            "let": {
-              "id": "$categoryId"
-            },
-            pipeline: [{
-                "$match": {
-                  "$expr": {
-                    "$eq": ["$_id", "$$id"]
-                  }
-                }
-              },
-              {
-                "$project": {
-                  "_id": 0,
-                  'id': '$_id',
-                  'titleAr': 1,
-                  'titleEn': 1,
-                  'creationDate': 1,
-                  'deleted': 1,
-                }
-              }
-            ],
-            as: "category"
-          },
-        },
-        {
-          $unwind: "$owner"
-        },
-        {
-          $unwind: "$category"
-        },
-        {
-          $unwind: "$subCategory"
-        },
-        {
-          $match: filter
-        },
-        {
-          $sort: {
-            creationDate: -1
+          {
+            "$project": {
+              "_id": 0,
+              'id': '$_id',
+              'nameEn': 1,
+              'nameAr': 1,
+              'nameUnique': 1,
+              'logo': 1,
+              'status': 1,
+              'description': 1,
+              'covers': 1,
+              'locationPoint': 1,
+              'phone1': 1,
+              'fax': 1,
+              'address': 1,
+              'deleted': 1,
+              'cityId': 1,
+              'locationId': 1
+            }
           }
+          ],
+          as: "business"
         },
-        {
-          $limit: limit + offset
-        },
-        {
-          $skip: offset
-        },
-        {
-          $project: {
-            _id: 0,
-            'id': '$_id',
-            nameEn: 1,
-            nameAr: 1,
-            descriptionAr: 1,
-            descriptionEn: 1,
-            minimumEducationLevel: 1,
-            jobType: 1,
-            qualificationsEn: 1,
-            qualificationsAr: 1,
-            responsibilitiesAr: 1,
-            responsibilitiesEn: 1,
-            rangeSalary: 1,
-            businessId: 1,
-            status: 1,
-            categoryId: 1,
-            subCategoryId: 1,
-            creationDate: 1,
-            ownerId: 1,
-            category: 1,
-            subCategory: 1,
-            business: 1,
-
-
+      },
+      {
+        $unwind: "$business"
+      },
+      {
+        $lookup: {
+          from: "cities",
+          "let": {
+            "id": "$business.cityId"
+          },
+          pipeline: [{
+            "$match": {
+              "$expr": {
+                "$eq": ["$_id", "$$id"]
+              }
+            }
+          },
+          {
+            "$project": {
+              "_id": 0,
+              'id': '$_id',
+              'nameEn': 1,
+              'nameAr': 1,
+              'deleted': 1
+            }
           }
+          ],
+          as: "business.city"
+        },
+      },
+      {
+        $unwind: "$business.city"
+      },
+      {
+        $lookup: {
+          from: "locations",
+          "let": {
+            "id": "$business.locationId"
+          },
+          pipeline: [{
+            "$match": {
+              "$expr": {
+                "$eq": ["$_id", "$$id"]
+              }
+            }
+          },
+          {
+            "$project": {
+              "_id": 0,
+              'id': '$_id',
+              'nameEn': 1,
+              'nameAr': 1,
+              'deleted': 1
+            }
+          }
+          ],
+          as: "business.location"
+        },
+      },
+      {
+        $unwind: "$business.location"
+      },
+      {
+        $lookup: {
+          from: "jobOpportunityCategories",
+          "let": {
+            "id": "$subCategoryId"
+          },
+          pipeline: [{
+            "$match": {
+              "$expr": {
+                "$eq": ["$_id", "$$id"]
+              }
+            }
+          },
+          {
+            "$project": {
+              "_id": 0,
+              'id': '$_id',
+              'titleAr': 1,
+              'titleEn': 1,
+              'creationDate': 1,
+              'deleted': 1,
+              'parentCategoryId': 1
+            }
+          }
+          ],
+          as: "subCategory"
+        },
+      },
+      {
+        $lookup: {
+          from: "jobOpportunityCategories",
+          "let": {
+            "id": "$categoryId"
+          },
+          pipeline: [{
+            "$match": {
+              "$expr": {
+                "$eq": ["$_id", "$$id"]
+              }
+            }
+          },
+          {
+            "$project": {
+              "_id": 0,
+              'id': '$_id',
+              'titleAr': 1,
+              'titleEn': 1,
+              'creationDate': 1,
+              'deleted': 1,
+            }
+          }
+          ],
+          as: "category"
+        },
+      },
+      {
+        $unwind: "$owner"
+      },
+      {
+        $unwind: "$category"
+      },
+      {
+        $unwind: "$subCategory"
+      },
+      {
+        $match: filter
+      },
+      {
+        $sort: {
+          creationDate: -1
         }
+      },
+      {
+        $limit: limit + offset
+      },
+      {
+        $skip: offset
+      },
+      {
+        $project: {
+          _id: 0,
+          'id': '$_id',
+          nameEn: 1,
+          nameAr: 1,
+          descriptionAr: 1,
+          descriptionEn: 1,
+          minimumEducationLevel: 1,
+          jobType: 1,
+          qualificationsEn: 1,
+          qualificationsAr: 1,
+          responsibilitiesAr: 1,
+          responsibilitiesEn: 1,
+          rangeSalary: 1,
+          businessId: 1,
+          status: 1,
+          categoryId: 1,
+          subCategoryId: 1,
+          creationDate: 1,
+          ownerId: 1,
+          category: 1,
+          subCategory: 1,
+          business: 1,
+
+
+        }
+      }
       ]);
       cursor.get(function (err, data) {
         if (err) return callback(err);
@@ -573,47 +573,47 @@ module.exports = function (Jobopportunity) {
   Jobopportunity.remoteMethod('searchJob', {
     description: '',
     accepts: [{
-        arg: "categoryId",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "subCategoryId",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "cityId",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "keyword",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "status",
-        type: "string",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "offset",
-        type: "number",
-        required: false,
-        description: ""
-      },
-      {
-        arg: "limit",
-        type: "number",
-        required: false,
-        description: ""
-      },
+      arg: "categoryId",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "subCategoryId",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "cityId",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "keyword",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "status",
+      type: "string",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "offset",
+      type: "number",
+      required: false,
+      description: ""
+    },
+    {
+      arg: "limit",
+      type: "number",
+      required: false,
+      description: ""
+    },
     ],
     returns: {
       arg: 'message',

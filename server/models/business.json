@@ -37,6 +37,22 @@
       "type": "string",
       "required": true
     },
+    "facebook": {
+      "type": "string",
+      "required": false
+    },
+    "twitter": {
+      "type": "string",
+      "required": false
+    },
+    "linkedin": {
+      "type": "string",
+      "required": false
+    },
+    "emailBusiness": {
+      "type": "string",
+      "required": false
+    },
     "nameUnique": {
       "type": "string",
       "required": true
@@ -46,6 +62,7 @@
     },
     "follower": {
       "type": "number",
+      "required": true,
       "default": 0
     },
     "status": {
