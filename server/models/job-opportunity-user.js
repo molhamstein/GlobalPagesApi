@@ -34,30 +34,32 @@ module.exports = function (Jobopportunityuser) {
       "jobId": new ObjectId(jobId),
       "userId": userId
     })
-    var newNumber = job.NumberOfApplicants + 1
+    var newNumber = job.NumberOfApplicants + 1;
     await job.updateAttribute("NumberOfApplicants", newNumber);
+
+    await Jobopportunityuser.app.models.notifications.customNotifcation("موظف جديد", [job.ownerId], "both", { "jobId": job.id }, "NEW_APPLIER");
     callback(null, newUserInJob)
   }
 
   Jobopportunityuser.remoteMethod('applyJobOpportunity', {
     description: '',
     accepts: [{
-        arg: 'jobId',
-        type: 'string',
-        required: true,
-        http: {
-          "source": "path"
-        }
-      },
-      {
-        arg: "req",
-        type: "object",
-        required: true,
-        description: "",
-        "http": {
-          "source": "req"
-        }
+      arg: 'jobId',
+      type: 'string',
+      required: true,
+      http: {
+        "source": "path"
       }
+    },
+    {
+      arg: "req",
+      type: "object",
+      required: true,
+      description: "",
+      "http": {
+        "source": "req"
+      }
+    }
     ],
     returns: {
       arg: 'message',
@@ -90,19 +92,19 @@ module.exports = function (Jobopportunityuser) {
   Jobopportunityuser.remoteMethod('changeStatus', {
     description: '',
     accepts: [{
-        arg: 'id',
-        type: 'string',
-        required: true,
-        http: {
-          "source": "path"
-        }
-      },
-      {
-        arg: "newStatus",
-        type: "string",
-        required: true,
-        description: ""
+      arg: 'id',
+      type: 'string',
+      required: true,
+      http: {
+        "source": "path"
       }
+    },
+    {
+      arg: "newStatus",
+      type: "string",
+      required: true,
+      description: ""
+    }
     ],
     returns: {
       arg: 'message',

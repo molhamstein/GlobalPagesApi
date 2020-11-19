@@ -26,6 +26,14 @@
     "description": {
       "type": "string"
     },
+    "locationPoint": {
+      "type": "geopoint"
+    },
+    "locationPointDB": {
+      "type": [
+        "number"
+      ]
+    },
     "status": {
       "type": "string",
       "required": true,

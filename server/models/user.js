@@ -42,7 +42,8 @@ module.exports = function (User) {
 
 
   User.beforeRemote('create', function (ctx, modelInstance, next) {
-    var name = ctx.req.body.email.trim().match(/^([^@]*)@/)[1];
+    ctx.req.body.email = ctx.req.body.email.toLowerCase();
+    var name = ctx.req.body.username.toLowerCase()
 
     // make unique name
     User.count({
@@ -56,8 +57,6 @@ module.exports = function (User) {
       ctx.req.body.username = name;
       if (count != 0)
         ctx.req.body.username = name + (count.toString());
-      ctx.req.body.email = ctx.req.body.email.toLowerCase();
-
       next();
     });
   });
@@ -65,24 +64,24 @@ module.exports = function (User) {
   //send verification email after registration
   User.afterRemote('create', function (context, user, next) {
     User.app.models.notifications.create({ "message": "مرحباً في تطبيق المرسال , من أجل الإعلان أو التسجيل في الموقع يرجى التواصل على info@almersal.co", "recipientId": user.id, "type": "welcome" })
-    var options = {
-      type: 'email',
-      to: user.email,
-      from: myConfig.email,
-      subject: 'Thanks for registering.',
-      template: path.resolve(__dirname, '../../server/views/emails/verifyEmail.ejs'),
-      // redirect: '/verified',
-      user: user,
-      host: 'almersal.co',
-      port: 80
-    };
-    user.verify(options, function (err, response) {
-      if (err) {
-        User.deleteById(user.id);
-        return next(err);
-      }
-      context.res.json(user)
-    });
+    // var options = {
+    //   type: 'email',
+    //   to: user.email,
+    //   from: myConfig.email,
+    //   subject: 'Thanks for registering.',
+    //   template: path.resolve(__dirname, '../../server/views/emails/verifyEmail.ejs'),
+    //   // redirect: '/verified',
+    //   user: user,
+    //   host: 'almersal.co',
+    //   port: 80
+    // };
+    // user.verify(options, function (err, response) {
+    //   if (err) {
+    //     User.deleteById(user.id);
+    //     return next(err);
+    //   }
+    context.res.json(user)
+    // });
   });
 
   User.forgotPassword = function (email, cb) {
@@ -620,6 +619,7 @@ module.exports = function (User) {
       include = include.toLowerCase();
     }
 
+    credentials.email = credentials.email.toLowerCase();
 
     var query = {
       email: credentials.email

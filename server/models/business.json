@@ -12,6 +12,7 @@
       "category",
       "subCategory",
       "city",
+      "country",
       "location"
     ]
   },
@@ -133,6 +134,11 @@
     "owner": {
       "type": "belongsTo",
       "model": "user"
+    },
+    "country": {
+      "type": "belongsTo",
+      "model": "countries",
+      "foreignKey": "countryId"
     },
     "category": {
       "type": "belongsTo",

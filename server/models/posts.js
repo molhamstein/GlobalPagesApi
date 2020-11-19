@@ -10,6 +10,9 @@ module.exports = function (Post) {
 	Post.beforeRemote('create', function (ctx, modelInstance, next) {
 		if (!ctx.req.body.ownerId)
 			ctx.req.body.ownerId = ctx.args.options.accessToken.userId
+		if (ctx.req.body.locationPoint && ctx.req.body.locationPointDB == null)
+			ctx.req.body.locationPointDB = [ctx.req.body.locationPoint.lat, ctx.req.body.locationPoint.lng]
+
 		var tempId = 1;
 		_.each(ctx.req.body.media, (m) => { m.id = tempId++ });
 		Post.app.models.User.findById(ctx.args.options.accessToken.userId, function (err, user) {

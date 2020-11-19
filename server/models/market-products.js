@@ -2,16 +2,18 @@
 var ObjectId = require('mongodb').ObjectID;
 
 module.exports = function (Marketproducts) {
-  Marketproducts.addProduct = async function (categoryId, subCategoryId, cityId, locationId, titleEn, titleAr, descriptionEn, descriptionAr, price, status = "pending", tags = [], ownerId = null, media = [], businessId, req, callback) {
+  Marketproducts.addProduct = async function (categoryId, subCategoryId, countryId, cityId, locationId, titleEn, titleAr, descriptionEn, descriptionAr, price, status = "pending", tags = [], ownerId = null, media = [], businessId, req, callback) {
 
     // console.log(req)
     try {
+      console.log(req.accessToken)
       var userId = req.accessToken.userId
       if (ownerId != null)
         userId = ownerId;
       var objectProduct = {
         "ownerId": userId,
         "cityId": cityId,
+        "countryId": countryId,
         "locationId": locationId,
         "titleEn": titleEn,
         "titleAr": titleAr,
@@ -67,6 +69,12 @@ module.exports = function (Marketproducts) {
     },
     {
       arg: "subCategoryId",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "countryId",
       type: "string",
       required: true,
       description: ""
@@ -161,7 +169,7 @@ module.exports = function (Marketproducts) {
     },
   });
 
-  Marketproducts.updateProduct = async function (id, categoryId, subCategoryId, cityId, locationId, titleEn, titleAr, descriptionEn, descriptionAr, price, status, tags = [], ownerId, media = [], businessId, callback) {
+  Marketproducts.updateProduct = async function (id, categoryId, subCategoryId, countryId, cityId, locationId, titleEn, titleAr, descriptionEn, descriptionAr, price, status, tags = [], ownerId, media = [], businessId, callback) {
     var product = await Marketproducts.findById(id);
     if (product == null) {
       var err = new Error('product not found');
@@ -192,6 +200,7 @@ module.exports = function (Marketproducts) {
       "descriptionEn": descriptionEn,
       "descriptionAr": descriptionAr,
       "cityId": cityId,
+      "countryId": countryId,
       "locationId": locationId,
       "price": price,
       "status": status || product.status,
@@ -223,6 +232,12 @@ module.exports = function (Marketproducts) {
     },
     {
       arg: "subCategoryId",
+      type: "string",
+      required: true,
+      description: ""
+    },
+    {
+      arg: "countryId",
       type: "string",
       required: true,
       description: ""

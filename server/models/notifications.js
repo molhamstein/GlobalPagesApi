@@ -12,6 +12,7 @@ module.exports = function (Notifications) {
         keyId = key
       }
     }
+
     if (countryId != null && (!recipients || recipients.length == 0)) {
       let users = await Notifications.app.models.user.find({ "where": { "countryId": countryId } })
       users.forEach(element => {
@@ -30,9 +31,10 @@ module.exports = function (Notifications) {
       notificationModule.sendCustomNotificationToAllUsers(message, type, keyId, id, typeNot);
 
     }
-    return cb(null, {
-      message: 'Done'
-    });
+    if (cb)
+      return cb(null, {
+        message: 'Done'
+      });
   }
 
   Notifications.remoteMethod('customNotifcation', {
