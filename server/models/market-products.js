@@ -76,19 +76,19 @@ module.exports = function (Marketproducts) {
     {
       arg: "countryId",
       type: "string",
-      required: true,
+      required: false,
       description: ""
     },
     {
       arg: "cityId",
       type: "string",
-      required: true,
+      required: false,
       description: ""
     },
     {
       arg: "locationId",
       type: "string",
-      required: true,
+      required: false,
       description: ""
     },
     {

@@ -33,6 +33,7 @@ module.exports = function (Post) {
 
 		})
 	});
+	
 	Post.afterRemote('create', function (ctx, post, next) {
 		Post.app.models.volumes.findOne({ "where": { "status": "pending" }, "order": "creationDate DESC" }, function (err, volume) {
 			if (err)
