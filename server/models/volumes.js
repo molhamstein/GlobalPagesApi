@@ -116,5 +116,5 @@ module.exports = function (Volumes) {
 		let newVolumes = await Volumes.create(volumeObj)
 	});
 	// // createVolume.start();
-	// publishVolume.start();
+	publishVolume.start();
 };
