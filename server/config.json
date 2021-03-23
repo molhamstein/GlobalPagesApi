@@ -18,5 +18,14 @@
       "limit": "100kb"
     },
     "cors": false
+  },
+  "httpMode": false,
+  "certConfig": {
+    "path": "/etc/letsencrypt/live/almersal.co/",
+    "key": "privkey.pem",
+    "cert": "fullchain.pem",
+    "ca": [],
+    "requestCert": false,
+    "rejectUnauthorized": false
   }
 }
