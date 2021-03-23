@@ -203,6 +203,58 @@ module.exports = function (User) {
   });
 
 
+  User.activateUser = async function (ownerId, code, callback) {
+    try {
+      let activationCode = await User.app.models.activationCode.findOne({ "where": { "ownerId": ownerId, "code": code, "status": "active", }, "order": "createdAt DESC" })
+      if (activationCode == null) {
+        let err = new Error('active code not found');
+        err.statusCode = 604;
+        err.code = 'ACTIVE_CODE_NOT_FOUND';
+        throw err
+      }
+
+      if (activationCode.expiredDate.getTime() < new Date().getTime()) {
+        let err = new Error('active code is expired');
+        err.statusCode = 605;
+        err.code = 'ACTIVE_CODE_IS_EXPIRED';
+        throw err
+      }
+      let mainUser = await User.findById(ownerId);
+      if (mainUser) {
+        await mainUser.updateAttribute("status","activated");
+        await activationCode.updateAttribute("status","used");
+      }
+      callback(null, loginData)
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+  User.remoteMethod('activateUser', {
+    accepts: [{
+      arg: 'owenrId',
+      type: 'string',
+      required: true
+    },
+    {
+      arg: 'code',
+      type: 'string',
+      required: true
+    }
+    ],
+    returns: [{
+      "arg": "object",
+      "type": "object",
+      "root": true,
+      "description": ""
+    }],
+    http: {
+      verb: 'post',
+      path: '/activateUser'
+    },
+  });
+
+
   User.checkVersion = function (version, platform, callback) {
     var result = ""
     if (platform == "android")

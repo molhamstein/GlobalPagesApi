@@ -177,5 +177,9 @@
   "contact": {
     "dataSource": "mongoDb",
     "public": true
+  },
+  "activationCode": {
+    "dataSource": "mongoDb",
+    "public": true
   }
 }
