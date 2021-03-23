@@ -1,5 +1,5 @@
 'use strict';
-var http = require('http');
+const https = require('https');
 
 module.exports = function (Activationcode) {
     Activationcode.sendNewCode = function (ownerId, callback) {
@@ -14,7 +14,7 @@ module.exports = function (Activationcode) {
                     return callback(err)
                 console.log(newCode)
                 // callback(null, newCode)
-                http.get(
+                https.get(
                     "https://services.mtnsyr.com:7443/General/MTNSERVICES/ConcatenatedSender.aspx?User=mers275&Pass=las121715&From=Al%20Mersal&Gsm=963957465876&Msg=hello&Lang=0",
                     function (res) {
                         res.on('data', function (data) {
