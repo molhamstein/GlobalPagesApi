@@ -13,7 +13,7 @@ module.exports = function (Activationcode) {
                 if (err)
                     return callback(err)
                 console.log(newCode)
-                callback(null, newCode)
+                // callback(null, newCode)
                 http.get(
                     "https://services.mtnsyr.com:7443/General/MTNSERVICES/ConcatenatedSender.aspx?User=mers275&Pass=las121715&From=Al%20Mersal&Gsm=963957465876&Msg=hello&Lang=0",
                     function (res) {
