@@ -231,7 +231,7 @@ module.exports = function(User) {
 
     User.remoteMethod('activateUser', {
         accepts: [{
-                arg: 'owenrId',
+                arg: 'ownerId',
                 type: 'string',
                 required: true
             },
