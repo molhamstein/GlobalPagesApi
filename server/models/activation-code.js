@@ -1,29 +1,37 @@
 'use strict';
 const https = require('https');
 
-module.exports = function (Activationcode) {
-    Activationcode.sendNewCode = function (ownerId, callback) {
+module.exports = function(Activationcode) {
+    Activationcode.sendNewCode = function(ownerId, callback) {
         // try {
 
 
-        Activationcode.app.models.User.findById(ownerId, function (err, owner) {
+        Activationcode.app.models.User.findById(ownerId, function(err, owner) {
+            if (owner == null) {
+                err = new Error('usiness not found');
+                err.statusCode = 404;
+                err.code = 'USER_NOT_FOUND';
+                return callback(err);
+            }
+            let phoneNumber = owner.phoneNumber.substring(2, owner.phoneNumber.length)
             let code = Activationcode.app.service.makeCode(4, true);
             let expiredDate = Activationcode.app.service.addHourse(0.25, new Date())
-            Activationcode.create({ "code": code, "ownerId": ownerId, "expiredDate": expiredDate }, function (err, newCode) {
+            let msg = "Your code is '" + code + "'"
+            Activationcode.create({ "code": code, "ownerId": ownerId, "expiredDate": expiredDate }, function(err, newCode) {
                 if (err)
                     return callback(err)
                 console.log(newCode)
-                // callback(null, newCode)
+                    // callback(null, newCode)
                 https.get(
-                    "https://services.mtnsyr.com:7443/General/MTNSERVICES/ConcatenatedSender.aspx?User=mers275&Pass=las121715&From=Al%20Mersal&Gsm=963957465876&Msg=hello&Lang=0",
-                    function (res) {
-                        res.on('data', function (data) {
+                    "https://services.mtnsyr.com:7443/General/MTNSERVICES/ConcatenatedSender.aspx?User=mers275&Pass=las121715&From=Al%20Mersal&Gsm=" + phoneNumber + "&Msg=" + msg + "&Lang=0",
+                    function(res) {
+                        res.on('data', function(data) {
                             console.log(data.toString());
                             callback(null, data)
 
                         });
                     }
-                ).on('error', function (error) {
+                ).on('error', function(error) {
                     console.log(error)
                     callback(error)
 
