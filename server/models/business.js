@@ -609,7 +609,7 @@ module.exports = function(Business) {
                 near: [null, null],
                 key: "locationPointDB",
                 distanceField: "distance",
-                $limit: 15000,
+                limit: 999999999,
                 query: {
                     deleted: false
                 },
@@ -873,6 +873,7 @@ module.exports = function(Business) {
 
                     var collection = db.collection('business');
                     var b = collection.aggregate(aggregateArray);
+                    console.log(JSON.stringify(aggregateArray))
                     b.get(function(err, business) {
                         if (err) return cb(err);
                         var vibBusiness = []
@@ -890,6 +891,7 @@ module.exports = function(Business) {
             });
         });
     }
+
     Business.updateLocation = function() {
         Business.getDataSource().connector.connect(function(err, db) {
             var cust_to_clear = db.collection('business').aggregate()

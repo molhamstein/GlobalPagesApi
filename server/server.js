@@ -34,11 +34,11 @@ boot(app, __dirname, function(err) {
     if (require.main === module) {
         //Comment this app.start line and add following lines
         // app.start();
-        app.io = require('socket.io')(app.start());
-        // app.io = require('socket.io')(loopbackSSL.startServer(app));
-        // require('./bin/socketio.js')(app)
-        // require('socketio-auth')(app.io, {
-        //   authenticate: function (socket, value, callback) {
+        // app.io = require('socket.io')(app.start());
+        app.io = require('socket.io')(loopbackSSL.startServer(app));
+        require('./bin/socketio.js')(app)
+            // require('socketio-auth')(app.io, {
+            //   authenticate: function (socket, value, callback) {
 
         //     var AccessToken = app.models.AccessToken;
         //     //get credentials sent by the client
