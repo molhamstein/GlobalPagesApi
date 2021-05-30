@@ -2,7 +2,7 @@
 
 var loopback = require('loopback');
 var boot = require('loopback-boot');
-// var loopbackSSL = require('loopback-ssl');
+var loopbackSSL = require('loopback-ssl');
 
 global.app = module.exports = loopback();
 const service = require('./boot/service.js');
