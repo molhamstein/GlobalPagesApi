@@ -14,7 +14,7 @@
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.17",
     "@ffprobe-installer/ffprobe": "^1.0.10",
-    "async": "^2.6.0",
+    "async": "^2.6.4",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
     "cron": "^1.8.2",
